@@ -1,0 +1,15 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "init": {
+      "description": "A new NestJS application.",
+      "factory": "./init/index#init",
+      "schema": "./init/schema.json"
+    },
+    "application": {
+      "description": "A new NestJS boilerplate.",
+      "factory": "./application/index#application",
+      "schema": "./application/schema.json"
+    }
+  }
+}
