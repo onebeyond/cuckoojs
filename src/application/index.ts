@@ -1,6 +1,6 @@
 import { Rule, SchematicContext, externalSchematic, Tree, branchAndMerge, chain } from '@angular-devkit/schematics';
 
-import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
+import { NodePackageInstallTask, RepositoryInitializerTask } from '@angular-devkit/schematics/tasks';
 
 // import { addPackageJsonDependency, NodeDependencyType } from 'schematics-utilities';
 // import {
@@ -9,38 +9,18 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 //   NodeDependencyType,
 // } from '@schematics/angular/utility/dependencies';
 
-// You don't have to export the function as default. You can also have more than one rule factory
-// per file.
-// export function application(options: any): Rule {
-//   return (tree: Tree, context: SchematicContext) => {
-//     console.log('Run application generator');
-
-//     const sourceTemplates =  url('./files');
-//     const sourceParametrizedTemplates = apply(sourceTemplates, [
-//       template({
-//         ...options,
-//         ...strings
-//       })
-//     ]);
-
-//     return mergeWith(sourceParametrizedTemplates)(tree, context);
-//   };
-// }
-
-// export function application(options: any): Rule {
-//   return (tree: Tree, context: SchematicContext) => {
-//     return branchAndMerge(
-//       chain([
-//         createNestApplication(options),
-//         installHusky(options),
-//       ]),
-//     )(tree, context);
-//   };
-// }
-
 export function application(options: any): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    return chain([branchAndMerge(createNestApplication(options)), installPackageJsonDependencies(options.name)])(tree, context);
+
+    console.log('tree :>> ', options.path);
+    return chain([
+      branchAndMerge(createNestApplication(options)),
+
+
+      // Ejecutar git init
+
+      installPackageJsonDependencies(options.name)
+    ])(tree, context);
   }
 }
 
@@ -55,6 +35,17 @@ function addPackageToPackageJson(host: Tree, name: string, pkg: string, version:
       json.dependencies[pkg] = version;
       // json.dependencies = sortObjectByKeys(json.dependencies);
     }
+
+
+    if (!json.scripts) {
+      json.scripts = {};
+    }
+    if (!json.scripts.prepare) {
+      const scriptName = "prepare";
+      const scriptValue= "husky install";
+      json.scripts[scriptName] = scriptValue;
+    }
+
     host.overwrite(`./${name}/package.json`, JSON.stringify(json, null, 2));
   }
   return host;
@@ -66,7 +57,12 @@ function installPackageJsonDependencies(name: string): Rule {
     const projectPath= `/${name}`
     // addPackageJsonDependency(host, dependency);
 
-    addPackageToPackageJson(host, name, '@angular/elements', '~6.1.1');
+    addPackageToPackageJson(host, name, 'husky', '~8.0.1');
+
+
+    context.addTask(new RepositoryInitializerTask(projectPath, {}));
+
+
     context.addTask(new NodePackageInstallTask(projectPath));
     return host;
   };
@@ -98,5 +94,3 @@ function createNestApplication(options: any): Rule {
   // }
   return externalSchematic('@nestjs/schematics', 'application', options);
 }
-
-
