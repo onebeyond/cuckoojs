@@ -2,6 +2,8 @@ import { Rule, SchematicContext, externalSchematic, Tree, branchAndMerge, chain 
 
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
+import {  addPackageJsonDependency, NodeDependencyType } from 'schematics-utilities';
+
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
 // export function application(options: any): Rule {
@@ -33,18 +35,17 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export function application(options: any): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    // const projectPath= "/home/path/to/project"
-    // const templateSource = apply(url(templatePath), [move(projectPath)]);
-    // context.addTask(new NodePackageInstallTask(projectPath));
-
-    installHusky(options);
-    return chain([branchAndMerge(createNestApplication(options))])(tree, context);
+    return chain([branchAndMerge(createNestApplication(options)), installPackageJsonDependencies(options.name)])(tree, context);
   }
 }
 
-function installHusky(_options: any): Rule {
-  return (_tree: Tree, context: SchematicContext) => {
-    context.addTask(new NodePackageInstallTask());
+function installPackageJsonDependencies(name: string): Rule {
+  return (host: Tree, context: SchematicContext) => {
+    const dependency =  { type: NodeDependencyType.Default, version: '~6.1.1', name: '@angular/elements' }
+    const projectPath= `/${name}`
+    addPackageJsonDependency(host, dependency);
+    context.addTask(new NodePackageInstallTask(projectPath));
+    return host;
   };
 }
 
@@ -74,3 +75,5 @@ function createNestApplication(options: any): Rule {
   // }
   return externalSchematic('@nestjs/schematics', 'application', options);
 }
+
+
