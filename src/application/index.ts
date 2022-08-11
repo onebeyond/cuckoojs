@@ -2,7 +2,12 @@ import { Rule, SchematicContext, externalSchematic, Tree, branchAndMerge, chain 
 
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
-import {  addPackageJsonDependency, NodeDependencyType } from 'schematics-utilities';
+// import { addPackageJsonDependency, NodeDependencyType } from 'schematics-utilities';
+// import {
+//   addPackageJsonDependency,
+//   // NodeDependency,
+//   NodeDependencyType,
+// } from '@schematics/angular/utility/dependencies';
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
@@ -39,11 +44,29 @@ export function application(options: any): Rule {
   }
 }
 
+function addPackageToPackageJson(host: Tree, name: string, pkg: string, version: string): Tree {
+  if (host.exists(`./${name}/package.json`)) {
+    const sourceText = host.read(`./${name}/package.json`)!.toString("utf-8");
+    const json = JSON.parse(sourceText) as any;
+    if (!json.dependencies) {
+      json.dependencies = {};
+    }
+    if (!json.dependencies[pkg]) {
+      json.dependencies[pkg] = version;
+      // json.dependencies = sortObjectByKeys(json.dependencies);
+    }
+    host.overwrite(`./${name}/package.json`, JSON.stringify(json, null, 2));
+  }
+  return host;
+}
+
 function installPackageJsonDependencies(name: string): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    const dependency =  { type: NodeDependencyType.Default, version: '~6.1.1', name: '@angular/elements' }
+  return (host: Tree, context: SchematicContext): Tree => {
+    // const dependency =  { type: NodeDependencyType.Default, version: '~6.1.1', name: '@angular/elements' }
     const projectPath= `/${name}`
-    addPackageJsonDependency(host, dependency);
+    // addPackageJsonDependency(host, dependency);
+
+    addPackageToPackageJson(host, name, '@angular/elements', '~6.1.1');
     context.addTask(new NodePackageInstallTask(projectPath));
     return host;
   };
