@@ -5,17 +5,17 @@
   "type": "object",
   "description": "Name of your app",
   "properties": {
-      "name": {
-          "type": "string",
-          "description": "Name of your app",
-          "$default": {
-              "$source": "argv",
-              "index": 0
-          },
-          "x-prompt": "Name of your cool app!!!"
-      }
+    "name": {
+      "type": "string",
+      "description": "Name of your app",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "Name of your cool app!!!"
+    }
   },
   "required": [
-      "name"
+    "name"
   ]
 }
