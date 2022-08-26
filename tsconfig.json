@@ -12,6 +12,7 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "rootDir": "src/",
+    "outDir": "dist/",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -19,6 +20,6 @@
     "target": "es6",
     "types": ["jasmine", "node"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts"],
   "exclude": ["src/*/files/**/*"]
 }
