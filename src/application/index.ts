@@ -14,7 +14,7 @@ export function application(options: ApplicationSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     return chain([
       branchAndMerge(createNestApplication(options)),
-      addPackageToJson(options, {name: 'husky', value: '~8.0.1'}),
+      addPackageToDevDependencies(options, {name: 'husky', value: '~8.0.1'}),
       addNpmScript(options, {name: 'prepare', value: 'husky install'}),
       initProject(options),
     ])(tree, context);
@@ -57,9 +57,9 @@ function addNpmScript(options: ApplicationSchema, script: PackageEntry) {
   }
 }
 
-function addPackageToJson(options: ApplicationSchema, pkg: PackageEntry): Rule {
+function addPackageToDevDependencies(options: ApplicationSchema, pkg: PackageEntry): Rule {
   return (host: Tree, _context: SchematicContext): Tree => {
-    return ensurePackageSection(host, options.name, 'dependencies', pkg, true);
+    return ensurePackageSection(host, options.name, 'devDependencies', pkg, true);
   }
 }
 
