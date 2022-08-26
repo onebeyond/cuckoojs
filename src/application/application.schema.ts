@@ -1,3 +1,3 @@
-export interface ApplicationSchema {
-  name: string
-}
+export type ApplicationSchema = {
+	name: string;
+};
