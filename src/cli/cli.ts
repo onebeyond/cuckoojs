@@ -20,7 +20,7 @@ const init = () => {
 		.alias('n')
 		.description('generate a new NestJS project scaffolding')
 		.action(async (name: string, _options: any) => {
-			await NewCommand.execute(name);
+			await new NewCommand(name).execute();
 		});
 
 	program.parse(process.argv);

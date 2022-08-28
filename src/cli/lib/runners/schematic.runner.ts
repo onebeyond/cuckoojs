@@ -8,11 +8,12 @@ export class SchematicRunner extends GenericRunner {
 		);
 	}
 
-	constructor(private readonly args: string[] = []) {
+	constructor() {
 		super('node');
 	}
 
-	public async run() {
-		await super.run(SchematicRunner.getSchematicPath(), this.args);
+	public async generateNestApplication(name: string) {
+		const args = ['@nestjs/schematics:application', `--name ${name}`];
+		await super.run(SchematicRunner.getSchematicPath(), args);
 	}
 }
