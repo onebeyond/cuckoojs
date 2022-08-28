@@ -1,29 +1,54 @@
 import {SchematicRunner} from '../lib/runners/schematic.runner';
 import {GitRunner} from '../lib/runners/git.runner';
+import type {PackageEntry, ScriptEntry} from '../lib/runners/npm.runner';
 import {NpmRunner} from '../lib/runners/npm.runner';
 
 export class NewCommand {
-	constructor(private readonly name: string) {}
+	private readonly initialPackages: PackageEntry[] = [
+		{name: 'husky', version: '~8.0.1', section: 'devDependencies'},
+	];
+
+	private readonly initialScripts: ScriptEntry[] = [
+		{name: 'prepare', value: 'husky install'},
+	];
+
+	constructor(
+		private readonly name: string,
+		private readonly schematicRunner: SchematicRunner = new SchematicRunner(),
+		private readonly gitRunner: GitRunner = new GitRunner(),
+		private readonly npmRunner: NpmRunner = new NpmRunner(),
+	) {}
 
 	public async execute() {
 		try {
 			await this.generateNestApplication();
 			await this.initRepository();
+			await this.addNpmPackages();
+			await this.addNpmScripts();
 			await this.installPackages();
 		} catch (error: unknown) {
+			console.error(error);
 			process.exit(1);
 		}
 	}
 
 	private async generateNestApplication() {
-		return new SchematicRunner().generateNestApplication(this.name);
+		return this.schematicRunner.generateNestApplication(this.name);
 	}
 
 	private async initRepository() {
-		return new GitRunner().init({folderName: this.name});
+		return this.gitRunner.init({folderName: this.name});
+	}
+
+	private async addNpmPackages() {
+		await this.npmRunner.addPackages(this.name, this.initialPackages);
+	}
+
+	private async addNpmScripts() {
+		await this.npmRunner.addScripts(this.name, this.initialScripts);
 	}
 
 	private async installPackages() {
-		return new NpmRunner().install(this.name);
+		return this.npmRunner.install(this.name);
 	}
 }
