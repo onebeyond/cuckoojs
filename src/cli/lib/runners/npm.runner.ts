@@ -32,7 +32,7 @@ export class NpmRunner extends GenericRunner {
 	}
 
 	private static async loadPackageJson(path: string) {
-		return await import(path) as PackageJson;
+		return JSON.parse(await fs.readFile(path, {encoding: 'utf-8'})) as PackageJson;
 	}
 
 	constructor() {
