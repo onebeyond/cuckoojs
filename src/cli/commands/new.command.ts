@@ -3,6 +3,7 @@ import {GitRunner} from '../lib/runners/git.runner';
 import type {PackageEntry, ScriptEntry} from '../lib/runners/npm.runner';
 import {NpmRunner} from '../lib/runners/npm.runner';
 import Printer from '../lib/printer/printer';
+import {messages} from '../lib/ui/ui';
 import * as fs from 'fs';
 import {join} from 'path';
 
@@ -31,15 +32,7 @@ export class NewCommand {
 		const printError = Printer.format({fontColor: 'red', decoration: 'bold'});
 		const printNeutral = Printer.format({decoration: 'bold'});
 
-		printSuccess(`
-   _____           _                    _  _____ 
-  / ____|         | |                  | |/ ____|
- | |    _   _  ___| | _____   ___      | | (___  
- | |   | | | |/ __| |/ / _ \\ / _ \\ _   | |\\___ \\ 
- | |___| |_| | (__|   < (_) | (_) | |__| |____) |
-  \\_____\\__,_|\\___|_|\\_\\___/ \\___/ \\____/|_____/ 
-                                                                           
-		`);
+		printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
 			printError(`Error generating new project: Folder ${this.name} already exists`);
