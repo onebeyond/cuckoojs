@@ -18,6 +18,7 @@ export class NewCommand {
 
 	private readonly initialScripts: ScriptEntry[] = [
 		{name: 'prepare', value: 'husky install'},
+		{name: 'postinstall', value: 'npx @guidesmiths/license-checker --outputFileName license-report --failOn /GPL/'},
 	];
 
 	constructor(
