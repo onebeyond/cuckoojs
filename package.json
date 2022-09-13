@@ -1,7 +1,7 @@
 {
-  "name": "@inigo/nest-schematics",
-  "version": "0.0.0",
-  "description": "A blank schematics",
+  "name": "@guidesmiths/cuckoojs",
+  "version": "0.0.1",
+  "description": "CuckooJS CLI",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node src/cli/cli.js",
@@ -10,9 +10,24 @@
     "lint:fix": "eslint --fix --ext .ts ."
   },
   "keywords": [
-    "schematics"
+    "schematics nestjs"
   ],
-  "author": "Íñigo Marquínez Prado <inigo.marquinez@gmail.com>",
+  "contributors": [
+    {
+      "name": "David Yusta",
+      "email": "david.yusta@one-beyond.com"
+    },
+    {
+      "name": "Laura Corbí",
+      "email": "laura.corbi@one-beyond.com"
+    },    {
+      "name": "Adrián Rodríguez",
+      "email": "adrian.rodriguez@one-beyond.com"
+    },    {
+      "name": "Íñigo Marquínez",
+      "email": "inigo.marquinez@one-beyond.com"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "@angular-devkit/schematics-cli": "^14.2.1",
