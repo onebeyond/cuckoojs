@@ -6,6 +6,8 @@ import Printer from '../lib/printer/printer';
 import {messages} from '../lib/ui/ui';
 import * as fs from 'fs';
 import {join} from 'path';
+import {BashRunner} from '../lib/runners/bash.runner';
+import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
 
 export class NewCommand {
 	private static endProcess(status: number) {
@@ -13,7 +15,10 @@ export class NewCommand {
 	}
 
 	private readonly initialPackages: PackageEntry[] = [
-		{name: 'husky', version: '~8.0.1', section: 'devDependencies'},
+		{name: 'husky', version: '^8.0.1', section: 'devDependencies'},
+		{name: '@commitlint/cli', version: '^17.1.2', section: 'devDependencies'},
+		{name: '@commitlint/config-conventional', version: '^17.1.0', section: 'devDependencies'},
+
 	];
 
 	private readonly initialScripts: ScriptEntry[] = [
@@ -26,6 +31,8 @@ export class NewCommand {
 		private readonly schematicRunner: SchematicRunner = new SchematicRunner(),
 		private readonly gitRunner: GitRunner = new GitRunner(),
 		private readonly npmRunner: NpmRunner = new NpmRunner(),
+		private readonly bashRunner: BashRunner = new BashRunner(),
+		private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky(),
 	) {}
 
 	public async execute() {
@@ -43,20 +50,26 @@ export class NewCommand {
 		try {
 			this.checkFileExists();
 
-			printNeutral('(1/5) Generating NestJS application scaffolding');
+			printNeutral('(1/7) Generating NestJS application scaffolding');
 			await this.schematicRunner.generateNestApplication(this.name);
 
-			printNeutral('(2/5) Initializing Git repository');
+			printNeutral('(2/7) Initializing Git repository');
 			await this.gitRunner.init({folderName: this.name});
 
-			printNeutral('(3/5) Adding additional packages');
+			printNeutral('(3/7) Adding additional packages');
 			await this.npmRunner.addPackages(this.name, this.initialPackages);
 
-			printNeutral('(4/5) Adding additional npm scripts');
+			printNeutral('(4/7) Adding additional npm scripts');
 			await this.npmRunner.addScripts(this.name, this.initialScripts);
 
-			printNeutral('(5/5) Installing dependencies');
+			printNeutral('(5/7) Creating commitlint config');
+			await this.bashRunner.runCommand(this.name);
+
+			printNeutral('(6/7) Installing dependencies');
 			await this.npmRunner.install(this.name);
+
+			printNeutral('(7/7) Creating husky files');
+			await this.bashRunnerHusky.runHuskyCommit(this.name);
 
 			printSuccess(`NestJS application "${this.name}" generated`);
 			printSuccess('Thanks for using CuckooJS');
