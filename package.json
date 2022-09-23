@@ -4,7 +4,7 @@
   "description": "CuckooJS CLI",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "node src/cli/cli.js",
+    "start": "node build/src/cli/cli.js",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --fix --ext .ts ."
