@@ -2,6 +2,14 @@
   "name": "@guidesmiths/cuckoojs",
   "version": "0.0.1",
   "description": "CuckooJS CLI",
+  "keywords": [
+    "schematics nestjs"
+  ],
+  "license": "MIT",
+  "main": "./build/src/cli/cli.js",
+  "bin": {
+    "cuckoo": "./build/src/cli/cli.js"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node build/src/cli/cli.js",
@@ -9,9 +17,6 @@
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --fix --ext .ts ."
   },
-  "keywords": [
-    "schematics nestjs"
-  ],
   "contributors": [
     {
       "name": "David Yusta",
@@ -20,15 +25,16 @@
     {
       "name": "Laura Corbí",
       "email": "laura.corbi@one-beyond.com"
-    },    {
+    },
+    {
       "name": "Adrián Rodríguez",
       "email": "adrian.rodriguez@one-beyond.com"
-    },    {
+    },
+    {
       "name": "Íñigo Marquínez",
       "email": "inigo.marquinez@one-beyond.com"
     }
   ],
-  "license": "MIT",
   "dependencies": {
     "@angular-devkit/schematics-cli": "^14.2.3",
     "@nestjs/schematics": "^9.0.3",
