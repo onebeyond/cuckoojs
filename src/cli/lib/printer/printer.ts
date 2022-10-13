@@ -1,3 +1,5 @@
+/* eslint-disable no-bitwise */
+
 type FontColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
 
 type BackgroundColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
@@ -47,6 +49,19 @@ type Style = {
 	decoration?: Decoration;
 };
 
+const printLoader = () => {
+	const p = ['⠙', '⠘', '⠰', '⠴', '⠤', '⠦', '⠆', '⠃', '⠋', '⠉'];
+	let x = 0;
+	return setInterval(() => {
+		process.stdout.write('\r' + p[x++]);
+		x &= 3;
+	}, 250);
+};
+
+const removeLoader = () => {
+	process.stdout.write('\r\x1b[K');
+};
+
 export default class Printer {
 	public static format({
 		backgroundColor = 'none',
@@ -64,7 +79,9 @@ export default class Printer {
 				leftPaddingAmount = Printer.calculateLeftPadding(text);
 			}
 
+			removeLoader();
 			process.stdout.write(`${' '.repeat(leftPaddingAmount)}${formattedText}\n`);
+			printLoader();
 		};
 	}
 
