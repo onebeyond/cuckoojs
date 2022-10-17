@@ -14,7 +14,8 @@
                 "*.tsx"
             ],
           "rules": {
-            "@typescript-eslint/no-extraneous-class": "off"
+            "@typescript-eslint/no-extraneous-class": "off",
+            "capitalized-comments": "off"
           }
         }
     ],

@@ -20,10 +20,12 @@
     {
       "name": "Laura Corbí",
       "email": "laura.corbi@one-beyond.com"
-    },    {
+    },
+    {
       "name": "Adrián Rodríguez",
       "email": "adrian.rodriguez@one-beyond.com"
-    },    {
+    },
+    {
       "name": "Íñigo Marquínez",
       "email": "inigo.marquinez@one-beyond.com"
     }
@@ -32,7 +34,8 @@
   "dependencies": {
     "@angular-devkit/schematics-cli": "^14.2.3",
     "@nestjs/schematics": "^9.0.3",
-    "commander": "^9.4.0"
+    "commander": "^9.4.0",
+    "loading-cli": "^1.1.0"
   },
   "devDependencies": {
     "@types/jasmine": "~4.3.0",

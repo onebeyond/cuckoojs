@@ -8,6 +8,8 @@ import * as fs from 'fs';
 import {join} from 'path';
 import {BashRunner} from '../lib/runners/bash.runner';
 import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import loading = require('loading-cli');
 
 export class NewCommand {
 	private static endProcess(status: number) {
@@ -38,9 +40,28 @@ export class NewCommand {
 	public async execute() {
 		const printSuccess = Printer.format({fontColor: 'green', decoration: 'bold'});
 		const printError = Printer.format({fontColor: 'red', decoration: 'bold'});
-		const printNeutral = Printer.format({decoration: 'bold'});
+		// const printNeutral = Printer.format({decoration: 'bold'});
 
 		printSuccess(messages.banner);
+		const load = loading({
+			color: 'green',
+			interval: 100,
+			stream: process.stdout,
+			frames: ['◐', '◓', '◑', '◒'],
+		}).start();
+
+		const total = 7;
+		let step = 1;
+
+		const startStep = (text: string) => {
+			load.text = `(${step}/${total}) ${text}`;
+			load.start();
+		};
+
+		const endStep = () => {
+			load.succeed(load.text);
+			step++;
+		};
 
 		if (this.checkFileExists()) {
 			printError(`Error generating new project: Folder ${this.name} already exists`);
@@ -50,30 +71,37 @@ export class NewCommand {
 		try {
 			this.checkFileExists();
 
-			printNeutral('(1/7) Generating NestJS application scaffolding');
+			startStep('Generating NestJS application scaffolding');
 			await this.schematicRunner.generateNestApplication(this.name);
+			endStep();
 
-			printNeutral('(2/7) Initializing Git repository');
+			startStep('Initializing Git repository');
 			await this.gitRunner.init({folderName: this.name});
+			endStep();
 
-			printNeutral('(3/7) Adding additional packages');
+			startStep('Adding additional packages');
 			await this.npmRunner.addPackages(this.name, this.initialPackages);
+			endStep();
 
-			printNeutral('(4/7) Adding additional npm scripts');
+			startStep('Adding additional npm scripts');
 			await this.npmRunner.addScripts(this.name, this.initialScripts);
+			endStep();
 
-			printNeutral('(5/7) Creating commitlint config');
+			startStep('Creating commitlint config');
 			await this.bashRunner.runCommand(this.name);
+			endStep();
 
-			printNeutral('(6/7) Installing dependencies');
+			startStep('Installing dependencies');
 			await this.npmRunner.install(this.name);
+			endStep();
 
-			printNeutral('(7/7) Creating husky files');
+			startStep('Creating husky files');
 			await this.bashRunnerHusky.runHuskyCommit(this.name);
+			load.succeed(load.text);
 
 			printSuccess(`NestJS application "${this.name}" generated`);
-			printSuccess('Thanks for using CuckooJS');
 		} catch (error: unknown) {
+			load.fail();
 			printError(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
 			NewCommand.endProcess(1);
