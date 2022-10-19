@@ -11,7 +11,7 @@ export class GenericRunner {
 	): Promise<string | void> {
 		const options: SpawnOptions = {
 			cwd,
-			stdio: 'pipe',
+			stdio: 'inherit',
 			shell: true,
 		};
 
