@@ -68,7 +68,7 @@ export class NewCommand extends AbstractCommand {
 			this.endStep(load);
 
 			this.startStep('Installing dependencies', load);
-			// await this.npmRunner.install(this.name);
+			await this.npmRunner.install(this.name);
 			this.endStep(load);
 
 			this.startStep('Creating husky files', load);
