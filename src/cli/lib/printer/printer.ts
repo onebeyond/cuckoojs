@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+import loading = require('loading-cli');
+
 type FontColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
 
 type BackgroundColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
@@ -46,7 +49,6 @@ type Style = {
 	alignment?: Alignment;
 	decoration?: Decoration;
 };
-
 export default class Printer {
 	public static format({
 		backgroundColor = 'none',
@@ -71,5 +73,32 @@ export default class Printer {
 	private static calculateLeftPadding(text: string) {
 		const columns = process.stdout.columns || 80;
 		return Math.floor((columns - text.length) / 2);
+	}
+
+	total: number;
+	step: number;
+	constructor() {
+		this.total = 7;
+		this.step = 1;
+	}
+
+	public initLoader(): loading.Loading {
+		return loading({
+			color: 'green',
+			interval: 100,
+			stream: process.stdout,
+			frames: ['◐', '◓', '◑', '◒'],
+		}).start();
+	}
+
+	public startStep(text: string, load: loading.Loading): any {
+		load.text = `(${this.step}/${this.total}) ${text}`;
+		load.start();
+	}
+
+	public endStep(load: loading.Loading): number {
+		load.succeed(load.text);
+		this.step += 1;
+		return this.step;
 	}
 }
