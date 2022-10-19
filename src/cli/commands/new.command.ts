@@ -2,17 +2,19 @@ import {SchematicRunner} from '../lib/runners/schematic.runner';
 import {GitRunner} from '../lib/runners/git.runner';
 import type {PackageEntry, ScriptEntry} from '../lib/runners/npm.runner';
 import {NpmRunner} from '../lib/runners/npm.runner';
-import Printer from '../lib/printer/printer';
 import {messages} from '../lib/ui/ui';
 import * as fs from 'fs';
 import {join} from 'path';
 import {BashRunner} from '../lib/runners/bash.runner';
 import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
+import {AbstractCommand} from './abstract.command';
 
-export class NewCommand {
-	private static endProcess(status: number) {
-		process.exit(status);
-	}
+export class NewCommand extends AbstractCommand {
+	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
+	private readonly gitRunner: GitRunner = new GitRunner();
+	private readonly npmRunner: NpmRunner = new NpmRunner();
+	private readonly bashRunner: BashRunner = new BashRunner();
+	private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky();
 
 	private readonly initialPackages: PackageEntry[] = [
 		{name: 'husky', version: '^8.0.1', section: 'devDependencies'},
@@ -27,54 +29,47 @@ export class NewCommand {
 	];
 
 	constructor(
-		private readonly name: string,
-		private readonly schematicRunner: SchematicRunner = new SchematicRunner(),
-		private readonly gitRunner: GitRunner = new GitRunner(),
-		private readonly npmRunner: NpmRunner = new NpmRunner(),
-		private readonly bashRunner: BashRunner = new BashRunner(),
-		private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky(),
-	) {}
+		private readonly name: string
+	) {
+		super();
+	}
 
 	public async execute() {
-		const printSuccess = Printer.format({fontColor: 'green', decoration: 'bold'});
-		const printError = Printer.format({fontColor: 'red', decoration: 'bold'});
-		const printNeutral = Printer.format({decoration: 'bold'});
-
-		printSuccess(messages.banner);
+		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
-			printError(`Error generating new project: Folder ${this.name} already exists`);
+			this.printError(`Error generating new project: Folder ${this.name} already exists`);
 			NewCommand.endProcess(1);
 		}
 
 		try {
 			this.checkFileExists();
 
-			printNeutral('(1/7) Generating NestJS application scaffolding');
+			this.printNeutral('(1/7) Generating NestJS application scaffolding');
 			await this.schematicRunner.generateNestApplication(this.name);
 
-			printNeutral('(2/7) Initializing Git repository');
+			this.printNeutral('(2/7) Initializing Git repository');
 			await this.gitRunner.init({folderName: this.name});
 
-			printNeutral('(3/7) Adding additional packages');
+			this.printNeutral('(3/7) Adding additional packages');
 			await this.npmRunner.addPackages(this.name, this.initialPackages);
 
-			printNeutral('(4/7) Adding additional npm scripts');
+			this.printNeutral('(4/7) Adding additional npm scripts');
 			await this.npmRunner.addScripts(this.name, this.initialScripts);
 
-			printNeutral('(5/7) Creating commitlint config');
+			this.printNeutral('(5/7) Creating commitlint config');
 			await this.bashRunner.runCommand(this.name);
 
-			printNeutral('(6/7) Installing dependencies');
+			this.printNeutral('(6/7) Installing dependencies');
 			await this.npmRunner.install(this.name);
 
-			printNeutral('(7/7) Creating husky files');
+			this.printNeutral('(7/7) Creating husky files');
 			await this.bashRunnerHusky.runHuskyCommit(this.name);
 
-			printSuccess(`NestJS application "${this.name}" generated`);
-			printSuccess('Thanks for using CuckooJS');
+			this.printSuccess(`NestJS application "${this.name}" generated`);
+			this.printSuccess('Thanks for using CuckooJS');
 		} catch (error: unknown) {
-			printError(`Error generating new project: ${(error as Error).message}`);
+			this.printError(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
 			NewCommand.endProcess(1);
 		}
