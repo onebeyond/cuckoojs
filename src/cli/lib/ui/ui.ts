@@ -1,3 +1,5 @@
+import {version} from '../../../../package.json';
+
 export const messages: Record<string, string> = {
 	banner: `
      =########+.                                                                                    
