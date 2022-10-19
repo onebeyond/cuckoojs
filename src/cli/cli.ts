@@ -1,29 +1,41 @@
 #!/usr/bin/env node
 import {Command} from 'commander';
 import {version} from '../../package.json';
-import {NewCommand} from './commands/new.command';
+import {NewCommand, GenerateCommand} from './commands';
 
-const init = () => {
-	const program = new Command('cuckoo');
+const init = (): void => {
+	const cuckoo = new Command('cuckoo');
 
-	program
+	cuckoo
 		.version(
 			version,
 			'-v, --version',
-			'output the current version',
-		)
-		.helpOption('-h, --help', 'output usage information')
-		.showHelpAfterError()
-		.usage('<command> [options]')
+			'Output the current version.',
+		);
 
+	cuckoo
+		.helpOption('-h, --help', 'Output usage information.')
+		.showHelpAfterError()
+		.usage('<command> [options]');
+
+	cuckoo
 		.command('new <name>')
 		.alias('n')
-		.description('generate a new NestJS project scaffolding')
+		.description('Generate Nest application with basic tooling.')
 		.action(async (name: string, _options: any) => {
 			await new NewCommand(name).execute();
 		});
 
-	program.parse(process.argv);
+	cuckoo
+		.command('generate <schematic> <name> [options...]')
+		.alias('g')
+		.description('Generate a Nest element.')
+		.action(async (schematic: string, name: string, options: string[]) => {
+			await new GenerateCommand(schematic, name, options).execute();
+		});
+
+	cuckoo
+		.parse(process.argv);
 };
 
 init();

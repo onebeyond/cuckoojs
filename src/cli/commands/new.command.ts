@@ -2,16 +2,19 @@ import {SchematicRunner} from '../lib/runners/schematic.runner';
 import {GitRunner} from '../lib/runners/git.runner';
 import type {PackageEntry, ScriptEntry} from '../lib/runners/npm.runner';
 import {NpmRunner} from '../lib/runners/npm.runner';
-import Printer from '../lib/printer/printer';
 import {messages} from '../lib/ui/ui';
 import * as fs from 'fs';
 import {join} from 'path';
 import {BashRunner} from '../lib/runners/bash.runner';
 import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
-export class NewCommand {
-	private static endProcess(status: number) {
-		process.exit(status);
-	}
+import {AbstractCommand} from './abstract.command';
+
+export class NewCommand extends AbstractCommand {
+	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
+	private readonly gitRunner: GitRunner = new GitRunner();
+	private readonly npmRunner: NpmRunner = new NpmRunner();
+	private readonly bashRunner: BashRunner = new BashRunner();
+	private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky();
 
 	private readonly initialPackages: PackageEntry[] = [
 		{name: 'husky', version: '^8.0.1', section: 'devDependencies'},
@@ -27,59 +30,52 @@ export class NewCommand {
 
 	constructor(
 		private readonly name: string,
-		private readonly schematicRunner: SchematicRunner = new SchematicRunner(),
-		private readonly gitRunner: GitRunner = new GitRunner(),
-		private readonly npmRunner: NpmRunner = new NpmRunner(),
-		private readonly bashRunner: BashRunner = new BashRunner(),
-		private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky(),
-	) {}
+	) {
+		super();
+	}
 
 	public async execute() {
-		const printSuccess = Printer.format({fontColor: 'green', decoration: 'bold'});
-		const printError = Printer.format({fontColor: 'red', decoration: 'bold'});
-		const printer = new Printer();
+		this.printSuccess(messages.banner);
 
-		printSuccess(messages.banner);
-
-		const load = printer.initLoader();
+		const load = this.initLoader();
 
 		if (this.checkFileExists()) {
-			printError(`Error generating new project: Folder ${this.name} already exists`);
+			this.printError(`Error generating new project: Folder ${this.name} already exists`);
 			NewCommand.endProcess(1);
 		}
 
 		try {
 			this.checkFileExists();
 
-			printer.startStep('Generating NestJS application scaffolding', load);
+			this.startStep('Generating NestJS application scaffolding', load);
 			await this.schematicRunner.generateNestApplication(this.name);
-			printer.endStep(load);
+			this.endStep(load);
 
-			printer.startStep('Initializing Git repository', load);
+			this.startStep('Initializing Git repository', load);
 			await this.gitRunner.init({folderName: this.name});
-			printer.endStep(load);
+			this.endStep(load);
 
-			printer.startStep('Adding additional packages', load);
+			this.startStep('Adding additional packages', load);
 			await this.npmRunner.addPackages(this.name, this.initialPackages);
-			printer.endStep(load);
+			this.endStep(load);
 
-			printer.startStep('Adding additional npm scripts', load);
+			this.startStep('Adding additional npm scripts', load);
 			await this.npmRunner.addScripts(this.name, this.initialScripts);
-			printer.endStep(load);
+			this.endStep(load);
 
-			printer.startStep('Creating commitlint config', load);
+			this.startStep('Creating commitlint config', load);
 			await this.bashRunner.runCommand(this.name);
-			printer.endStep(load);
+			this.endStep(load);
 
-			printer.startStep('Installing dependencies', load);
-			await this.npmRunner.install(this.name);
-			printer.endStep(load);
+			this.startStep('Installing dependencies', load);
+			// await this.npmRunner.install(this.name);
+			this.endStep(load);
 
-			printer.startStep('Creating husky files', load);
+			this.startStep('Creating husky files', load);
 			await this.bashRunnerHusky.runHuskyCommit(this.name);
-			printer.endStep(load);
+			this.endStep(load);
 
-			printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
+			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {
 			load.fail(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
