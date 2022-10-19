@@ -8,6 +8,7 @@ import {join} from 'path';
 import {BashRunner} from '../lib/runners/bash.runner';
 import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
 import {AbstractCommand} from './abstract.command';
+import Printer from '../lib/printer/printer';
 
 export class NewCommand extends AbstractCommand {
 	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
@@ -35,9 +36,10 @@ export class NewCommand extends AbstractCommand {
 	}
 
 	public async execute() {
+		const printer = new Printer();
 		this.printSuccess(messages.banner);
 
-		const load = this.initLoader();
+		const load = printer.initLoader();
 
 		if (this.checkFileExists()) {
 			this.printError(`Error generating new project: Folder ${this.name} already exists`);
@@ -47,33 +49,33 @@ export class NewCommand extends AbstractCommand {
 		try {
 			this.checkFileExists();
 
-			this.startStep('Generating NestJS application scaffolding', load);
+			printer.startStep('Generating NestJS application scaffolding', load);
 			await this.schematicRunner.generateNestApplication(this.name);
-			this.endStep(load);
+			printer.endStep(load);
 
-			this.startStep('Initializing Git repository', load);
+			printer.startStep('Initializing Git repository', load);
 			await this.gitRunner.init({folderName: this.name});
-			this.endStep(load);
+			printer.endStep(load);
 
-			this.startStep('Adding additional packages', load);
+			printer.startStep('Adding additional packages', load);
 			await this.npmRunner.addPackages(this.name, this.initialPackages);
-			this.endStep(load);
+			printer.endStep(load);
 
-			this.startStep('Adding additional npm scripts', load);
+			printer.startStep('Adding additional npm scripts', load);
 			await this.npmRunner.addScripts(this.name, this.initialScripts);
-			this.endStep(load);
+			printer.endStep(load);
 
-			this.startStep('Creating commitlint config', load);
+			printer.startStep('Creating commitlint config', load);
 			await this.bashRunner.runCommand(this.name);
-			this.endStep(load);
+			printer.endStep(load);
 
-			this.startStep('Installing dependencies', load);
+			printer.startStep('Installing dependencies', load);
 			await this.npmRunner.install(this.name);
-			this.endStep(load);
+			printer.endStep(load);
 
-			this.startStep('Creating husky files', load);
+			printer.startStep('Creating husky files', load);
 			await this.bashRunnerHusky.runHuskyCommit(this.name);
-			this.endStep(load);
+			printer.endStep(load);
 
 			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {
