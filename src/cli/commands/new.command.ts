@@ -8,12 +8,9 @@ import * as fs from 'fs';
 import {join} from 'path';
 import {BashRunner} from '../lib/runners/bash.runner';
 import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
+import {AbstractCommand} from './abstract.command';
 
-export class NewCommand {
-	private static endProcess(status: number) {
-		process.exit(status);
-	}
-
+export class NewCommand extends AbstractCommand {
 	private readonly initialPackages: PackageEntry[] = [
 		{name: 'husky', version: '^8.0.1', section: 'devDependencies'},
 		{name: '@commitlint/cli', version: '^17.1.2', section: 'devDependencies'},
@@ -33,7 +30,9 @@ export class NewCommand {
 		private readonly npmRunner: NpmRunner = new NpmRunner(),
 		private readonly bashRunner: BashRunner = new BashRunner(),
 		private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky(),
-	) {}
+	) {
+		super();
+	}
 
 	public async execute() {
 		const printSuccess = Printer.format({fontColor: 'green', decoration: 'bold'});
