@@ -36,10 +36,8 @@ export class NewCommand extends AbstractCommand {
 	}
 
 	public async execute() {
-		const printer = new Printer();
+		const printer = new Printer({total: 7, step: 1});
 		this.printSuccess(messages.banner);
-
-		const load = printer.initLoader();
 
 		if (this.checkFileExists()) {
 			this.printError(`Error generating new project: Folder ${this.name} already exists`);
@@ -49,37 +47,37 @@ export class NewCommand extends AbstractCommand {
 		try {
 			this.checkFileExists();
 
-			printer.startStep('Generating NestJS application scaffolding', load);
+			printer.startStep('Generating NestJS application scaffolding', printer.load);
 			await this.schematicRunner.generateNestApplication(this.name);
-			printer.endStep(load);
+			printer.endStep(printer.load);
 
-			printer.startStep('Initializing Git repository', load);
+			printer.startStep('Initializing Git repository', printer.load);
 			await this.gitRunner.init({folderName: this.name});
-			printer.endStep(load);
+			printer.endStep(printer.load);
 
-			printer.startStep('Adding additional packages', load);
+			printer.startStep('Adding additional packages', printer.load);
 			await this.npmRunner.addPackages(this.name, this.initialPackages);
-			printer.endStep(load);
+			printer.endStep(printer.load);
 
-			printer.startStep('Adding additional npm scripts', load);
+			printer.startStep('Adding additional npm scripts', printer.load);
 			await this.npmRunner.addScripts(this.name, this.initialScripts);
-			printer.endStep(load);
+			printer.endStep(printer.load);
 
-			printer.startStep('Creating commitlint config', load);
+			printer.startStep('Creating commitlint config', printer.load);
 			await this.bashRunner.runCommand(this.name);
-			printer.endStep(load);
+			printer.endStep(printer.load);
 
-			printer.startStep('Installing dependencies', load);
+			printer.startStep('Installing dependencies', printer.load);
 			await this.npmRunner.install(this.name);
-			printer.endStep(load);
+			printer.endStep(printer.load);
 
-			printer.startStep('Creating husky files', load);
+			printer.startStep('Creating husky files', printer.load);
 			await this.bashRunnerHusky.runHuskyCommit(this.name);
-			printer.endStep(load);
+			printer.endStep(printer.load);
 
 			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {
-			load.fail(`Error generating new project: ${(error as Error).message}`);
+			printer.load.fail(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
 			NewCommand.endProcess(1);
 		}

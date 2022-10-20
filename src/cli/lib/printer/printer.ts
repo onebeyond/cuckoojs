@@ -77,9 +77,11 @@ export default class Printer {
 
 	total: number;
 	step: number;
-	constructor() {
-		this.total = 7;
-		this.step = 1;
+	load: loading.Loading;
+	constructor({total, step}: {total: number; step: number}) {
+		this.total = total;
+		this.step = step;
+		this.load = this.initLoader();
 	}
 
 	public initLoader(): loading.Loading {
@@ -92,6 +94,8 @@ export default class Printer {
 	}
 
 	public startStep(text: string, load: loading.Loading): any {
+		const printSuccess = Printer.format({fontColor: 'green', decoration: 'bold'});
+		printSuccess(`AAAH ${this.step}`);
 		load.text = `(${this.step}/${this.total}) ${text}`;
 		load.start();
 	}
