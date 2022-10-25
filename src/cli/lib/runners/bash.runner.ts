@@ -15,6 +15,6 @@ export class BashRunner extends GenericRunner {
 		const fullPath = BashRunner.buildCommitLintPath(folderName);
 
 		const args = ['module.exports = {extends: [\'@commitlint/config-conventional\']} > ' + fullPath];
-		await super.run('', args);
+		await super.run({command: '', args});
 	}
 }

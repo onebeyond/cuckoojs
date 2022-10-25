@@ -93,15 +93,13 @@ export default class Printer {
 		}).start();
 	}
 
-	public startStep(text: string, load: loading.Loading): any {
-		const printSuccess = Printer.format({fontColor: 'green', decoration: 'bold'});
-		printSuccess(`AAAH ${this.step}`);
-		load.text = `(${this.step}/${this.total}) ${text}`;
-		load.start();
+	public startStep(text: string): any {
+		this.load.text = `(${this.step}/${this.total}) ${text}`;
+		this.load.start();
 	}
 
-	public endStep(load: loading.Loading): number {
-		load.succeed(load.text);
+	public endStep(): number {
+		this.load.succeed(this.load.text);
 		this.step += 1;
 		return this.step;
 	}

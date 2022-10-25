@@ -47,33 +47,33 @@ export class NewCommand extends AbstractCommand {
 		try {
 			this.checkFileExists();
 
-			printer.startStep('Generating NestJS application scaffolding', printer.load);
+			printer.startStep('Generating NestJS application scaffolding');
 			await this.schematicRunner.generateNestApplication(this.name);
-			printer.endStep(printer.load);
+			printer.endStep();
 
-			printer.startStep('Initializing Git repository', printer.load);
+			printer.startStep('Initializing Git repository');
 			await this.gitRunner.init({folderName: this.name});
-			printer.endStep(printer.load);
+			printer.endStep();
 
-			printer.startStep('Adding additional packages', printer.load);
+			printer.startStep('Adding additional packages');
 			await this.npmRunner.addPackages(this.name, this.initialPackages);
-			printer.endStep(printer.load);
+			printer.endStep();
 
-			printer.startStep('Adding additional npm scripts', printer.load);
+			printer.startStep('Adding additional npm scripts');
 			await this.npmRunner.addScripts(this.name, this.initialScripts);
-			printer.endStep(printer.load);
+			printer.endStep();
 
-			printer.startStep('Creating commitlint config', printer.load);
+			printer.startStep('Creating commitlint config');
 			await this.bashRunner.runCommand(this.name);
-			printer.endStep(printer.load);
+			printer.endStep();
 
-			printer.startStep('Installing dependencies', printer.load);
+			printer.startStep('Installing dependencies');
 			await this.npmRunner.install(this.name);
-			printer.endStep(printer.load);
+			printer.endStep();
 
-			printer.startStep('Creating husky files', printer.load);
+			printer.startStep('Creating husky files');
 			await this.bashRunnerHusky.runHuskyCommit(this.name);
-			printer.endStep(printer.load);
+			printer.endStep();
 
 			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {

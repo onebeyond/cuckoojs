@@ -12,6 +12,6 @@ export class GitRunner extends GenericRunner {
 
 	public async init({initialBranch = 'main', folderName}: InitOptions) {
 		const args = [`--initial-branch ${initialBranch}`, folderName];
-		await super.run('init', args);
+		await super.run({command: 'init', args});
 	}
 }
