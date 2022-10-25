@@ -1,17 +1,25 @@
-import type {SpawnOptions} from 'child_process';
+import type {SpawnOptions, StdioOptions} from 'child_process';
 import {spawn} from 'child_process';
+
+type RunObject = {
+	command: string;
+	args: string [];
+	cwd?: string;
+	stdio?: StdioOptions;
+};
 
 export class GenericRunner {
 	constructor(protected binary: string) {}
 
-	protected async run(
-		command: string,
-		args: string [] = [],
-		cwd: string = process.cwd(),
-	): Promise<string | void> {
+	protected async run({
+		command,
+		args = [],
+		cwd = process.cwd(),
+		stdio = 'pipe',
+	}: RunObject): Promise<string | void> {
 		const options: SpawnOptions = {
 			cwd,
-			stdio: 'inherit',
+			stdio,
 			shell: true,
 		};
 
@@ -23,6 +31,7 @@ export class GenericRunner {
 			);
 
 			child.on('error', error => {
+				console.log('eeeee', error);
 				reject(new Error(`Child process filed with error: ${error.message}`));
 			});
 

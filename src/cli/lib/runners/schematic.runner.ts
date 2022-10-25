@@ -13,12 +13,12 @@ export class SchematicRunner extends GenericRunner {
 	}
 
 	public async generateNestApplication(name: string) {
-		const args = ['@nestjs/schematics:application', `--name ${name}`];
-		await super.run(SchematicRunner.getSchematicPath(), args);
+		const args = ['@nestjs/schematics:application', `--name ${name} --verbosity=QUIET -`];
+		await super.run({command: SchematicRunner.getSchematicPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
 	}
 
 	public async generateNestElement(schematic: string, name: string, options: string[]) {
 		const args = [`@nestjs/schematics:${schematic} ${name} ${options.join(' ')}`];
-		await super.run(SchematicRunner.getSchematicPath(), args);
+		await super.run({command: SchematicRunner.getSchematicPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
 	}
 }

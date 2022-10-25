@@ -1,5 +1,4 @@
 import Printer from '../lib/printer/printer';
-
 export class AbstractCommand {
 	protected static endProcess(status: number) {
 		process.exit(status);

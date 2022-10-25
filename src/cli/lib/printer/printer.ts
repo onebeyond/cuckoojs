@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+import loading = require('loading-cli');
+
 type FontColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
 
 type BackgroundColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
@@ -46,7 +49,6 @@ type Style = {
 	alignment?: Alignment;
 	decoration?: Decoration;
 };
-
 export default class Printer {
 	public static format({
 		backgroundColor = 'none',
@@ -71,5 +73,34 @@ export default class Printer {
 	private static calculateLeftPadding(text: string) {
 		const columns = process.stdout.columns || 80;
 		return Math.floor((columns - text.length) / 2);
+	}
+
+	total: number;
+	step: number;
+	load: loading.Loading;
+	constructor({total, step}: {total: number; step: number}) {
+		this.total = total;
+		this.step = step;
+		this.load = this.initLoader();
+	}
+
+	public initLoader(): loading.Loading {
+		return loading({
+			color: 'green',
+			interval: 100,
+			stream: process.stdout,
+			frames: ['◐', '◓', '◑', '◒'],
+		}).start();
+	}
+
+	public startStep(text: string): any {
+		this.load.text = `(${this.step}/${this.total}) ${text}`;
+		this.load.start();
+	}
+
+	public endStep(): number {
+		this.load.succeed(this.load.text);
+		this.step += 1;
+		return this.step;
 	}
 }

@@ -15,6 +15,6 @@ export class BashRunnerHusky extends GenericRunner {
 		const fullPath = BashRunnerHusky.buildCommitLintPath(folderName);
 
 		const args = ['husky add ' + fullPath + ' \'npx --no -- commitlint --edit "$1"\''];
-		await super.run('', args);
+		await super.run({command: '', args});
 	}
 }
