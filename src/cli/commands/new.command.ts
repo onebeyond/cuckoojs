@@ -52,7 +52,8 @@ export class NewCommand extends AbstractCommand {
 			printer.endStep();
 
 			printer.startStep('Initializing Git repository');
-			await this.gitRunner.init({folderName: this.name});
+			await this.gitRunner.init(this.name);
+			await this.gitRunner.createBranch({folderName: this.name});
 			printer.endStep();
 
 			printer.startStep('Adding additional packages');

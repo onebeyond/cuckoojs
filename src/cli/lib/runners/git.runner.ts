@@ -1,6 +1,6 @@
 import {GenericRunner} from './generic.runner';
 
-type InitOptions = {
+type CreateBranchOptions = {
 	initialBranch?: string;
 	folderName: string;
 };
@@ -10,8 +10,11 @@ export class GitRunner extends GenericRunner {
 		super('git');
 	}
 
-	public async init({initialBranch = 'main', folderName}: InitOptions) {
-		const args = [`--initial-branch ${initialBranch}`, folderName];
-		await super.run({command: 'init', args});
+	public async init(folderName: string) {
+		await super.run({command: 'init', args: [folderName]});
+	}
+
+	public async createBranch({folderName, initialBranch = 'main'}: CreateBranchOptions) {
+		await super.run({command: `-C ${folderName} checkout`, args: ['-b', initialBranch]});
 	}
 }
