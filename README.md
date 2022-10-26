@@ -19,7 +19,7 @@ This way, you don't have to worry about including these when initiating a new pr
 
 
 ```bash
-nest new <projectname>
+cuckoo new <projectname>
 ```
 
 
