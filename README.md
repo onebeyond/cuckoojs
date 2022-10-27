@@ -23,5 +23,8 @@ cuckoo new <projectname>
 ```
 
 
-You can still use all the commands that work with NestJS
+You can still use all the commands that work with NestJS, for example:
 
+```bash
+cuckoo generate|g controller <name>
+```
