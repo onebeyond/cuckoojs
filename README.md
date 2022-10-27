@@ -3,7 +3,7 @@
 </div>
 <br />
 
-#####Let the cuckoo accommodate the nest for you.
+##### Let the cuckoo accommodate the nest for you.
 
 CuckooJS is a scaffolding based on <a href="https://nestjs.com/" target="_blank">NestJS</a>. Inspired by the cuckoo bird, we took advantage of the already created nest and included our own easter eggs, such as:
 - <a href="https://commitlint.js.org/#/" target="_blank">Commitlint</a>
