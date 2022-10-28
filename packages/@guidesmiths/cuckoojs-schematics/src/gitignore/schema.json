@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsGitignore",
+  "title": "gitignore Options Schema",
+  "type": "object",
+  "properties": {
+    "directory": {
+      "type": "string",
+      "description": "gitignore destination directory."
+    }
+  },
+  "required": ["directory"]
+}
