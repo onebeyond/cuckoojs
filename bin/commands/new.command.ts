@@ -21,7 +21,7 @@ export class NewCommand extends AbstractCommand {
 
 	private readonly initialScripts: ScriptEntry[] = [
 		{name: 'prepare', value: 'husky install'},
-		{name: 'postinstall', value: 'npx @guidesmiths/license-checker --outputFileName license-report --failOn /GPL/'}
+		{name: 'postinstall', value: 'npx @guidesmiths/license-checker --outputFileName license-report --failOn /GPL/'},
 	];
 
 	constructor(
@@ -63,9 +63,9 @@ export class NewCommand extends AbstractCommand {
 			await this.schematicRunner.addCommitlint(this.name);
 			printer.endStep();
 
-			printer.startStep('Adding .gitignore file');
-			await this.schematicRunner.addGitignoreFile(this.name);
-			printer.endStep();
+			// printer.startStep('Adding .gitignore file');
+			// await this.schematicRunner.addGitignoreFile(this.name);
+			// printer.endStep();
 
 			printer.startStep('Installing dependencies');
 			await this.npmRunner.install(this.name);
@@ -75,7 +75,7 @@ export class NewCommand extends AbstractCommand {
 			await this.bashRunnerHusky.runHuskyCommit(this.name);
 			printer.endStep();
 
-			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
+			this.printSuccess(`\n        🐦 Your Cuckoo "${this.name}" is in the Nest and ready to fly! 🐦`);
 		} catch (error: unknown) {
 			printer.load.fail(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
