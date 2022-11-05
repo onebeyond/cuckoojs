@@ -1,7 +1,8 @@
 import type {
 	Rule,
 	SchematicContext,
-	Tree} from '@angular-devkit/schematics';
+	Tree,
+} from '@angular-devkit/schematics';
 import {
 	apply,
 	MergeStrategy,
@@ -19,8 +20,18 @@ export function main(options: any): Rule {
 		const templateSource = apply(url('./files'), [
 			template({}),
 			move(normalize(options.directory)),
+			renameFile(options),
 		]);
 
 		return mergeWith(templateSource, MergeStrategy.Overwrite)(tree, context);
+	};
+}
+
+function renameFile(options: any): Rule {
+	return (tree: Tree, context: SchematicContext) => {
+		context.logger.info('Will create files from templates');
+		// create files implementation
+		tree.rename(`${normalize(options.directory)}/gitignore`, `${normalize(options.directory)}/.gitignore`);
+		return tree;
 	};
 }

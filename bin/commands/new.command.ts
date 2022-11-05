@@ -63,9 +63,9 @@ export class NewCommand extends AbstractCommand {
 			await this.schematicRunner.addCommitlint(this.name);
 			printer.endStep();
 
-			// printer.startStep('Adding .gitignore file');
-			// await this.schematicRunner.addGitignoreFile(this.name);
-			// printer.endStep();
+			printer.startStep('Adding .gitignore file');
+			await this.schematicRunner.addGitignoreFile(this.name);
+			printer.endStep();
 
 			printer.startStep('Installing dependencies');
 			await this.npmRunner.install(this.name);
