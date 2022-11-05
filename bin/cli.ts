@@ -2,6 +2,7 @@
 import {Command} from 'commander';
 import {version} from '../package.json';
 import {NewCommand, GenerateCommand} from './commands';
+import { SchematicRunner } from './lib/runners/schematic.runner';
 
 const init = (): void => {
 	const cuckoo = new Command('cuckoo');
@@ -17,6 +18,15 @@ const init = (): void => {
 		.helpOption('-h, --help', 'Output usage information.')
 		.showHelpAfterError()
 		.usage('<command> [options]');
+
+	cuckoo
+		.command('list')
+		.alias('l')
+		.description('List available schematics.')
+		.action(async (_options: any) => {
+			const schematicRunner = new SchematicRunner();
+			await schematicRunner.listSchematics();
+		});
 
 	cuckoo
 		.command('new <name>')
