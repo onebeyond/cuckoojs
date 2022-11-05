@@ -29,19 +29,20 @@
   "bin": {
     "cuckoo": "./dist/bin/cli.js"
   },
-  "schematics": "./schematics/collection.json",
+  "schematics": "./dist/schematics/collection.json",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "postbuild": "copyfiles schematics/collection.json schematics/*/schema.json schematics/*/files/**  dist/",
-    "start": "node bin/cli.js",
-    "test": "npm run build && jasmine src/**/*_spec.js",
-    "lint": "eslint --ext .ts .",
-    "lint:fix": "eslint --fix --ext .ts ."
+    "postbuild": "copyfiles -a schematics/collection.json schematics/*/schema.json schematics/*/files/**  dist/",
+    "start": "node dist/bin/cli.js",
+    "test": "npm run build && jasmine bin/**/*.spec.js && jasmine schematics/**/*.spec.js",
+    "lint": "eslint --ext .ts bin schematics",
+    "lint:fix": "eslint --fix --ext .ts bin schematics"
   },
   "dependencies": {
     "@angular-devkit/core": "^14.2.7",
     "@angular-devkit/schematics": "^14.2.6",
     "@angular-devkit/schematics-cli": "^14.2.3",
+    "@guidesmiths/cuckoojs": ".",
     "@nestjs/schematics": "^9.0.3",
     "commander": "^9.4.0",
     "loading-cli": "^1.1.0",

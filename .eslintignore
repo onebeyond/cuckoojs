@@ -1,4 +1,7 @@
 node_modules
-src/**/*.js
-src/**/*.js.map
-src/**/*.d.ts
+bin/**/*.js
+bin/**/*.js.map
+bin/**/*.d.ts
+schematics/**/*.js
+schematics/**/*.js.map
+schematics/**/*.d.ts
