@@ -12,6 +12,9 @@
   "engines": {
     "node": ">= 12"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/guidesmiths/cuckoojs.git"
