@@ -17,9 +17,18 @@ export function main(options: any): Rule {
 
     const templateSource = apply(url('./files'), [
       template({}),
-      move(normalize(options.directory))
+      move(normalize(options.directory)),
+      renameFile(options),
     ]);
 
     return mergeWith(templateSource, MergeStrategy.Overwrite)(tree, context);
+  };
+}
+
+function renameFile(options: any): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+    const normalizedPath = normalize(options.directory);
+    tree.rename(`${normalizedPath}/gitignore`, `${normalizedPath}/.gitignore`);
+    return tree;
   };
 }
