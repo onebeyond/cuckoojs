@@ -1,6 +1,10 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
+    "new": {
+      "description": "Create an enriched Nest application.",
+      "factory": "./new/new.factory#main"
+    },
     "gitignore": {
       "description": "Add a NodeJS-based .gitignore file to a project.",
       "factory": "./gitignore/gitignore.factory#main",

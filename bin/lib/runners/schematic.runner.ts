@@ -17,6 +17,11 @@ export class SchematicRunner extends GenericRunner {
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['inherit', 'inherit', 'inherit']});
 	}
 
+	public async generateApplication(name: string, options: string[]) {
+		const args = [`@guidesmiths/cuckoojs:new --name ${name} ${options.join(' ')}`];
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['inherit', 'inherit', 'inherit']});
+	}
+
 	public async generateNestApplication(name: string) {
 		const args = ['@nestjs/schematics:application', `--name ${name} --verbosity=QUIET -`];
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});

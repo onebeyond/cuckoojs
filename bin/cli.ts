@@ -37,6 +37,15 @@ const init = (): void => {
 		});
 
 	cuckoo
+		.command('new2 <name> [options...]')
+		.description('Generate Nest application with basic tooling.')
+		.action(async (name: string, options: string[]) => {
+			console.log('options :>> ', options);
+			const schematicRunner = new SchematicRunner();
+			await schematicRunner.generateApplication(name, options);
+		});
+
+	cuckoo
 		.command('generate <schematic> <name> [options...]')
 		.alias('g')
 		.description('Generate a Nest element.')
