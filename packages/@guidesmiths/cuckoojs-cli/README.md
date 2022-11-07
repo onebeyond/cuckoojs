@@ -1,5 +1,5 @@
 <div style="display:flex; align-items:center; justify-content:center">
-  <img alt="logo" src="./assets/banner-filled.svg" width="100%" />
+  <img alt="logo" src="../../assets/banner-filled.svg" width="100%" />
 </div>
 <br />
 
@@ -14,7 +14,7 @@ This way, you don't have to worry about including these when initiating a new pr
 
 
 
-### <img alt="logo" src="./assets/logo.svg" width="20px" />  How to use it
+### <img alt="logo" src="../../assets/logo.svg" width="20px" />  How to use it
 
 Creating a new NestJS app with the basic tooling:
 
