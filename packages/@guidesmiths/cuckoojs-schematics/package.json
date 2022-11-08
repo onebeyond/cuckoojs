@@ -1,0 +1,60 @@
+{
+  "name": "@guidesmiths/cuckoojs-schematics",
+  "version": "0.0.1",
+  "description": "A collection of CuckooJS schematics",
+  "keywords": [
+    "schematics",
+    "cuckoojs"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 12"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guidesmiths/cuckoojs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/guidesmiths/cuckoojs/issues"
+  },
+  "homepage": "https://github.com/guidesmiths/cuckoojs#readme",
+  "contributors": [
+    {
+      "name": "David Yusta",
+      "email": "david.yusta@one-beyond.com"
+    },
+    {
+      "name": "Laura Corbí",
+      "email": "laura.corbi@one-beyond.com"
+    },
+    {
+      "name": "Adrián Rodríguez",
+      "email": "adrian.rodriguez@one-beyond.com"
+    },
+    {
+      "name": "Íñigo Marquínez",
+      "email": "inigo.marquinez@one-beyond.com"
+    }
+  ],
+  "schematics": "./dist/collection.json",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "postbuild": "copyfiles -a -u 1 ./src/collection.json ./src/*/schema.json ./src/*/files/** dist/",
+    "watch": "tsc -p tsconfig.json --watch",
+    "test": "npm run build && jasmine src/**/*_spec.js"
+  },
+  "dependencies": {
+    "@angular-devkit/core": "^14.2.7",
+    "@angular-devkit/schematics": "^14.2.6",
+    "typescript": "~4.7.2"
+  },
+  "devDependencies": {
+    "@types/jasmine": "~4.0.0",
+    "@types/node": "^14.15.0",
+    "copyfiles": "^2.4.1",
+    "jasmine": "^4.0.0"
+  }
+}

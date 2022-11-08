@@ -1,0 +1,15 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "gitignore": {
+      "description": "Add a NodeJS-based .gitignore file to a project.",
+      "factory": "./gitignore/gitignore.factory#main",
+      "schema": "./gitignore/schema.json"
+    },
+    "commitlint": {
+      "description": "Add commitlint (config and dependency) to a project.",
+      "factory": "./commitlint/commitlint.factory#main",
+      "schema": "./commitlint/schema.json"
+    }
+  }
+}

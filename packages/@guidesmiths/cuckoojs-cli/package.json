@@ -1,0 +1,73 @@
+{
+  "name": "@guidesmiths/cuckoojs-cli",
+  "version": "0.0.1",
+  "description": "CuckooJS CLI",
+  "keywords": [
+    "schematics",
+    "nestjs",
+    "cli",
+    "cuckoojs"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 12"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guidesmiths/cuckoojs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/guidesmiths/cuckoojs/issues"
+  },
+  "homepage": "https://github.com/guidesmiths/cuckoojs#readme",
+  "contributors": [
+    {
+      "name": "David Yusta",
+      "email": "david.yusta@one-beyond.com"
+    },
+    {
+      "name": "Laura Corbí",
+      "email": "laura.corbi@one-beyond.com"
+    },
+    {
+      "name": "Adrián Rodríguez",
+      "email": "adrian.rodriguez@one-beyond.com"
+    },
+    {
+      "name": "Íñigo Marquínez",
+      "email": "inigo.marquinez@one-beyond.com"
+    }
+  ],
+  "main": "dist/src/cli.js",
+  "bin": {
+    "cuckoo": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/src/cli.js",
+    "test": "npm run build && jasmine src/**/*_spec.js",
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --fix --ext .ts ."
+  },
+  "dependencies": {
+    "@angular-devkit/schematics-cli": "^14.2.3",
+    "@guidesmiths/cuckoojs-schematics": "^0.0.1",
+    "@nestjs/schematics": "^9.0.3",
+    "commander": "^9.4.0",
+    "loading-cli": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/jasmine": "~4.3.0",
+    "@types/node": "^18.7.18",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "eslint": "^8.23.1",
+    "eslint-config-xo": "^0.42.0",
+    "eslint-config-xo-typescript": "^0.53.0",
+    "jasmine": "^4.4.0",
+    "typescript": "^4.8.3"
+  }
+}
