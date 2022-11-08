@@ -25,7 +25,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
     - name: Install dependencies
-      run: npm i -w @guidesmiths/cuckoojs-schematics
+      run: npm i --omit=dev -w @guidesmiths/cuckoojs-schematics
     - name: Build artifact
       run: npm run build -w @guidesmiths/cuckoojs-schematics
     - name: Publish package to npm
@@ -54,7 +54,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
     - name: Install dependencies
-      run: npm i -w @guidesmiths/cuckoojs-cli
+      run: npm i --omit=dev -w @guidesmiths/cuckoojs-cli
     - name: Build artifact
       run: npm run build -w @guidesmiths/cuckoojs-cli
     - name: Publish package to npm
