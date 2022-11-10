@@ -16,6 +16,12 @@ This way, you don't have to worry about including these when initiating a new pr
 
 ### <img alt="logo" src="./assets/logo.svg" width="20px" />  How to use it
 
+Install the cuckoo cli globally
+
+```bash
+npm install -g @guidesmiths/cuckoojs-cli
+```
+
 Creating a new NestJS app with the basic tooling:
 
 ```bash
@@ -27,4 +33,24 @@ You can still use all the commands that work with NestJS, for example:
 
 ```bash
 cuckoo generate|g controller <name>
+```
+
+### Use our schematics
+
+If you want to use the schematics solely, install the schematics globally
+
+```bash
+npm install -g @guidesmiths/cuckoojs-schematics
+```
+
+Currently we have schematics for:
+- creating a .gitignore file:
+
+```bash
+schematics @guidesmiths/cuckoojs-schematics:commitlint
+```
+- adding commitlint:
+
+```bash
+schematics @guidesmiths/cuckoojs-schematics:gitignore
 ```
