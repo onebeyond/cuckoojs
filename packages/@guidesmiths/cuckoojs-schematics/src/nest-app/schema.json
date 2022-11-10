@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsNestApplication",
+  "title": "Nest Application Options Schema",
+  "type": "object",
+  "properties": {
+    "author": {
+      "type": "string",
+      "description": "Nest application author.",
+      "default": "",
+      "x-prompt": "Who is the author of the project?"
+    },
+    "description": {
+      "type": "string",
+      "description": "Nest application description.",
+      "default": "",
+      "x-prompt": "Add a description for the project"
+    },
+    "version": {
+      "type": "string",
+      "description": "Nest application version.",
+      "default": "0.0.1",
+      "x-prompt": "Add an initial version for the project"
+    },
+    "license": {
+      "type": "string",
+      "description": "Nest application license.",
+      "default": "MIT",
+      "x-prompt": "Under which license do you want to release your project?"
+    }
+  },
+  "required": [
+    "author",
+    "description",
+    "version",
+    "license"
+  ]
+}
