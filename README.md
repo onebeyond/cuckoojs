@@ -47,10 +47,10 @@ Currently we have schematics for:
 - creating a .gitignore file:
 
 ```bash
-schematics @guidesmiths/cuckoojs-schematics:commitlint
+schematics @guidesmiths/cuckoojs-schematics:gitignore
 ```
 - adding commitlint:
 
 ```bash
-schematics @guidesmiths/cuckoojs-schematics:gitignore
+schematics @guidesmiths/cuckoojs-schematics:commitlint
 ```
