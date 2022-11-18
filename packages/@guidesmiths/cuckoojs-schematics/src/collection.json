@@ -20,6 +20,11 @@
       "description": "Add Pull Request template to a project.",
       "factory": "./pr-template/pr-template.factory#main",
       "schema": "./pr-template/schema.json"
+    },
+    "ci": {
+      "description": "Set basic CI pipeline into a project",
+      "factory": "./ci/ci.factory#main",
+      "schema": "./ci/schema.json"
     }
   }
 }
