@@ -71,3 +71,22 @@ That's it!
 | Name          | Description                           | Supported values        | Default value | 
 |---------------|---------------------------------------|-------------------------|---------------|
 | `directory`   | Directory where files will be created | *valid folder*          | `.` |
+
+### Helm chart
+
+* **Description**: Create a helm chart to deploy on kubernetes
+* **Command**: `schematics @guidesmiths/cuckoojs-schematics:helm`
+* **Parameters**:
+
+| Name          | Description                                   | Supported values | Default value | 
+|---------------|-----------------------------------------------|------------------|---------------|
+| `serviceName` | Name of the resource to deploy                | *string*         |               |
+| `imageName`   | Docker image to be deployed                   | *string*         |               |
+| `resourcesLimitCpu`   | Maximum cpu used by each pod                  | *number*         | `100`         |
+| `resourcesLimitMemory`   | Maximum memory used by each pod               | *number*         | `128`         |
+| `resourcesRequestCpu`   | Requested cpu used by a pod to be launched    | *number*         | `100`         |
+| `resourcesRequestMemory`   | Requested memory used by a pod to be launched | *number*         | `128`         |
+| `autoscalingEnabled`   | Enable autoscaling features on the pods       | `true`, `false`  | `true`        |
+| `autoscalingReplicasMin`   | Autoscaled minimum replicas                   | *number*         | `1`           |
+| `autoscalingReplicasMax`   | Autoscaled maximum replicas                   | *number*         | `5`           |
+| `autoscalingTargetCpu`   | Target cpu used to trigger autoscaling        | *number*         | `75`          |
