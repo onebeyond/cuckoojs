@@ -10,6 +10,11 @@
       "description": "Add commitlint (config and dependency) to a project.",
       "factory": "./commitlint/commitlint.factory#main",
       "schema": "./commitlint/schema.json"
+    },
+    "dockerfile": {
+      "description": "Add dockerfile to a project.",
+      "factory": "./dockerfile/dockerfile.factory#main",
+      "schema": "./dockerfile/schema.json"
     }
   }
 }
