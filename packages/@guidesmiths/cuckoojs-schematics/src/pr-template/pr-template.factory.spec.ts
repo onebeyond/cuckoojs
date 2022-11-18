@@ -4,27 +4,25 @@ import * as path from 'path';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
-describe('dockerignore', () => {
-    it('works with node basic build', async () => {
+describe('pr-template', () => {
+    it('works with github', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematicAsync('dockerfile', {directory: '.', buildType: 'basic', nodeVersion: 18}, Tree.empty())
+            .runSchematicAsync('pr-template', {gitProvider: 'github'}, Tree.empty())
             .toPromise();
 
         expect(tree.files).toEqual([
-            '/Dockerfile',
-            '/.dockerignore'
+            '/.github/pull_request_template.md',
         ]);
     });
-    it('works with nestjs build', async () => {
+    it('works with azuredevops', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematicAsync('dockerfile', {directory: '.', buildType: 'nestjs', nodeVersion: 18}, Tree.empty())
+            .runSchematicAsync('pr-template', {gitProvider: 'azuredevops'}, Tree.empty())
             .toPromise();
 
         expect(tree.files).toEqual([
-            '/Dockerfile',
-            '/.dockerignore'
+            '/.azuredevops/pull_request_template.md',
         ]);
     });
 });
