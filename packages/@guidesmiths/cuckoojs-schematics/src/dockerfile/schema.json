@@ -44,5 +44,5 @@
       }
     }
   },
-  "required": ["directory"]
+  "required": ["directory", "buildType", "nodeVersion"]
 }
