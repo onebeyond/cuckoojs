@@ -71,3 +71,16 @@ That's it!
 | Name          | Description                           | Supported values        | Default value | 
 |---------------|---------------------------------------|-------------------------|---------------|
 | `directory`   | Directory where files will be created | *valid folder*          | `.` |
+
+
+### Continuous Integration
+
+* **Description**: Config basic CI pipeline (docker build and push)
+* **Command**: `schematics @guidesmiths/cuckoojs-schematics:ci`
+* **Parameters**:
+
+| Name             | Description                                                | Supported values        | Default value | 
+|------------------|------------------------------------------------------------|-------------------------|------|
+| `ciProvider`     | CI provider                                                | `github`, `azuredevops` |  |
+| `dockerRegistry` | Docker registry to push image or service connection if AzureDevOps | *string*                |  |
+| `imageName`      | Name of the docker image                                   | *string*                |  |
