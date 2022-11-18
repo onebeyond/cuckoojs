@@ -25,6 +25,11 @@
       "description": "Set basic CI pipeline into a project",
       "factory": "./ci/ci.factory#main",
       "schema": "./ci/schema.json"
+    },
+    "helm": {
+      "description": "Set basic helm chart into a project",
+      "factory": "./helm/helm.factory#main",
+      "schema": "./helm/schema.json"
     }
   }
 }
