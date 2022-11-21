@@ -21,7 +21,7 @@ export class NewCommand extends AbstractCommand {
 
 	private readonly initialScripts: ScriptEntry[] = [
 		{name: 'prepare', value: 'husky install'},
-		{name: 'postinstall', value: 'npx @guidesmiths/license-checker --outputFileName license-report --failOn /GPL/'}
+		{name: 'postinstall', value: 'npx @guidesmiths/license-checker --outputFileName license-report --failOn /GPL/'},
 	];
 
 	constructor(
