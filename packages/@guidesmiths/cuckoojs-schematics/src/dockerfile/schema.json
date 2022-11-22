@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsDockerfile",
+  "title": "dockerfile Options Schema",
+  "type": "object",
+  "properties": {
+    "directory": {
+      "type": "string",
+      "description": "dockerfile config file destination directory.",
+      "default": ".",
+      "x-prompt": "Where do you want to create the Dockerfile?"
+    },
+    "buildType": {
+      "type": "string",
+      "description": "dockerfile build definition",
+      "x-prompt": {
+        "message": "What kind of build do you want?",
+        "type": "list",
+        "items": [
+          {
+            "value": "basic",
+            "label": "NodeJS basic build"
+          },
+          {
+            "value": "nestjs",
+            "label": "NestJS build"
+          }
+        ]
+      }
+    },
+    "nodeVersion": {
+      "type": "number",
+      "description": "node version to use in dockerfile",
+      "x-prompt": {
+        "message": "Which node version you want to use?",
+        "type": "list",
+        "items": [
+          { "value": 18,  "label": "18 (recommended)" },
+          { "value": 16,  "label": "16" },
+          { "value": 14,  "label": "14" },
+          { "value": 12,  "label": "12 (not recommended)" }
+        ],
+        "default": 18
+      }
+    }
+  },
+  "required": ["directory", "buildType", "nodeVersion"]
+}
