@@ -42,7 +42,7 @@
   "schematics": "./dist/collection.json",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "postbuild": "../../../node_modules/.bin/copyfiles -a -u 1 ./src/collection.json ./src/*/schema.json ./src/*/files/** ./src/*/files/*/** dist/",
+    "postbuild": "copyfiles -a -u 1 ./src/collection.json ./src/*/schema.json \"./src/*/files/**/*\" dist/",
     "watch": "tsc -p tsconfig.json --watch",
     "test": "npm run build && jest src/**/*.spec.ts"
   },

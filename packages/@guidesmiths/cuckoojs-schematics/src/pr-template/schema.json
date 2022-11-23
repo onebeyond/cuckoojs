@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsPrTemplate",
+  "title": "PR Template Options Schema",
+  "type": "object",
+  "properties": {
+    "gitProvider": {
+      "type": "string",
+      "description": "git provider where the repo is hosted",
+      "x-prompt": {
+        "message": "Where is the Git repository hosted",
+        "type": "list",
+        "items": [
+          {
+            "value": "github",
+            "label": "GitHub"
+          },
+          {
+            "value": "azuredevops",
+            "label": "Azure DevOps"
+          }
+        ]
+      }
+    }
+  },
+  "required": ["gitProvider"]
+}

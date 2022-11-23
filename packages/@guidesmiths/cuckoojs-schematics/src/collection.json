@@ -15,6 +15,11 @@
       "description": "Add dockerfile to a project.",
       "factory": "./dockerfile/dockerfile.factory#main",
       "schema": "./dockerfile/schema.json"
+    },
+    "pr-template": {
+      "description": "Add Pull Request template to a project.",
+      "factory": "./pr-template/pr-template.factory#main",
+      "schema": "./pr-template/schema.json"
     }
   }
 }
