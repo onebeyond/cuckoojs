@@ -1,25 +1,11 @@
 {
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "tsconfig",
-    "declaration": true,
-    "lib": ["es2018", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "dist",
+    "baseUrl": ".",
+    "outDir": "./dist",
     "resolveJsonModule": true,
     "rootDir": ".",
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "target": "es6",
-    "types": ["jasmine", "node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
