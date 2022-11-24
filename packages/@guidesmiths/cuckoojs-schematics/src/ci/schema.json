@@ -12,7 +12,7 @@
         "azuredevops"
       ],
       "x-prompt": {
-        "message": "What CI provider you want to set up?",
+        "message": "What CI provider do you want to set up?",
         "type": "list",
         "items": [
           {

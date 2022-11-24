@@ -12,30 +12,30 @@
     "imageName": {
       "type": "string",
       "description": "docker image name to deploy on kubernetes",
-      "x-prompt": "What image you want to config deployment?"
+      "x-prompt": "What image do you want to config deployment?"
     },
     "resourcesLimitCpu": {
       "type": "number",
       "description": "max cpu used by a pod",
-      "x-prompt": "What is the CPU limit per pod (specified en 'm' units)?",
+      "x-prompt": "What is the CPU limit per pod (specified in 'm' units)?",
       "default": 100
     },
     "resourcesLimitMemory": {
       "type": "number",
       "description": "max memory used by a pod",
-      "x-prompt": "What is the memory limit per pod (specified en 'Mi' units)?",
+      "x-prompt": "What is the memory limit per pod (specified in 'Mi' units)?",
       "default": 128
     },
     "resourcesRequestCpu": {
       "type": "number",
       "description": "requested cpu by a pod to be launched",
-      "x-prompt": "What is the CPU requested per pod (specified en 'm' units)?",
+      "x-prompt": "What is the CPU requested per pod (specified in 'm' units)?",
       "default": 100
     },
     "resourcesRequestMemory": {
       "type": "number",
       "description": "requested memory by a pod to be launched",
-      "x-prompt": "What is the memory requested per pod (specified en 'Mi' units)?",
+      "x-prompt": "What is the memory requested per pod (specified in 'Mi' units)?",
       "default": 128
     },
     "autoscalingEnabled": {
