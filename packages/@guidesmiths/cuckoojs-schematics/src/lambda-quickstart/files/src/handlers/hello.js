@@ -5,7 +5,7 @@ const httpResponse = require('./utils/httpResponse');
 
 const {
 	cradle: {
-		logger, sampleController,
+		logger, helloController,
 	},
 } = initContainer();
 
@@ -24,7 +24,7 @@ module.exports.handler = async event => {
 	}
 
 	try {
-		const output = sampleController.mergeName(input.first_name, input.last_name);
+		const output = helloController.mergeName(input.first_name, input.last_name);
 		return httpResponse.ok(output);
 	} catch (err) {
 		logger.error('could not complete function', {err});

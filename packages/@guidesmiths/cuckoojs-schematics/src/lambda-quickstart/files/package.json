@@ -2,7 +2,7 @@
   "name": "<%= serviceName %>",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest --testMatch '**/__tests__/*.test.js'",
+    "test": "jest --testMatch '**/tests/*.test.js'",
     "infra:up": "docker-compose -f docker/docker-compose.yml up",
     "infra:down": "docker-compose -f docker/docker-compose.yml down",
     "invoke:local": "sls invoke local --stage local --function $FUNCTION --path \"fixtures/$FUNCTION/$INPUT.json\""
