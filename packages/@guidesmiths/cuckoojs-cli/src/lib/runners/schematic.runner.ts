@@ -31,4 +31,14 @@ export class SchematicRunner extends GenericRunner {
 		const args = [`@guidesmiths/cuckoojs-schematics:commitlint --directory=${name}`];
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
 	}
+
+	public async addPullRequestTemplate(name: string, gitProvider: string) {
+		const args = [`@guidesmiths/cuckoojs-schematics:pr-template --directory=${name} --git-provider=${gitProvider}`];
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+	}
+
+	public async addLambdaQuickstart(name: string) {
+		const args = [`@guidesmiths/cuckoojs-schematics:lambda-quickstart --directory=${name} --service-name=${name}`];
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+	}
 }

@@ -20,7 +20,7 @@ describe('lambda-quickstart', () => {
             "/some-folder/.env.sample",
             "/some-folder/docker/docker-compose.yml",
             "/some-folder/docker/localstack/custom-config.sh",
-            "/some-folder/fixtures/helloFunction/regularRequest.json",
+            "/some-folder/fixtures/hello/regularRequest.json",
             "/some-folder/src/components/container.js",
             "/some-folder/src/components/config/config.js",
             "/some-folder/src/components/controllers/helloController.js",

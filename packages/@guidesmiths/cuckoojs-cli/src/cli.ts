@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import {Command} from 'commander';
+import {Command, InvalidArgumentError} from 'commander';
 import {version} from '../package.json';
 import {NewCommand, GenerateCommand} from './commands';
+import {NewAltCommand} from "./commands/new-alt.command";
 
 const init = (): void => {
 	const cuckoo = new Command('cuckoo');
@@ -24,6 +25,21 @@ const init = (): void => {
 		.description('Generate Nest application with basic tooling.')
 		.action(async (name: string, _options: any) => {
 			await new NewCommand(name).execute();
+		});
+
+	// Absolutely provisional until this is refined with the team to see how to merge or work with both project types
+	cuckoo
+		.command('new-alt')
+		.argument('<name>', 'project name')
+		.option('--git-provider','git provider to host this repo', (value) => {
+			const validGitProviders = ['github', 'azuredevops'];
+			if(validGitProviders.includes(value)) return value;
+			throw new InvalidArgumentError(`--git-provider must be one of: ${validGitProviders}`)
+		}, 'github')
+		.alias('na')
+		.description('Generate a NodeJS AWS Lambda Quickstart')
+		.action(async (name: string, options: any) => {
+			await new NewAltCommand(name, options.gitProvider).execute();
 		});
 
 	cuckoo

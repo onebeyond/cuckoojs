@@ -8,21 +8,21 @@ describe('pr-template', () => {
     it('works with github', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematicAsync('pr-template', {gitProvider: 'github'}, Tree.empty())
+            .runSchematicAsync('pr-template', {directory: 'somewhere', gitProvider: 'github'}, Tree.empty())
             .toPromise();
 
         expect(tree.files).toEqual([
-            '/.github/pull_request_template.md',
+            '/somewhere/.github/pull_request_template.md',
         ]);
     });
     it('works with azuredevops', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematicAsync('pr-template', {gitProvider: 'azuredevops'}, Tree.empty())
+            .runSchematicAsync('pr-template', {directory: 'somewhere', gitProvider: 'azuredevops'}, Tree.empty())
             .toPromise();
 
         expect(tree.files).toEqual([
-            '/.azuredevops/pull_request_template.md',
+            '/somewhere/.azuredevops/pull_request_template.md',
         ]);
     });
 });
