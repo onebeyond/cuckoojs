@@ -21,6 +21,16 @@
       "factory": "./pr-template/pr-template.factory#main",
       "schema": "./pr-template/schema.json"
     },
+    "ci": {
+      "description": "Set basic CI pipeline into a project",
+      "factory": "./ci/ci.factory#main",
+      "schema": "./ci/schema.json"
+    },
+    "helm": {
+      "description": "Set basic helm chart into a project",
+      "factory": "./helm/helm.factory#main",
+      "schema": "./helm/schema.json"
+    },
     "lambda-quickstart": {
       "description": "Create a quickstart project with a lambda",
       "factory": "./lambda-quickstart/lambda-quickstart.factory#main",

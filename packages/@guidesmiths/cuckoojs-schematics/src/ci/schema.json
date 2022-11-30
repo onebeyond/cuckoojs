@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsCI",
+  "title": "PR Template Options Schema",
+  "type": "object",
+  "properties": {
+    "ciProvider": {
+      "type": "string",
+      "description": "CI provider where ci will be set up",
+      "enum": [
+        "github",
+        "azuredevops"
+      ],
+      "x-prompt": {
+        "message": "What CI provider do you want to set up?",
+        "type": "list",
+        "items": [
+          {
+            "value": "github",
+            "label": "GitHub Actions"
+          },
+          {
+            "value": "azuredevops",
+            "label": "Azure DevOps Pipelines"
+          }
+        ]
+      }
+    },
+    "dockerRegistry": {
+      "type": "string",
+      "description": "Docker registry where images will be pushed",
+      "x-prompt": "Docker registry name or service connection for Azure Pipelines?"
+    },
+    "imageName": {
+      "type": "string",
+      "description": "Docker image name",
+      "x-prompt": "How do you want to name this repo's images?"
+    }
+  },
+  "required": ["ciProvider", "dockerRegistry", "imageName"]
+}
