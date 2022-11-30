@@ -98,8 +98,8 @@ export default class Printer {
 		this.load.start();
 	}
 
-	public info(): any {
-		this.load.info('ei');
+	public info(text: string): any {
+		this.load.info(text);
 	}
 
 	public endStep(): number {

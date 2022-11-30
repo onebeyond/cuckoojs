@@ -7,9 +7,11 @@ import {join} from 'path';
 import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
 import {AbstractCommand} from './abstract.command';
 import Printer from '../lib/printer/printer';
+import {GitRunner} from "../lib/runners/git.runner";
 
-export class NewAltCommand extends AbstractCommand {
+export class NewLambdaCommand extends AbstractCommand {
 	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
+	private readonly gitRunner: GitRunner = new GitRunner();
 	private readonly npmRunner: NpmRunner = new NpmRunner();
 	private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky();
 
@@ -25,6 +27,7 @@ export class NewAltCommand extends AbstractCommand {
 	constructor(
 		private readonly name: string,
 		private readonly gitProvider: string,
+		private readonly skipGitInit: boolean
 	) {
 		super();
 	}
@@ -35,7 +38,7 @@ export class NewAltCommand extends AbstractCommand {
 
 		if (this.checkFileExists()) {
 			this.printError(`Error generating new project: Folder ${this.name} already exists`);
-			NewAltCommand.endProcess(1);
+			NewLambdaCommand.endProcess(1);
 		}
 
 		try {
@@ -43,6 +46,15 @@ export class NewAltCommand extends AbstractCommand {
 
 			printer.startStep('Generating AWS Lambda scaffolding');
 			await this.schematicRunner.addLambdaQuickstart(this.name);
+			printer.endStep();
+
+			if(this.skipGitInit){
+				printer.info('Skipping Git repository initialization')
+			}else {
+				printer.startStep('Initializing Git repository');
+				await this.gitRunner.init(this.name);
+				await this.gitRunner.createBranch({folderName: this.name});
+			}
 			printer.endStep();
 
 			printer.startStep('Adding additional packages');
@@ -70,24 +82,26 @@ export class NewAltCommand extends AbstractCommand {
 			printer.endStep();
 
 			printer.startStep('Creating husky files');
-			await this.bashRunnerHusky.runHuskyCommit(this.name);
+			await this.npmRunner.runScript(this.name, 'prepare');
+			await this.bashRunnerHusky.addHuskyPreCommit(this.name);
+			await this.bashRunnerHusky.addHuskyPrePush(this.name);
 			printer.endStep();
 
 			this.printSuccess(`\n        🐦 Your CuckooJS Lambda "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {
 			printer.load.fail(`Error generating new project: ${(error as Error).message}`);
-			this.removeFolder();
-			NewAltCommand.endProcess(1);
+			// this.removeFolder();
+			 NewLambdaCommand.endProcess(1);
 		}
 	}
 
-	private removeFolder() {
-		try {
-			fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
-		} catch (e: unknown) {
-			// ignore
-		}
-	}
+	// private removeFolder() {
+	// 	try {
+	// 		fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
+	// 	} catch (e: unknown) {
+	// 		// ignore
+	// 	}
+	// }
 
 	private checkFileExists() {
 		const path = join(process.cwd(), this.name);
