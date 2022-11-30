@@ -33,7 +33,7 @@ export class NewLambdaCommand extends AbstractCommand {
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 8, step: 1});
+		const printer = new Printer({total: 9, step: 1});
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
@@ -48,10 +48,10 @@ export class NewLambdaCommand extends AbstractCommand {
 			await this.schematicRunner.addLambdaQuickstart(this.name);
 			printer.endStep();
 
-			if(this.skipGitInit){
-				printer.info('Skipping Git repository initialization')
-			}else {
-				printer.startStep('Initializing Git repository');
+			printer.startStep('Initializing Git repository');
+			if (this.skipGitInit) {
+				printer.updateStep('[Skipped] Initializing Git repository');
+			} else {
 				await this.gitRunner.init(this.name);
 				await this.gitRunner.createBranch({folderName: this.name});
 			}
@@ -90,18 +90,18 @@ export class NewLambdaCommand extends AbstractCommand {
 			this.printSuccess(`\n        🐦 Your CuckooJS Lambda "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {
 			printer.load.fail(`Error generating new project: ${(error as Error).message}`);
-			// this.removeFolder();
+			this.removeFolder();
 			 NewLambdaCommand.endProcess(1);
 		}
 	}
 
-	// private removeFolder() {
-	// 	try {
-	// 		fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
-	// 	} catch (e: unknown) {
-	// 		// ignore
-	// 	}
-	// }
+	private removeFolder() {
+		try {
+			fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
+		} catch (e: unknown) {
+			// ignore
+		}
+	}
 
 	private checkFileExists() {
 		const path = join(process.cwd(), this.name);
