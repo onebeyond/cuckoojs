@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "SchematicsPrTemplate",
+  "$id": "SchematicsCI",
   "title": "PR Template Options Schema",
   "type": "object",
   "properties": {
