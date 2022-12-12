@@ -19,7 +19,11 @@ const init = (): void => {
 		.showHelpAfterError()
 		.usage('<command> [options]');
 
-	cuckoo
+	const nest = cuckoo
+		.command('nest')
+		.description('Generate nest template')
+
+	nest
 		.command('new <name> [options...]')
 		.alias('n')
 		.description('Generate Nest application with basic tooling.')
@@ -27,29 +31,31 @@ const init = (): void => {
 			await new NewCommand(name).execute();
 		});
 
-	// Absolutely provisional until this is refined with the team to see how to merge or work with both project types
-	cuckoo
-		.command('new-lambda')
-		.argument('name', 'project name')
-		.addOption(
-			new Option('-g, --git-provider <gitProvider>', 'git provider to host the repo')
-			.choices(['github', 'azuredevops'])
-			.default('github'))
-		.addOption(
-			new Option('--skip-git-init', 'skip git repository initialization')
-		)
-		.alias('nl')
-		.description('Generate a NodeJS AWS Lambda Quickstart')
-		.action(async (name: string, options: any) => {
-			await new NewLambdaCommand(name, options.gitProvider, !!options.skipGitInit).execute();
-		});
-
-	cuckoo
+	nest
 		.command('generate <schematic> <name> [options...]')
 		.alias('g')
 		.description('Generate a Nest element.')
 		.action(async (schematic: string, name: string, options: string[]) => {
 			await new GenerateCommand(schematic, name, options).execute();
+		});
+
+	const lambda = cuckoo
+		.command('lambda')
+		.description('Generate lambda template')
+
+	lambda
+		.command('new <name>')
+		.alias('n')
+		.description('Generate an AWS Lambda Quickstart')
+		.addOption(
+			new Option('-g, --git-provider <gitProvider>', 'Git provider to host the repo')
+				.choices(['github', 'azuredevops'])
+				.default('github'))
+		.addOption(
+			new Option('--skip-git-init', 'Skip git repository initialization')
+		)
+		.action(async (name: string, options: any) => {
+			await new NewLambdaCommand(name, options.gitProvider, !!options.skipGitInit).execute();
 		});
 
 	cuckoo
