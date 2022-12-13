@@ -4,7 +4,7 @@ function removeDashesFrom(args: string[], initialIndex: number): string[] {
 			return arg;
 		}
 
-		return arg.replace(/^--/, '');
+		return arg.replace(/^--|^-/, '');
 	});
 }
 

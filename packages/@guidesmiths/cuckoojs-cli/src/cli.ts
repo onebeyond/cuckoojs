@@ -2,10 +2,12 @@
 import {Command} from 'commander';
 import {version} from '../package.json';
 import {NewCommand, GenerateCommand} from './commands';
-import {removeDashes, addDashes} from './lib/utils/formatArgs';
+import {removeDashes} from './lib/utils/formatArgs';
 
 const init = (): void => {
 	const cuckoo = new Command('cuckoo');
+
+	const originalArgs = process.argv;
 
 	cuckoo
 		.command('new')
@@ -14,7 +16,10 @@ const init = (): void => {
 		.alias('n')
 		.description('Generate Nest application with basic tooling.')
 		.hook('preAction', (_, actionCommand) => {
-			actionCommand.processedArgs[1] = addDashes(actionCommand.processedArgs[1]);
+			const commandArgs = originalArgs.slice(3);
+			const isOption = (a: string) => /^--|^-/.test(a);
+			actionCommand.processedArgs[0] = commandArgs.find(a => !isOption(a));
+			actionCommand.processedArgs[1] = commandArgs.filter(a => isOption(a));
 		})
 		.action(async (name: string, options: string[]) => {
 			await new NewCommand(name, options).execute();
