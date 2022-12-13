@@ -20,7 +20,7 @@ export class GenericRunner {
 		const options: SpawnOptions = {
 			cwd,
 			stdio,
-			shell: true,
+			shell: false,
 		};
 
 		return new Promise((resolve, reject) => {
@@ -31,8 +31,7 @@ export class GenericRunner {
 			);
 
 			child.on('error', error => {
-				console.log('eeeee', error);
-				reject(new Error(`Child process filed with error: ${error.message}`));
+				reject(new Error(`Child process failed with error: ${error.message}`));
 			});
 
 			child.on('close', code => {
