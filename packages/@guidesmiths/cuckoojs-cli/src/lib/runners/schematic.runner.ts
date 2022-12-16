@@ -41,4 +41,9 @@ export class SchematicRunner extends GenericRunner {
 		const args = [`@guidesmiths/cuckoojs-schematics:lambda-quickstart --directory=${name} --service-name=${name}`];
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
 	}
+
+	public async addESlint(name: string) {
+		const args = [`@guidesmiths/cuckoojs-schematics:eslint --directory=${name}`];
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+	}
 }

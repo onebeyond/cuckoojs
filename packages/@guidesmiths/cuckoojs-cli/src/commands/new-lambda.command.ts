@@ -33,7 +33,7 @@ export class NewLambdaCommand extends AbstractCommand {
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 9, step: 1});
+		const printer = new Printer({total: 10, step: 1});
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
@@ -73,6 +73,10 @@ export class NewLambdaCommand extends AbstractCommand {
 			await this.schematicRunner.addGitignoreFile(this.name);
 			printer.endStep();
 
+			printer.startStep('Setting ESlint config');
+			await this.schematicRunner.addESlint(this.name);
+			printer.endStep();
+
 			printer.startStep('Adding Pull Request template file');
 			await this.schematicRunner.addPullRequestTemplate(this.name, this.gitProvider);
 			printer.endStep();
@@ -97,7 +101,7 @@ export class NewLambdaCommand extends AbstractCommand {
 
 	private removeFolder() {
 		try {
-			fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
+			//fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
 		} catch (e: unknown) {
 			// ignore
 		}
