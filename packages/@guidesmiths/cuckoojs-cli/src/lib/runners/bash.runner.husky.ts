@@ -11,8 +11,8 @@ export class BashRunnerHusky extends GenericRunner {
 		super('npx');
 	}
 
-	public async addHuskyPreCommit(folderName: string) {
-		const fullPath = BashRunnerHusky.getHuskyHookFile(folderName, 'pre-commit');
+	public async addHuskyCommitMsg(folderName: string) {
+		const fullPath = BashRunnerHusky.getHuskyHookFile(folderName, 'commit-msg');
 
 		const args = ['husky add ' + fullPath + ' \'npx --no -- commitlint --edit "$1"\''];
 		await super.run({command: '', args});
