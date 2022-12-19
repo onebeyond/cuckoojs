@@ -1,5 +1,4 @@
 import {SchematicRunner} from '../lib/runners/schematic.runner';
-import {GitRunner} from '../lib/runners/git.runner';
 import type {PackageEntry, ScriptEntry} from '../lib/runners/npm.runner';
 import {NpmRunner} from '../lib/runners/npm.runner';
 import {messages} from '../lib/ui/ui';
@@ -8,8 +7,9 @@ import {join} from 'path';
 import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
 import {AbstractCommand} from './abstract.command';
 import Printer from '../lib/printer/printer';
+import {GitRunner} from "../lib/runners/git.runner";
 
-export class NewCommand extends AbstractCommand {
+export class NewLambdaCommand extends AbstractCommand {
 	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
 	private readonly gitRunner: GitRunner = new GitRunner();
 	private readonly npmRunner: NpmRunner = new NpmRunner();
@@ -26,29 +26,35 @@ export class NewCommand extends AbstractCommand {
 
 	constructor(
 		private readonly name: string,
+		private readonly gitProvider: string,
+		private readonly skipGitInit: boolean
 	) {
 		super();
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 8, step: 1});
+		const printer = new Printer({total: 9, step: 1});
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
 			this.printError(`Error generating new project: Folder ${this.name} already exists`);
-			NewCommand.endProcess(1);
+			NewLambdaCommand.endProcess(1);
 		}
 
 		try {
 			this.checkFileExists();
 
-			printer.startStep('Generating NestJS application scaffolding');
-			await this.schematicRunner.generateNestApplication(this.name);
+			printer.startStep('Generating AWS Lambda scaffolding');
+			await this.schematicRunner.addLambdaQuickstart(this.name);
 			printer.endStep();
 
 			printer.startStep('Initializing Git repository');
-			await this.gitRunner.init(this.name);
-			await this.gitRunner.createBranch({folderName: this.name});
+			if (this.skipGitInit) {
+				printer.updateStep('[Skipped] Initializing Git repository');
+			} else {
+				await this.gitRunner.init(this.name);
+				await this.gitRunner.createBranch({folderName: this.name});
+			}
 			printer.endStep();
 
 			printer.startStep('Adding additional packages');
@@ -67,19 +73,25 @@ export class NewCommand extends AbstractCommand {
 			await this.schematicRunner.addGitignoreFile(this.name);
 			printer.endStep();
 
+			printer.startStep('Adding Pull Request template file');
+			await this.schematicRunner.addPullRequestTemplate(this.name, this.gitProvider);
+			printer.endStep();
+
 			printer.startStep('Installing dependencies');
 			await this.npmRunner.install(this.name);
 			printer.endStep();
 
 			printer.startStep('Creating husky files');
-			await this.bashRunnerHusky.addHuskyPreCommit(this.name);
+			await this.npmRunner.runScript(this.name, 'prepare');
+			await this.bashRunnerHusky.addHuskyCommitMsg(this.name);
+			await this.bashRunnerHusky.addHuskyPrePush(this.name);
 			printer.endStep();
 
-			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
+			this.printSuccess(`\n        🐦 Your CuckooJS Lambda "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {
 			printer.load.fail(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
-			NewCommand.endProcess(1);
+			 NewLambdaCommand.endProcess(1);
 		}
 	}
 

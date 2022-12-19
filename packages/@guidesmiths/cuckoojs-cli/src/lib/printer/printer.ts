@@ -98,6 +98,10 @@ export default class Printer {
 		this.load.start();
 	}
 
+	public updateStep(text: string): any {
+		this.load.text =`(${this.step}/${this.total}) ${text}`;
+	}
+
 	public endStep(): number {
 		this.load.succeed(this.load.text);
 		this.step += 1;
