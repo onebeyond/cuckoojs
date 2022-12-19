@@ -87,7 +87,7 @@ export class NewLambdaCommand extends AbstractCommand {
 
 			printer.startStep('Creating husky files');
 			await this.npmRunner.runScript(this.name, 'prepare');
-			await this.bashRunnerHusky.addHuskyPreCommit(this.name);
+			await this.bashRunnerHusky.addHuskyCommitMsg(this.name);
 			await this.bashRunnerHusky.addHuskyPrePush(this.name);
 			printer.endStep();
 
