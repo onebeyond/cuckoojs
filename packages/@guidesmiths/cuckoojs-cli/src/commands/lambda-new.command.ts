@@ -9,7 +9,7 @@ import {AbstractCommand} from './abstract.command';
 import Printer from '../lib/printer/printer';
 import {GitRunner} from "../lib/runners/git.runner";
 
-export class NewLambdaCommand extends AbstractCommand {
+export class LambdaNewCommand extends AbstractCommand {
 	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
 	private readonly gitRunner: GitRunner = new GitRunner();
 	private readonly npmRunner: NpmRunner = new NpmRunner();
@@ -33,12 +33,20 @@ export class NewLambdaCommand extends AbstractCommand {
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 10, step: 1});
+		const printer = new Printer({total: 11, step: 1});
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
-			this.printError(`Error generating new project: Folder ${this.name} already exists`);
-			NewLambdaCommand.endProcess(1);
+			if(this.skipGitInit){
+				this.printNeutral(`Folder ${this.name} already exists but git won't be initialized there`);
+			}else{
+				this.printError(`Error generating new project: Folder ${this.name} already exists`);
+				LambdaNewCommand.endProcess(1);
+			}
+		} else {
+			if(this.skipGitInit) {
+				this.printNeutral(`Folder ${this.name} does not exist and git won't be initialized there`);
+			}
 		}
 
 		try {
@@ -85,6 +93,10 @@ export class NewLambdaCommand extends AbstractCommand {
 			await this.npmRunner.install(this.name);
 			printer.endStep();
 
+			printer.startStep('Applying ESlist config');
+			await this.npmRunner.runScript(this.name, 'lint:fix');
+			printer.endStep();
+
 			printer.startStep('Creating husky files');
 			await this.npmRunner.runScript(this.name, 'prepare');
 			await this.bashRunnerHusky.addHuskyCommitMsg(this.name);
@@ -95,13 +107,13 @@ export class NewLambdaCommand extends AbstractCommand {
 		} catch (error: unknown) {
 			printer.load.fail(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
-			 NewLambdaCommand.endProcess(1);
+			 LambdaNewCommand.endProcess(1);
 		}
 	}
 
 	private removeFolder() {
 		try {
-			//fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
+			fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
 		} catch (e: unknown) {
 			// ignore
 		}

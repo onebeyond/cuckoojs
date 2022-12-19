@@ -72,7 +72,7 @@ export class NewCommand extends AbstractCommand {
 			printer.endStep();
 
 			printer.startStep('Creating husky files');
-			await this.bashRunnerHusky.addHuskyPreCommit(this.name);
+			await this.bashRunnerHusky.addHuskyCommitMsg(this.name);
 			printer.endStep();
 
 			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);

@@ -1,4 +1,4 @@
-const SampleController = require('../helloController');
+const helloController = require('../helloController');
 const loggerMock = require('./mocks/logger');
 
 describe('helloController', () => {
@@ -9,8 +9,8 @@ describe('helloController', () => {
 	});
 
 	test('should merge name ok', () => {
-		const sampleController = new SampleController({logger});
-		const actual = sampleController.mergeName('a', 'b');
+		const testHelloController = helloController({logger});
+		const actual = testHelloController.mergeName('a', 'b');
 		expect(actual).toBe('a b');
 	});
 });
