@@ -1,12 +1,12 @@
-class HelloController {
-	constructor({logger}) {
-		this.logger = logger;
-	}
-
-	mergeName = (firstName, lastName) => {
-		this.logger.info('merging name', {firstName, lastName});
+const helloController = ({ logger }) => {
+	const mergeName = (firstName, lastName) => {
+		logger.info('merging name', {firstName, lastName});
 		return `${firstName} ${lastName}`;
 	};
+
+	return {
+		mergeName
+	}
 }
 
-module.exports = HelloController;
+module.exports = helloController;

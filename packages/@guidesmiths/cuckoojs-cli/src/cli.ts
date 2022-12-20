@@ -2,7 +2,7 @@
 import {Option, Command} from 'commander';
 import {version} from '../package.json';
 import {NewCommand, GenerateCommand} from './commands';
-import {NewLambdaCommand} from "./commands/new-lambda.command";
+import {LambdaNewCommand} from "./commands/lambda-new.command";
 
 const init = (): void => {
 	const cuckoo = new Command('cuckoo');
@@ -55,7 +55,7 @@ const init = (): void => {
 			new Option('--skip-git-init', 'Skip git repository initialization')
 		)
 		.action(async (name: string, options: any) => {
-			await new NewLambdaCommand(name, options.gitProvider, !!options.skipGitInit).execute();
+			await new LambdaNewCommand(name, options.gitProvider, !!options.skipGitInit).execute();
 		});
 
 	cuckoo

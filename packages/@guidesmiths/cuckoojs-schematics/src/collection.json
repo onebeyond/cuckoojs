@@ -35,6 +35,11 @@
       "description": "Create a quickstart project with a lambda",
       "factory": "./lambda-quickstart/lambda-quickstart.factory#main",
       "schema": "./lambda-quickstart/schema.json"
+    },
+    "eslint": {
+      "description": "Set ESlint config",
+      "factory": "./eslint/eslint.factory#main",
+      "schema": "./eslint/schema.json"
     }
   }
 }
