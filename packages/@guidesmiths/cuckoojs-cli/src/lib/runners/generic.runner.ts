@@ -20,7 +20,7 @@ export class GenericRunner {
 		const options: SpawnOptions = {
 			cwd,
 			stdio,
-			shell: false,
+			shell: true,
 		};
 
 		return new Promise((resolve, reject) => {

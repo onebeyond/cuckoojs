@@ -22,6 +22,10 @@ export class NestJsRunner extends GenericRunner {
 	}
 
 	public async generateNestApplication(name: string, options: string[]) {
+		if (!options.includes('--skip-install')) {
+			options.push('--skip-install');
+		}
+
 		const args = ['new', name, ...options].filter(Boolean);
 		console.log(args);
 		await super.run({command: NestJsRunner.getNestJsCliPath(), args, stdio: 'inherit'});

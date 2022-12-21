@@ -23,12 +23,12 @@ export class SchematicRunner extends GenericRunner {
 	}
 
 	public async addGitignoreFile(name: string) {
-		const args = [`@guidesmiths/cuckoojs-schematics:gitignore --directory=${name}`];
+		const args = ['@guidesmiths/cuckoojs-schematics:gitignore', `--directory=${name}`];
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
 	}
 
 	public async addCommitlint(name: string) {
-		const args = [`@guidesmiths/cuckoojs-schematics:commitlint --directory=${name}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		const args = ['@guidesmiths/cuckoojs-schematics:commitlint', `--directory=${name}`];
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['inherit', 'inherit', 'inherit']});
 	}
 }
