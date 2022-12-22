@@ -41,7 +41,7 @@
   ],
   "schematics": "./dist/collection.json",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "postbuild": "copyfiles -a -u 1 ./src/collection.json ./src/*/schema.json \"./src/*/files/**/*\" dist/",
     "watch": "tsc -p tsconfig.json --watch",
     "test": "npm run build && jest src/**/*.spec.ts"

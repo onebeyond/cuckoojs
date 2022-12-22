@@ -46,7 +46,7 @@
     "cuckoo": "dist/src/cli.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/src/cli.js",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "lint": "eslint --ext .ts .",
