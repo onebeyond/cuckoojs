@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsHusky",
+  "title": "husky Options Schema",
+  "type": "object",
+  "properties": {
+    "directory": {
+      "type": "string",
+      "description": "husky file destination directory."
+    },
+    "skipInstall": {
+      "type": "boolean",
+      "description": "skip husky installation.",
+      "default": false
+    }
+  },
+  "required": ["directory"]
+}
