@@ -16,7 +16,7 @@ export function main(options: {directory: string; skipInstall: boolean}): Rule {
 
 		// tree.exists seems to not work on files?
 		// https://github.com/angular/angular-cli/blob/8da926966e9f414ceecf60b89acd475ce1b55fc5/packages/angular_devkit/schematics/src/tree/host-tree.ts#L332
-		if (!tree.getDir(normalize(`./${path}/.git`)).subdirs) {
+		if (!tree.getDir(normalize(`./${path}/.git`)).subdirs.length) {
 			context.logger.info(
 				'Git directory not found. Husky installation will not proceed. Please, consider initializing Git on this project',
 			);
@@ -31,14 +31,18 @@ export function main(options: {directory: string; skipInstall: boolean}): Rule {
 }
 
 function runCommand(directory: string, skipInstall: boolean): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree, context: SchematicContext) => {
 		if (skipInstall) {
+			context.logger.info(
+				'Husky schematic executed with skipInstall option. Husky will not be installed.',
+			);
 			return tree;
 		}
 
 		const path = `${directory}/.husky/commit-msg`;
-		execSync(`npm run prepare --prefix=${directory}`);
+		execSync(`npm install --prefix=${directory}`);
 		execSync(`npx husky add ${path} 'npx --no -- commitlint --edit "$1"'`);
+		execSync(`npm run prepare --prefix=${directory}`);
 		return tree;
 	};
 }
