@@ -14,7 +14,6 @@ export function main(options: {directory: string; skipInstall: boolean}): Rule {
 		context.logger.info('Adding husky ...');
 		const path = normalize(options.directory);
 
-		// tree.exists seems to not work on files?
 		// https://github.com/angular/angular-cli/blob/8da926966e9f414ceecf60b89acd475ce1b55fc5/packages/angular_devkit/schematics/src/tree/host-tree.ts#L332
 		if (!tree.getDir(normalize(`./${path}/.git`)).subdirs.length) {
 			context.logger.info(
@@ -47,7 +46,6 @@ function runCommand(directory: string, skipInstall: boolean): Rule {
 	};
 }
 
-// 'husky add ' + fullPath + ' \'npx --no -- commitlint --edit "$1"\''
 function updatePackageJson(directory: string): Rule {
 	return (tree: Tree, _context: SchematicContext) => {
 		const path = `${directory}/package.json`;
