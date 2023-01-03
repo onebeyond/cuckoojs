@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsLambdaCICD",
+  "title": "Lambda CICD Schema",
+  "type": "object",
+  "properties": {
+    "directory": {
+      "type": "string",
+      "description": "destination directory",
+      "default": ".",
+      "x-prompt": "Where do you want to setup the cicd?"
+    },
+    "ciProvider": {
+      "type": "string",
+      "description": "ci provider",
+      "default": "github",
+      "enum": [
+        "github"
+      ],
+      "x-prompt": "What CI provider do you want to setup?"
+    }
+  },
+  "required": ["directory", "ciProvider"]
+}

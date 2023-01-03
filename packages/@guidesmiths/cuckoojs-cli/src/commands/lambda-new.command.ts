@@ -27,13 +27,15 @@ export class LambdaNewCommand extends AbstractCommand {
 	constructor(
 		private readonly name: string,
 		private readonly gitProvider: string,
-		private readonly skipGitInit: boolean
+		private readonly skipGitInit: boolean,
+		private readonly ciProvider: string,
+		private readonly skipCiInit: boolean,
 	) {
 		super();
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 11, step: 1});
+		const printer = new Printer({total: 12, step: 1});
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
@@ -93,6 +95,14 @@ export class LambdaNewCommand extends AbstractCommand {
 			await this.npmRunner.install(this.name);
 			printer.endStep();
 
+			printer.startStep('Setting up CI');
+			if (this.skipCiInit) {
+				printer.updateStep('[Skipped] Setting up CI');
+			} else {
+				await this.schematicRunner.addLambdaCi(this.name, this.ciProvider);
+			}
+			printer.endStep();
+
 			printer.startStep('Applying ESlist config');
 			await this.npmRunner.runScript(this.name, 'lint:fix');
 			printer.endStep();
@@ -113,7 +123,8 @@ export class LambdaNewCommand extends AbstractCommand {
 
 	private removeFolder() {
 		try {
-			fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
+			console.log('error')
+		//	fs.rmdirSync(join(process.cwd(), this.name), {recursive: true});
 		} catch (e: unknown) {
 			// ignore
 		}

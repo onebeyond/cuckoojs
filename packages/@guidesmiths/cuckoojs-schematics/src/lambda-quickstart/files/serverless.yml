@@ -6,6 +6,9 @@ custom:
   localstack:
     stages:
       - local
+  prune:
+    automatic: true
+    number: 3
 
 provider:
   name: aws
@@ -19,17 +22,28 @@ provider:
   environment:
     SERVICE_NAME: ${env:SERVICE_NAME}
 
+  httpApi:
+    cors: true
+    payload: '1.0'
 
 functions:
-  hello:
-    handler: src/handlers/hello.handler
-#    events:
+  sayHello:
+    handler: src/handlers/greetings.sayHello
+    events:
+      - httpApi:
+          method: POST
+          path: /v1/greetings/hello
 #      - sns: arn:xxx
-#      - httpApi:
-#          method: POST
-#          path: /post/just/to/this/path
+  sayBye:
+    handler: src/handlers/greetings.sayBye
+    events:
+      - httpApi:
+          method: POST
+          path: /v1/greetings/bye
+#      - sns: arn:xxx
 
 plugins:
   - serverless-localstack
+  - serverless-prune-plugin
 
 useDotenv: true
