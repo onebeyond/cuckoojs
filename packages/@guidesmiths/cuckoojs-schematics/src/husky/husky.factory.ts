@@ -1,9 +1,9 @@
-import type {
-	Rule,
-	SchematicContext,
-	Tree,
+import {
+	chain,
+	type Rule,
+	type SchematicContext,
+	type Tree,
 } from '@angular-devkit/schematics';
-import {chain} from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
 import {execSync} from 'child_process';
 
@@ -40,8 +40,10 @@ function runCommand(directory: string, skipInstall: boolean): Rule {
 
 		const path = `${directory}/.husky/commit-msg`;
 		execSync(`npm install --prefix=${directory}`);
-		execSync(`npx husky add ${path} 'npx --no -- commitlint --edit "$1"'`);
 		execSync(`npm run prepare --prefix=${directory}`);
+		execSync(`npx husky add ${path} 'npx --no -- commitlint --edit "$1"'`);
+		const path2 = `${directory}/.husky/pre-push`;
+		execSync(`npx husky add ${path2} 'npm run test'`);
 		return tree;
 	};
 }

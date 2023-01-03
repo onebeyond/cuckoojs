@@ -7,7 +7,14 @@ import {
 	printParseErrorCode,
 	modify,
 	applyEdits,
+	findNodeAtLocation,
 } from 'jsonc-parser';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+type TInsertDependencyOptions = {
+	ordered?: boolean;
+	overwrite?: boolean;
+};
 
 export class PackageJsonUtils {
 	content: string;
@@ -30,7 +37,7 @@ export class PackageJsonUtils {
 
 	addPackage(name: string, version: string, dev = false) {
 		const section = dev ? 'devDependencies' : 'dependencies';
-		this.content = this.insertDependency([section, name], version, true);
+		this.content = this.insertDependency([section, name], version, {ordered: true, overwrite: true});
 		this.host.overwrite(this.path, this.content);
 	}
 
@@ -48,14 +55,24 @@ export class PackageJsonUtils {
 		}
 	}
 
-	private insertDependency(path: JSONPath, value: string, ordered = false) {
+	private insertDependency(path: JSONPath, value: string, options: TInsertDependencyOptions = {ordered: false, overwrite: false}) {
 		const propertyToInsert = path.slice(-1)[0];
-		const getInsertionIndex = ordered
+		const getInsertionIndex = options.ordered
 		// eslint-disable-next-line @typescript-eslint/require-array-sort-compare
 			? (properties: Segment[]) => [...properties, propertyToInsert]
 				.sort()
 				.findIndex(p => p === propertyToInsert)
 			: undefined;
+
+		if (!options.overwrite) {
+			const tree = parseTree(this.content);
+			if (tree) {
+				const prevValue: string = findNodeAtLocation(tree, path)?.value as string;
+				if (prevValue && !prevValue.includes(value)) {
+					value = value.concat(' && ', prevValue);
+				}
+			}
+		}
 
 		const editResult = modify(this.content, path, value, {
 			formattingOptions: {
