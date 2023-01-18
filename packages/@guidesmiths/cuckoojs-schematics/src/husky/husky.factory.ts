@@ -1,4 +1,5 @@
 import {
+	branchAndMerge,
 	chain,
 	type Rule,
 	type SchematicContext,
@@ -12,6 +13,9 @@ import {PackageJsonUtils} from '../utils/package-json.utils';
 export function main(options: {directory: string; skipInstall: boolean}): Rule {
 	return (tree: Tree, context: SchematicContext) => {
 		context.logger.info('Adding husky ...');
+
+		// eslint-disable-next-line no-warning-comments
+		// TODO: setting the path to '.' makes it empty when normalizing
 		const path = normalize(options.directory);
 
 		// https://github.com/angular/angular-cli/blob/8da926966e9f414ceecf60b89acd475ce1b55fc5/packages/angular_devkit/schematics/src/tree/host-tree.ts#L332
@@ -22,10 +26,12 @@ export function main(options: {directory: string; skipInstall: boolean}): Rule {
 			return;
 		}
 
-		return chain([
-			updatePackageJson(path),
-			runCommand(path, options.skipInstall),
-		])(tree, context);
+		return branchAndMerge(
+			chain([
+				updatePackageJson(path),
+				runCommand(path, options.skipInstall),
+			]),
+		)(tree, context);
 	};
 }
 
@@ -40,7 +46,10 @@ function runCommand(directory: string, skipInstall: boolean): Rule {
 
 		const path = `${directory}/.husky/commit-msg`;
 		execSync(`npm install --prefix=${directory}`);
-		execSync(`npm run prepare --prefix=${directory}`);
+		execSync('npx husky install');
+		// eslint-disable-next-line no-warning-comments
+		// FIXME: executing npm run prepare fails because it doesn't find it (tree changed not applied)
+		// execSync(`npm run prepare --prefix=${directory}`);
 		execSync(`npx husky add ${path} 'npx --no -- commitlint --edit "$1"'`);
 		const path2 = `${directory}/.husky/pre-push`;
 		execSync(`npx husky add ${path2} 'npm run test'`);
@@ -55,6 +64,11 @@ function updatePackageJson(directory: string): Rule {
 		const packageJsonUtils = new PackageJsonUtils(tree, path);
 		packageJsonUtils.addPackage('husky', '^8.0.1', true);
 		packageJsonUtils.addScript('prepare', 'husky install');
+
+		const buffer = tree.read(path);
+		if (!buffer) {
+			throw new Error(`Path ${path} not found.`);
+		}
 
 		return tree;
 	};
