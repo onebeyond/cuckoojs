@@ -9,8 +9,7 @@ node_modules/
 *.code-workspace
 
 # bundle
-packages/**/*.d.ts
-packages/**/*.js
+/dist
 
 # misc
 .DS_Store
