@@ -9,8 +9,7 @@ node_modules/
 *.code-workspace
 
 # bundle
-packages/**/*.d.ts
-packages/**/*.js
+/dist
 
 # misc
 .DS_Store
@@ -27,10 +26,12 @@ yarn-error.log
 /example
 
 # tests
-/test
 /benchmarks/memory
 /coverage
 /.nyc_output
 /packages/graphql
 /benchmarks/memory
 build/config\.gypi
+
+# sensitive information
+.env*
