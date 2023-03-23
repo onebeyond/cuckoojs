@@ -1,6 +1,6 @@
 {
   "name": "@guidesmiths/cuckoojs-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CuckooJS CLI",
   "keywords": [
     "schematics",
@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@angular-devkit/schematics-cli": "^14.2.3",
-    "@guidesmiths/cuckoojs-schematics": "^0.0.1",
+    "@guidesmiths/cuckoojs-schematics": "^0.0.2",
     "@nestjs/schematics": "^9.0.3",
     "@types/node": "^18.11.17",
     "commander": "^9.4.1",
