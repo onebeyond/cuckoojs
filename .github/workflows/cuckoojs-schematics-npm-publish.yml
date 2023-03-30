@@ -21,7 +21,7 @@ jobs:
   publish-npm-cuckoojs-schematics:
     runs-on: ubuntu-latest
     needs: check-cuckoojs-schematics-version
-    if: ${{ needs.check-cuckoojs-schematics.outputs.version-changed }} === "true"
+    if: ${{ needs.check-cuckoojs-schematics-version.outputs.version-changed }} === "true"
     steps:
     - name: Check-out the repository
       uses: actions/checkout@v3
