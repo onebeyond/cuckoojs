@@ -48,9 +48,23 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_GUIDESMITHS }}
 
+  check-cuckoojs-cli-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version-changed: ${{ steps.version-change.outputs.version-changed }}
+    steps:
+      - name: Check-out the repository
+        uses: actions/checkout@v3
+      - name: Check version changes
+        uses: EndBug/version-check@v2
+        id: version-changed
+        with:
+          file-name: ./packages/@guidesmiths/cuckoojs-cli/package.json
+
   publish-npm-cuckoojs-cli:
     runs-on: ubuntu-latest
-    needs: publish-npm-cuckoojs-schematics
+    needs: check-cuckoojs-cli-version
+    if: ${{ needs.check-cuckoojs-cli-version.outputs.version-changed }} === "true"
     steps:
     - name: Check-out the repository
       uses: actions/checkout@v3
