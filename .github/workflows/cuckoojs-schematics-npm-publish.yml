@@ -21,7 +21,6 @@ jobs:
   publish-npm-cuckoojs-schematics:
     runs-on: ubuntu-latest
     needs: check-cuckoojs-schematics-version
-    if: ${{ needs.check-cuckoojs-schematics-version.outputs.version-changed }} === "true"
     steps:
     - name: Check-out the repository
       uses: actions/checkout@v3
@@ -44,6 +43,7 @@ jobs:
     - name: Build artifact
       run: npm run build -w @guidesmiths/cuckoojs-schematics
     - name: Publish package to npm
+      if: ${{ needs.check-cuckoojs-schematics-version.outputs.version-changed }} === "true"
       run: npm publish --ignore-scripts --access public -w @guidesmiths/cuckoojs-schematics
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_GUIDESMITHS }}
