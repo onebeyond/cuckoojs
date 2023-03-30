@@ -8,7 +8,7 @@ jobs:
   check-cuckoojs-schematics-version:
     runs-on: ubuntu-latest
     outputs:
-      version-changed: ${{ steps.version-change.outputs.version-changed }}
+      version-changed: ${{ steps.version-changed.outputs.version-changed }}
     steps:
       - name: Check-out the repository
         uses: actions/checkout@v3
@@ -51,7 +51,7 @@ jobs:
   check-cuckoojs-cli-version:
     runs-on: ubuntu-latest
     outputs:
-      version-changed: ${{ steps.version-change.outputs.version-changed }}
+      version-changed: ${{ steps.version-changed.outputs.version-changed }}
     steps:
       - name: Check-out the repository
         uses: actions/checkout@v3
