@@ -1,6 +1,6 @@
 {
   "name": "@guidesmiths/cuckoojs-schematics",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A collection of CuckooJS schematics",
   "keywords": [
     "schematics",
@@ -48,7 +48,8 @@
   },
   "dependencies": {
     "@angular-devkit/core": "^14.2.7",
-    "@angular-devkit/schematics": "^14.2.6"
+    "@angular-devkit/schematics": "^14.2.6",
+    "jsonc-parser": "^3.2.0"
   },
   "devDependencies": {
     "@types/jest": "^29.2.4",
