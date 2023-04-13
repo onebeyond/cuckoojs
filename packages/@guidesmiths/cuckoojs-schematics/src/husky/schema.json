@@ -6,13 +6,13 @@
   "properties": {
     "directory": {
       "type": "string",
-      "description": "husky file destination directory."
+      "description": "husky file destination directory.",
+      "default": "."
     },
     "skipInstall": {
       "type": "boolean",
       "description": "skip husky installation.",
       "default": false
     }
-  },
-  "required": ["directory"]
+  }
 }
