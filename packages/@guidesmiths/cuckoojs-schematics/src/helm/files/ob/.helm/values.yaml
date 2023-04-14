@@ -1,0 +1,117 @@
+# Default values for coffee-backend-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: <%= imageName %>
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Environment variables to be sended to our container
+# env:
+#   # Environment from a value
+#   - name: NODE_ENV
+#     value: production
+#   # Environment from a kubernetes secret
+#   - name: JSON_CREDENTIALS
+#     valueFrom:
+#       secretKeyRef:
+#         name: json-credentials
+#         key: username
+#         optional: false
+
+# Secrets to be passed to kubernetes, this will be replaced at CI stage (Azure DevOps, for example)
+# secrets:
+#   MY_ENV_VAR: "${base64(MyAzureSecret)}"
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+    add: ["NET_ADMIN", "SYS_TIME"]
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+
+ports:
+  - name: http
+    containerPort: 4000
+    protocol: TCP
+
+service:
+  type: ClusterIP
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      name: http
+
+ingressroute:
+  enabled: true
+  dns: my-domain.certmanager.test
+  port: 4000
+
+livenessProbe:
+  httpGet:
+    path: /__/manifest
+    port: http
+  periodSeconds: 30
+  timeoutSeconds: 30
+  initialDelaySeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /__/manifest
+    port: http
+  periodSeconds: 30
+  timeoutSeconds: 30
+  initialDelaySeconds: 20
+
+resources:
+  limits:
+    cpu: <%= resourcesLimitCpu %>m
+    memory: <%= resourcesLimitMemory %>Mi
+  requests:
+    cpu: <%= resourcesRequestCpu %>m
+    memory: <%= resourcesRequestMemory %>m
+
+autoscaling:
+  enabled: <%= autoscalingEnabled %>
+  minReplicas: <%= autoscalingReplicasMin %>
+  maxReplicas: <%= autoscalingReplicasMax %>
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: <%= autoscalingTargetCpu %>
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
