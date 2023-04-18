@@ -29,6 +29,6 @@ jobs:
     - name: Build artifacts
       run: npm run build
     - name: Publish packages to npm
-      run: lerna publish --yes --from-package
+      run: lerna publish from-package --yes
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_GUIDESMITHS }}
