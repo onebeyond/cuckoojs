@@ -1,0 +1,40 @@
+name: lib - destroy lambdas on environment
+
+on:
+  workflow_call:
+    inputs:
+      env-name:
+        required: true
+        type: string
+    secrets:
+      aws-key:
+        required: true
+      aws-secret:
+        required: true
+
+jobs:
+  deploy-serverless-on-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.x
+
+      - name: install deps
+        run: npm ci --ignore-scripts
+
+      - name: serverless config credentials
+        uses: serverless/github-action@v3.1
+        with:
+          args: config credentials --provider aws --key ${{ secrets.aws-key }} --secret ${{ secrets.aws-secret }}
+
+      - name: serverless destroy
+        uses: serverless/github-action@v3.1
+        with:
+          args: destroy --stage ${{ inputs.env-name }}
+
+

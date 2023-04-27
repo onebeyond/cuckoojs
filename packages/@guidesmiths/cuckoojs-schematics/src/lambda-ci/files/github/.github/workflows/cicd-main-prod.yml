@@ -1,0 +1,13 @@
+name: manual - main cicd workflow for prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-prod:
+    uses: ./.github/workflows/deploy-serverless-on-env.yml
+    with:
+      env-name: prod
+    secrets:
+      aws-key: ${{ secrets.AWS_KEY }}
+      aws-secret: ${{ secrets.AWS_SECRET }}

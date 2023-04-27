@@ -1,0 +1,20 @@
+name: manual - main cicd workflow for destroying envs
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: env-name
+        description: What env will be destroyed?
+        options:
+          - dev
+          - prod
+
+jobs:
+  deploy-prod:
+    uses: ./.github/workflows/destroy-serverless-env.yml
+    with:
+      env-name: ${{ github.event.inputs.env-name }}
+    secrets:
+      aws-key: ${{ secrets.AWS_KEY }}
+      aws-secret: ${{ secrets.AWS_SECRET }}

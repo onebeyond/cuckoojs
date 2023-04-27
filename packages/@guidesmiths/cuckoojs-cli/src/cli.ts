@@ -52,10 +52,23 @@ const init = (): void => {
 				.choices(['github', 'azuredevops'])
 				.default('github'))
 		.addOption(
+			new Option('-ci, --ci-provider <ciProvider>', 'CI provider')
+				.choices(['github'])
+				.default('github'))
+		.addOption(
 			new Option('--skip-git-init', 'Skip git repository initialization')
 		)
+		.addOption(
+			new Option('--skip-ci-init', 'Skip CI workflows setup')
+		)
 		.action(async (name: string, options: any) => {
-			await new LambdaNewCommand(name, options.gitProvider, !!options.skipGitInit).execute();
+			const {
+				gitProvider,
+				skipGitInit,
+				ciProvider,
+				skipCiInit
+			} = options;
+			await new LambdaNewCommand(name, gitProvider, !!skipGitInit, ciProvider, !!skipCiInit).execute();
 		});
 
 	cuckoo

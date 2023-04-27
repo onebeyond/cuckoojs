@@ -1,0 +1,15 @@
+name: auto - main cicd workflow for dev
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-dev:
+    uses: ./.github/workflows/deploy-serverless-on-env.yml
+    with:
+      env-name: dev
+    secrets:
+      aws-key: ${{ secrets.AWS_KEY }}
+      aws-secret: ${{ secrets.AWS_SECRET }}

@@ -42,6 +42,11 @@ export class SchematicRunner extends GenericRunner {
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
 	}
 
+	public async addLambdaCi(name: string, ciProvider: string) {
+		const args = [`@guidesmiths/cuckoojs-schematics:lambda-ci --directory=${name} --ci-provider=${ciProvider}`];
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+	}
+
 	public async addESlint(name: string) {
 		const args = [`@guidesmiths/cuckoojs-schematics:eslint --directory=${name}`];
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});

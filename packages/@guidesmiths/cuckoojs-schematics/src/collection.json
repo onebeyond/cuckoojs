@@ -26,6 +26,11 @@
       "factory": "./ci/ci.factory#main",
       "schema": "./ci/schema.json"
     },
+    "lambda-ci": {
+      "description": "Set lambda CI pipeline into a project",
+      "factory": "./lambda-ci/lambda-ci.factory#main",
+      "schema": "./lambda-ci/schema.json"
+    },
     "helm": {
       "description": "Set basic helm chart into a project",
       "factory": "./helm/helm.factory#main",

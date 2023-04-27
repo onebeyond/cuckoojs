@@ -23,14 +23,20 @@ describe('lambda-quickstart', () => {
             "/some-folder/fixtures/hello/regularRequest.json",
             "/some-folder/src/components/container.js",
             "/some-folder/src/components/config/config.js",
-            "/some-folder/src/components/controllers/helloController.js",
-            "/some-folder/src/components/controllers/tests/helloController.test.js",
+            "/some-folder/src/components/controllers/greetingsController.js",
+            "/some-folder/src/components/controllers/tests/greetingsController.test.js",
             "/some-folder/src/components/controllers/tests/mocks/logger.js",
             "/some-folder/src/components/logger/logger.js",
-            "/some-folder/src/handlers/hello.js",
-            "/some-folder/src/handlers/schemas/helloInput.js",
-            "/some-folder/src/handlers/utils/extractPayload.js",
-            "/some-folder/src/handlers/utils/httpResponse.js"
+            "/some-folder/src/handlers/greetings.js",
+            "/some-folder/src/handlers/middlewares/index.js",
+            "/some-folder/src/handlers/middlewares/processInput.js",
+            "/some-folder/src/handlers/middlewares/validateInput.js",
+            "/some-folder/src/handlers/schemas/index.js",
+            "/some-folder/src/handlers/schemas/greetings/index.js",
+            "/some-folder/src/handlers/schemas/greetings/sayByeRequest.js",
+            "/some-folder/src/handlers/schemas/greetings/sayHelloRequest.js",
+            "/some-folder/src/handlers/utils/httpResponse.js",
+            "/some-folder/src/handlers/utils/schemaValidator.js"
         ]);
     });
 });
