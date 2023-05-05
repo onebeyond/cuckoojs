@@ -4,6 +4,23 @@
   "title": "helm Options Schema",
   "type": "object",
   "properties": {
+    "helmType": {
+      "type": "string",
+      "description": "type of helm chart",
+      "x-prompt": "Which type of helm chart you want to use?",
+      "enum": ["generic", "ob"],
+      "default": "generic",
+      "items": [
+        {
+          "value": "generic",
+          "label": "Generic - basic helm chart for a generic service"
+        },
+        {
+          "value": "ob",
+          "label": "OB Cluster - for deploying on a cluster with Traefik and CertManager (OB internal projects)"
+        }
+      ]
+    },
     "serviceName": {
       "type": "string",
       "description": "service name to deploy on kubernetes",
