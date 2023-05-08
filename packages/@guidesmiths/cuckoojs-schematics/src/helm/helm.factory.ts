@@ -26,7 +26,7 @@ type HelmTypeStrategies = Record<string, HelmTypeStrategy>;
 const helmTypeStrategies: HelmTypeStrategies = {
 	generic: {
 		filePath: 'generic',
-		helmChartName: 'onebeyond/one-beyond-generic-service:0.1.9',
+		helmChartName: './.helm',
 	},
 	ob: {
 		filePath: 'ob',

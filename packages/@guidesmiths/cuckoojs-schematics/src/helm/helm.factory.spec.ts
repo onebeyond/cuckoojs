@@ -17,13 +17,23 @@ describe('helm', () => {
             ).toPromise();
 
         expect(tree.files).toEqual([
-            '/package.json',
+            "/package.json",
+            '/.helm/.helmignore',
+            '/.helm/Chart.yaml',
             '/.helm/values.yaml',
+            '/.helm/templates/NOTES.txt',
+            '/.helm/templates/_helpers.tpl',
+            '/.helm/templates/deployment.yaml',
+            '/.helm/templates/hpa.yaml',
+            '/.helm/templates/ingress.yaml',
+            '/.helm/templates/service.yaml',
+            '/.helm/templates/serviceaccount.yaml',
+            '/.helm/templates/tests/test-connection.yaml',
         ]);
 
         const packageJson = JSON.parse(tree.readContent('./package.json'));
         expect(packageJson.scripts).toEqual({
-            "helm:upgrade": "helm upgrade -f ./.helm/values.yml serviceName onebeyond/one-beyond-generic-service:0.1.9"
+            "helm:upgrade": "helm upgrade -f ./.helm/values.yml serviceName ./.helm"
         });
 
         const helmValues = tree.readContent('./.helm/values.yaml');
