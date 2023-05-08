@@ -40,6 +40,11 @@
       "description": "Set ESlint config",
       "factory": "./eslint/eslint.factory#main",
       "schema": "./eslint/schema.json"
+    },
+    "husky": {
+      "description": "Add Husky to the project",
+      "factory": "./husky/husky.factory#main",
+      "schema": "./husky/schema.json"
     }
   }
 }
