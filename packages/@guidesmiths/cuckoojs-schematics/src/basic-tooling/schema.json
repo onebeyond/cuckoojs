@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "BasicTooling",
+  "title": "Basic tooling schema (commitlint, husky, gitignore, license-checker)",
+  "type": "object",
+  "properties": {
+    "directory": {
+      "type": "string",
+      "description": "destination directory.",
+      "default": "."
+    }
+  }
+}

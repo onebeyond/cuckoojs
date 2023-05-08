@@ -45,6 +45,11 @@
       "description": "Add Husky to the project",
       "factory": "./husky/husky.factory#main",
       "schema": "./husky/schema.json"
+    },
+    "basic-tooling": {
+      "description": "Add basic tooling to the project",
+      "factory": "./basic-tooling/basic-tooling.factory#main",
+      "schema": "./basic-tooling/schema.json"
     }
   }
 }
