@@ -1,7 +1,7 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import * as path from 'path';
-import { getGenericValues, getObValues } from './fixtures';
+import { getGenericValues, getObValues } from './__fixtures__';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
