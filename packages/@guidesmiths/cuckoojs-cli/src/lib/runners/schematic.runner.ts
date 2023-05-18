@@ -43,7 +43,8 @@ export class SchematicRunner extends GenericRunner {
 	}
 
 	public async addESlint(name: string) {
+		debugger
 		const args = [`@guidesmiths/cuckoojs-schematics:eslint --directory=${name}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['inherit', 'inherit', 'inherit']});
 	}
 }

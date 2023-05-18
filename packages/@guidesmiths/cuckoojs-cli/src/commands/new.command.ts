@@ -31,7 +31,7 @@ export class NewCommand extends AbstractCommand {
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 8, step: 1});
+		const printer = new Printer({total: 9, step: 1});
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
@@ -74,6 +74,10 @@ export class NewCommand extends AbstractCommand {
 			printer.startStep('Creating husky files');
 			await this.bashRunnerHusky.addHuskyCommitMsg(this.name);
 			printer.endStep();
+
+			printer.startStep('Creating eslint configuration');
+			printer.endStep();
+			await this.schematicRunner.addESlint(this.name);
 
 			this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
 		} catch (error: unknown) {
