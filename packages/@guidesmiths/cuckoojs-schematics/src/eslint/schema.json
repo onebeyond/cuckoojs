@@ -9,7 +9,59 @@
       "description": "eslint config directory",
       "default": ".",
       "x-prompt": "Where do you want to setup eslint?"
+    },
+    "indent": {
+      "description": "identation style",
+      "type": "string",
+      "default": "tabs",
+      "x-prompt": {
+        "message": "What style of indentation do you use?",
+        "type": "list",
+        "items": [
+          {"label": "Tabs", "value": "tabs"},
+          {"label": "Spaces", "value": "spaces"}
+        ]
+      }
+    },
+    "quotes": {
+      "description": "quote style",
+      "type": "string",
+      "default": "single",
+      "x-prompt": {
+        "message": "What quotes do you use for strings?",
+        "type": "list",
+        "items": [
+          {"label": "Double", "value": "double"},
+          {"label": "Single", "value": "single"}
+        ]
+      }
+    },
+    "linebreakStyle": {
+      "description": "line-ending style",
+      "type": "string",
+      "default": "unix",
+      "x-prompt": {
+        "message": "What line endings do you use?",
+        "type": "list",
+        "items": [
+          {"label": "Unix", "value": "unix"},
+          {"label": "Windows", "value": "windows"}
+        ]
+      }
+    },
+    "semicolon": {
+      "description": "semicolon yes or not",
+      "type": "string",
+      "default": "always",
+      "x-prompt": {
+        "message": "Do you require semicolons?",
+        "type": "list",
+        "items": [
+          {"label": "Yes", "value": "always"},
+          {"label": "No", "value": "never"}
+        ]
+      }
     }
   },
-  "required": ["directory"]
+  "required": ["directory", "indent", "quotes", "linebreakStyle", "semicolon"]
 }

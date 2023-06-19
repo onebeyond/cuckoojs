@@ -16,7 +16,11 @@ export const main = (options: any): Rule => (tree: Tree, context: SchematicConte
 	const path = normalize(options.directory);
 
 	const templateSource = apply(url('./files'), [
-		template({...options}),
+		template(
+			{
+				...options,
+				indentvalue: options.indent === 'tabs' ? '\'tabs\'' : 4,
+			}),
 		move(path),
 		renameFile(options),
 	]);
@@ -26,7 +30,7 @@ export const main = (options: any): Rule => (tree: Tree, context: SchematicConte
 	return chain([
 		merged,
 		updatePackageJson(path),
-	])(tree, context)
+	])(tree, context);
 };
 
 function renameFile(options: any): Rule {
@@ -47,16 +51,21 @@ function updatePackageJson(directory: string): Rule {
 			json.devDependencies = {};
 		}
 
-		json.devDependencies['eslint'] = '^8.29.0';
+		json.devDependencies.eslint = '^8.40.0';
 		json.devDependencies['eslint-config-airbnb-base'] = '^15.0.0';
 		json.devDependencies['eslint-plugin-import'] = '^2.26.0';
 		json.devDependencies['eslint-plugin-jest'] = '^27.1.6';
+		json.devDependencies['@typescript-eslint/eslint-plugin'] = '^5.59.6';
+		json.devDependencies['@typescript-eslint/parser'] = '^5.59.6';
+		json.devDependencies['eslint-plugin-promise'] = '^6.1.1';
+		json.devDependencies['eslint-config-standard-with-typescript'] = '^34.0.1';
+		json.devDependencies['eslint-plugin-n'] = '^15.7.0';
 
-		if(!json.scripts) {
-			json.scripts = {}
+		if (!json.scripts) {
+			json.scripts = {};
 		}
 
-		json.scripts['lint'] = 'eslint .';
+		json.scripts.lint = 'eslint .';
 		json.scripts['lint:fix'] = 'eslint . --fix';
 
 		tree.overwrite(path, JSON.stringify(json, null, 2));

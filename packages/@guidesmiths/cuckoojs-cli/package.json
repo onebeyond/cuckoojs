@@ -24,22 +24,10 @@
   },
   "homepage": "https://github.com/guidesmiths/cuckoojs#readme",
   "contributors": [
-    {
-      "name": "David Yusta",
-      "email": "david.yusta@one-beyond.com"
-    },
-    {
-      "name": "Laura Corbí",
-      "email": "laura.corbi@one-beyond.com"
-    },
-    {
-      "name": "Adrián Rodríguez",
-      "email": "adrian.rodriguez@one-beyond.com"
-    },
-    {
-      "name": "Íñigo Marquínez",
-      "email": "inigo.marquinez@one-beyond.com"
-    }
+    "David Yusta <david.yusta@one-beyond.com>",
+    "Laura Corbí <laura.corbi@one-beyond.com>",
+    "Adrián Rodríguez <adrian.rodriguez@one-beyond.com>",
+    "Íñigo Marquínez <inigo.marquinez@one-beyond.com>"
   ],
   "main": "dist/src/cli.js",
   "bin": {
@@ -71,5 +59,7 @@
     "jest": "^29.3.1",
     "ts-jest": "^29.0.3",
     "typescript": "^4.9.4"
-  }
+  },
+  "types": "./dist/src/cli.d.ts",
+  "author": ""
 }
