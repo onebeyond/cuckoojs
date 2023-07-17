@@ -3,6 +3,9 @@
 </div>
 <br />
 
+<a href="https://codeclimate.com/github/onebeyond/cuckoojs/maintainability"><img src="https://api.codeclimate.com/v1/badges/4513809de0dc74ecf875/maintainability" /></a>
+<a href="https://codeclimate.com/github/onebeyond/cuckoojs/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4513809de0dc74ecf875/test_coverage" /></a>
+
 #### Let the cuckoo accommodate the nest for you.
 
 CuckooJS is a scaffolding based on <a href="https://nestjs.com/" target="_blank">NestJS</a>. Inspired by the cuckoo bird, we took advantage of the already created nest and included our own easter eggs, such as:
