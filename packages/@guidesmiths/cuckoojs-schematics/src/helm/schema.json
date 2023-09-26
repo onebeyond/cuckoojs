@@ -31,6 +31,30 @@
       "description": "docker image name to deploy on kubernetes",
       "x-prompt": "What image do you want to config deployment?"
     },
+    "containerPort": {
+      "type": "number",
+      "description": "port to expose on the container",
+      "x-prompt": "What port do you want to expose on the container?",
+      "default": 4000
+    },
+    "portProtocol": {
+      "type": "string",
+      "description": "protocol to expose on the container",
+      "x-prompt": "What protocol do you want to expose on the container?",
+      "default": "TCP"
+    },
+    "livenessProbePath": {
+      "type": "string",
+      "description": "path to check liveness probe",
+      "x-prompt": "What path do you want to check liveness probe?",
+      "default": "/"
+    },
+    "readinessProbPath": {
+      "type": "string",
+      "description": "path to check readyness probe",
+      "x-prompt": "What path do you want to check readyness probe?",
+      "default": "/"
+    },
     "resourcesLimitCpu": {
       "type": "number",
       "description": "max cpu used by a pod",

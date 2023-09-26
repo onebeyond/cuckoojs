@@ -23,18 +23,43 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+  # Environment variables to be sended to our container
+  # env:
+  #   # Environment from a value
+  #   - name: NODE_ENV
+  #     value: production
+  #   # Environment from a kubernetes secret
+  #   - name: JSON_CREDENTIALS
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: json-credentials
+  #         key: username
+  #         optional: false
+
+  # Secrets to be passed to kubernetes, this will be replaced at CI stage (Azure DevOps, for example)
+  # secrets:
+  #   MY_ENV_VAR: "${base64(MyAzureSecret)}"
+
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
+  fsGroup: 1000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  capabilities:
+    drop:
+      - ALL
+    add: ["NET_ADMIN", "SYS_TIME"]
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+
+ports:
+  - name: main
+    containerPort: <%= containerPort %>
+    protocol: <%= portProtocol %>
 
 service:
   type: ClusterIP
@@ -55,6 +80,23 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+
+livenessProbe:
+  httpGet:
+    path: <%= livenessProbePath %>
+    port: main
+  periodSeconds: 30
+  timeoutSeconds: 30
+  initialDelaySeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: <%= readinessProbePath %>
+    port: main
+  periodSeconds: 30
+  timeoutSeconds: 30
+  initialDelaySeconds: 20
 
 resources:
   limits:
