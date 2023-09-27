@@ -4,13 +4,11 @@ import {
 	type Tree,
 } from '@angular-devkit/schematics';
 
-import {helmConfigs} from './helm.configs';
-import {RuleBuilderFactory} from './rule.builder.factory';
+import {RuleBuilderFactory} from './rule-builder/rule.builder.factory';
 
-export const main = (options: any): Rule => (tree: Tree, context: SchematicContext) => {
+export const main = (options: any): Rule => async (tree: Tree, context: SchematicContext) => {
 	context.logger.info('Creating Helm Chart');
-	const config = helmConfigs[options?.helmType] || helmConfigs.generic;
-	const ruleBuilder = new RuleBuilderFactory().create(config);
+	const ruleBuilder = new RuleBuilderFactory().create(context.logger);
 	const rule = ruleBuilder.build(options, tree);
 	return rule(tree, context);
 };
