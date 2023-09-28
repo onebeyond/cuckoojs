@@ -4,7 +4,7 @@ import {join} from 'path';
 
 export class HelmTraefikIngressControllerStrategy extends HelmIngressControllerStrategy {
 	addResources = (options: any) => {
-		const filePath = join(__dirname, '..', 'files', 'ingress', 'traefik');
+		const filePath = join(__dirname, '..', '..', 'files', 'ingress', 'traefik');
 		return mergeWith(
 			apply(url(filePath), [template({...options})]),
 			MergeStrategy.Overwrite,

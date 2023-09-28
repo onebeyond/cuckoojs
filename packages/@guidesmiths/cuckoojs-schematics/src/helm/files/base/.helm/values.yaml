@@ -23,22 +23,22 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-  # Environment variables to be sended to our container
-  # env:
-  #   # Environment from a value
-  #   - name: NODE_ENV
-  #     value: production
-  #   # Environment from a kubernetes secret
-  #   - name: JSON_CREDENTIALS
-  #     valueFrom:
-  #       secretKeyRef:
-  #         name: json-credentials
-  #         key: username
-  #         optional: false
+# Environment variables to be sended to our container
+# env:
+#   # Environment from a value
+#   - name: NODE_ENV
+#     value: production
+#   # Environment from a kubernetes secret
+#   - name: JSON_CREDENTIALS
+#     valueFrom:
+#       secretKeyRef:
+#         name: json-credentials
+#         key: username
+#         optional: false
 
-  # Secrets to be passed to kubernetes, this will be replaced at CI stage (Azure DevOps, for example)
-  # secrets:
-  #   MY_ENV_VAR: "${base64(MyAzureSecret)}"
+# Secrets to be passed to kubernetes, this will be replaced at CI stage (Azure DevOps, for example)
+# secrets:
+#   MY_ENV_VAR: "${base64(MyAzureSecret)}"
 
 podAnnotations: {}
 
@@ -80,7 +80,6 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
 
 livenessProbe:
   httpGet:

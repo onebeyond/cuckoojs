@@ -11,7 +11,7 @@ import {
 } from '@angular-devkit/schematics';
 import {join} from 'path';
 import {type LoggerApi} from '@angular-devkit/core/src/logger';
-import {type HelmIngressControllerStrategy} from '../helm-strategies/helm.ingressController.strategy';
+import {type HelmIngressControllerStrategy} from '../helm-strategies/ingress-controller/helm.ingressController.strategy';
 import {type HelmTlsCertStrategy} from '../helm-strategies/tls-cert/helm.tlsCert.strategy';
 
 type PackageJson = {
@@ -43,7 +43,7 @@ export class RuleBuilder {
 	};
 
 	addBaseHelmChartToTemplate = (options: any) => {
-		const filePath = join(__dirname, 'files', 'base');
+		const filePath = join(__dirname, '..', 'files', 'base');
 		return mergeWith(
 			apply(url(filePath), [template({...options})]),
 			MergeStrategy.Overwrite,
@@ -65,8 +65,8 @@ export class RuleBuilder {
 
 		return chain([
 			this.addBaseHelmChartToTemplate(options),
-			// this.tlsCertStrategy.addResources(options, tree),
-			// this.ingressControllerStrategy.addResources(options, tree),
+			this.tlsCertStrategy.addResources(options),
+			this.ingressControllerStrategy.addResources(options),
 		]);
 	};
 }

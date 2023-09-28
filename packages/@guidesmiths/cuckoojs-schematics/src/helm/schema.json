@@ -32,7 +32,7 @@
       "x-prompt": "What path do you want to check liveness probe?",
       "default": "/"
     },
-    "readinessProbPath": {
+    "readinessProbePath": {
       "type": "string",
       "description": "path to check readyness probe",
       "x-prompt": "What path do you want to check readyness probe?",
@@ -89,33 +89,39 @@
     "ingressController": {
       "type": "string",
       "description": "ingress controller to use",
-      "x-prompt": "What ingress controller do you want to use?",
-      "enum": [
-        {
-          "value": "generic",
-          "description": "Generic ingress controller"
-        },
-        {
-          "value": "traefik",
-          "description": "Traefik ingress controller"
-        }
-      ],
+      "x-prompt": {
+        "message": "What ingress controller do you want to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": "generic",
+            "description": "Generic ingress controller"
+          },
+          {
+            "value": "traefik",
+            "description": "Traefik ingress controller"
+          }
+        ]
+      },
       "default": "generic"
     },
     "tlsCertManager": {
       "type": "string",
       "description": "tls cert manager to use",
-      "x-prompt": "What tls cert manager do you want to use?",
-      "enum": [
-        {
-          "value": "none",
-          "description": "No tls cert manager"
-        },
-        {
-          "value": "certManager",
-          "description": "Cert manager"
-        }
-      ],
+      "x-prompt": {
+        "message": "What tls cert manager do you want to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": "none",
+            "description": "No tls cert manager"
+          },
+          {
+            "value": "certManager",
+            "description": "Cert manager"
+          }
+        ]
+      },
       "default": "none"
     }
   },

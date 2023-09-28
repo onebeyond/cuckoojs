@@ -23,18 +23,43 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+# Environment variables to be sended to our container
+# env:
+#   # Environment from a value
+#   - name: NODE_ENV
+#     value: production
+#   # Environment from a kubernetes secret
+#   - name: JSON_CREDENTIALS
+#     valueFrom:
+#       secretKeyRef:
+#         name: json-credentials
+#         key: username
+#         optional: false
+
+# Secrets to be passed to kubernetes, this will be replaced at CI stage (Azure DevOps, for example)
+# secrets:
+#   MY_ENV_VAR: "\${base64(MyAzureSecret)}"
+
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
+  fsGroup: 1000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  capabilities:
+    drop:
+      - ALL
+    add: ["NET_ADMIN", "SYS_TIME"]
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+
+ports:
+  - name: main
+    containerPort: 4000
+    protocol: TCP
 
 service:
   type: ClusterIP
@@ -56,6 +81,22 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+livenessProbe:
+  httpGet:
+    path: /
+    port: main
+  periodSeconds: 30
+  timeoutSeconds: 30
+  initialDelaySeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: main
+  periodSeconds: 30
+  timeoutSeconds: 30
+  initialDelaySeconds: 20
+
 resources:
   limits:
     cpu: 100m
@@ -68,8 +109,19 @@ autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 5
-  targetCPUUtilizationPercentage: 75
-  # targetMemoryUtilizationPercentage: 80
+  # metrics:
+  #   - type: Resource
+  #     resource:
+  #       name: cpu
+  #       target:
+  #         type: Utilization
+  #         averageUtilization: 75
+  #   - type: Resource
+  #     resource:
+  #       name: memory
+  #       target:
+  #         type: Utilization
+  #         averageUtilization: 80
 
 nodeSelector: {}
 

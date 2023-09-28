@@ -2,9 +2,9 @@ import {apply, url, template, mergeWith, MergeStrategy} from '@angular-devkit/sc
 import {HelmIngressControllerStrategy} from './helm.ingressController.strategy';
 import {join} from 'path';
 
-export class HelmTraefikIngressControllerStrategy extends HelmIngressControllerStrategy {
+export class HelmGenericIngressControllerStrategy extends HelmIngressControllerStrategy {
 	addResources = (options: any) => {
-		const filePath = join(__dirname, '..', 'files', 'ingress', 'generic');
+		const filePath = join(__dirname, '..', '..', 'files', 'ingress', 'generic');
 		return mergeWith(
 			apply(url(filePath), [template({...options})]),
 			MergeStrategy.Overwrite,
