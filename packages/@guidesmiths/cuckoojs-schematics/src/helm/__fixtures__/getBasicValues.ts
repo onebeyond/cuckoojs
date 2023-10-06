@@ -1,4 +1,4 @@
-export const getGenericValues = () => `# Default values for serviceName.
+export const getBasicValues = () => `# Default values for serviceName.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 

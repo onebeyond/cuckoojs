@@ -1,5 +1,8 @@
-import {type BaseHelmStrategy} from '../base.helm.strategy';
+import {BaseHelmStrategy} from '../base.helm.strategy';
 
-export type HelmTlsCertStrategy = BaseHelmStrategy & {
-	isTlsEnabled: boolean;
-};
+export class HelmTlsCertStrategy extends BaseHelmStrategy {
+	protected constructor(readonly isTlsEnabled: boolean) {
+		super();
+		this.templatePath.push('dns-certs');
+	}
+}

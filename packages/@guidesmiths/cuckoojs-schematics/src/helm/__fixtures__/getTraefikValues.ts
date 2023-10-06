@@ -1,4 +1,4 @@
-export const getObValues = () => `# Default values for coffee-backend-helm.
+export const getTraefikValues = () => `# Default values for serviceName.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -6,13 +6,13 @@ replicaCount: 1
 
 image:
   repository: imageName
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: \"\"
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: \"\"
+fullnameOverride: \"\"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -21,7 +21,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: \"\"
 
 # Environment variables to be sended to our container
 # env:
@@ -38,18 +38,18 @@ serviceAccount:
 
 # Secrets to be passed to kubernetes, this will be replaced at CI stage (Azure DevOps, for example)
 # secrets:
-#   MY_ENV_VAR: "\${base64(MyAzureSecret)}"
+#   MY_ENV_VAR: \"$\{base64(MyAzureSecret)}\"
 
 podAnnotations: {}
 
-podSecurityContext:
+podSecurityContext: {}
   fsGroup: 1000
 
-securityContext:
+securityContext: {}
   capabilities:
     drop:
       - ALL
-    add: ["NET_ADMIN", "SYS_TIME"]
+    add: [\"NET_ADMIN\", \"SYS_TIME\"]
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -57,35 +57,33 @@ securityContext:
   allowPrivilegeEscalation: false
 
 ports:
-  - name: http
+  - name: main
     containerPort: 4000
     protocol: TCP
 
 service:
   type: ClusterIP
-  ports:
-    - port: 4000
-      targetPort: 4000
-      protocol: TCP
-      name: http
+  port: 80
 
-ingressroute:
+
+ingress:
   enabled: true
+  port: main
   dns: my-domain.certmanager.test
-  port: 4000
+
 
 livenessProbe:
   httpGet:
-    path: /__/manifest
-    port: http
+    path: /
+    port: main
   periodSeconds: 30
   timeoutSeconds: 30
   initialDelaySeconds: 10
 
 readinessProbe:
   httpGet:
-    path: /__/manifest
-    port: http
+    path: /
+    port: main
   periodSeconds: 30
   timeoutSeconds: 30
   initialDelaySeconds: 20
@@ -102,13 +100,19 @@ autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 5
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 75
+  # metrics:
+  #   - type: Resource
+  #     resource:
+  #       name: cpu
+  #       target:
+  #         type: Utilization
+  #         averageUtilization: 75
+  #   - type: Resource
+  #     resource:
+  #       name: memory
+  #       target:
+  #         type: Utilization
+  #         averageUtilization: 80
 
 nodeSelector: {}
 

@@ -65,6 +65,7 @@ service:
   type: ClusterIP
   port: 80
 
+<% if (ingressController == "generic") { %>
 ingress:
   enabled: false
   className: ""
@@ -80,6 +81,12 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+<% } else if (ingressController == "traefik") { %>
+ingress:
+  enabled: true
+  port: main
+  dns: my-domain.certmanager.test
+<% } %>
 
 livenessProbe:
   httpGet:

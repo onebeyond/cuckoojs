@@ -1,7 +1,8 @@
-import {type Tree} from '@angular-devkit/schematics';
-import {type HelmTlsCertStrategy} from './helm.tlsCert.strategy';
+import {HelmTlsCertStrategy} from './helm.tlsCert.strategy';
 
-export class HelmNoneTlsCertStrategy implements HelmTlsCertStrategy {
-	isTlsEnabled = false;
-	addResources = () => (tree: Tree) => tree;
+export class HelmNoneTlsCertStrategy extends HelmTlsCertStrategy {
+	constructor() {
+		super(false);
+		this.templatePath.push('none');
+	}
 }

@@ -1,2 +1,4 @@
-export * from './getGenericValues';
-export * from './getObValues';
+export * from './getBasicValues';
+export * from './getBasicIngress';
+export * from './getTraefikValues';
+export * from './getTraefikIngress';

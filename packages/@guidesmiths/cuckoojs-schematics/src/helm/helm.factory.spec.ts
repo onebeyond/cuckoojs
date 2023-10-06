@@ -1,12 +1,12 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import * as path from 'path';
-import { getGenericValues } from './__fixtures__';
+import { getBasicValues, getBasicIngress, getTraefikValues, getTraefikIngress } from './__fixtures__';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
 describe('helm', () => {
-    it.only('works for helm with generic ingress controller and no tls certificate manager', async () => {
+    it('works for helm with generic ingress controller and no tls certificate manager', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const folder = Tree.empty();
         folder.create('package.json',Buffer.from('{}'));
@@ -42,8 +42,11 @@ describe('helm', () => {
             "helm:upgrade": "helm upgrade -f ./.helm/values.yml serviceName ./.helm"
         });
 
-        const helmValues = tree.readContent('./.helm/values.yaml');
-        expect(helmValues).toEqual(getGenericValues());
+        const helmValues = tree.readContent('/.helm/values.yaml');
+        expect(helmValues).toEqual(getBasicValues());
+
+        const ingress = tree.readContent('/.helm/templates/ingress.yaml');
+        expect(ingress).toEqual(getBasicIngress());
     });
 
     it('works for helm with generic ingress controller and cert-manager', async () => {
@@ -84,10 +87,10 @@ describe('helm', () => {
         });
 
         const helmValues = tree.readContent('./.helm/values.yaml');
-        expect(helmValues).toEqual(getGenericValues());
+        expect(helmValues).toEqual(getBasicValues());
     });
 
-    it('works for helm with traefik and no tls certificate manager', async () => {
+    it.only('works for helm with traefik and no tls certificate manager', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const folder = Tree.empty();
         folder.create('package.json',Buffer.from('{}'));
@@ -124,7 +127,10 @@ describe('helm', () => {
         });
 
         const helmValues = tree.readContent('./.helm/values.yaml');
-        expect(helmValues).toEqual(getGenericValues());
+        expect(helmValues).toEqual(getTraefikValues());
+
+        const ingress = tree.readContent('./.helm/templates/ingress.yaml');
+        expect(ingress).toEqual(getTraefikIngress());
     });
 
     it('works for helm with traefik and cert-manager', async () => {
@@ -165,6 +171,6 @@ describe('helm', () => {
         });
 
         const helmValues = tree.readContent('./.helm/values.yaml');
-        expect(helmValues).toEqual(getGenericValues());
+        expect(helmValues).toEqual(getBasicValues());
     });
 });
