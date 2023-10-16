@@ -45,6 +45,11 @@
       "description": "Add Husky to the project",
       "factory": "./husky/husky.factory#main",
       "schema": "./husky/schema.json"
+    },
+    "nestjs-config": {
+      "description": "Add NestJS config to the project",
+      "factory": "./nestjs-config/nestjs-config.factory#main",
+      "schema": "./nestjs-config/schema.json"
     }
   }
 }

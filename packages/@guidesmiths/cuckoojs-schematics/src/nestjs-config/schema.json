@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "SchematicsNestJSConfig",
+    "title": "NestJS basic config module",
+    "type": "object",
+    "properties": {
+      "directory": {
+        "type": "string",
+        "description": "The path of the existing project directory.",
+        "default": ".",
+        "x-prompt": "Where is the NestJS project located?"
+      }
+    },
+    "required": ["directory"]
+  }
+  
