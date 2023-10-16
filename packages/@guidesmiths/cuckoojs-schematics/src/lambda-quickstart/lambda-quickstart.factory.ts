@@ -11,7 +11,8 @@ import {
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
 
-export const main = (options: any): Rule => (tree: Tree, context: SchematicContext) => {
+// eslint-disable-next-line @typescript-eslint/promise-function-async
+export const main = (options: {directory: string}): Rule => (tree: Tree, context: SchematicContext) => {
 	context.logger.info('Creating Lambda Quickstart');
 
 	const templateSource = apply(url('./files'), [
