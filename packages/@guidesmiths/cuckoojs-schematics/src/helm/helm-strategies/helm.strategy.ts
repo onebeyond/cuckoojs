@@ -2,7 +2,7 @@ import {type Rule} from '@angular-devkit/schematics';
 import {apply, url, template, mergeWith, MergeStrategy} from '@angular-devkit/schematics';
 import {join} from 'path';
 
-export abstract class BaseHelmStrategy {
+export abstract class HelmStrategy {
 	templatePath: string[] = [__dirname, '..', 'files'];
 
 	addResources = (options: Record<string, any>): Rule => {

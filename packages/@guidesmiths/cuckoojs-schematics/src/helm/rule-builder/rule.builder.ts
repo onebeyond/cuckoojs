@@ -11,9 +11,9 @@ import {
 } from '@angular-devkit/schematics';
 import {join} from 'path';
 import {type LoggerApi} from '@angular-devkit/core/src/logger';
-import {type HelmIngressControllerStrategy} from '../helm-strategies/ingress-controller/helm.ingressController.strategy';
-import {type HelmTlsCertStrategy} from '../helm-strategies/tls-cert/helm.tlsCert.strategy';
-import {type BaseHelmStrategy} from '../helm-strategies/base.helm.strategy';
+import {type IngressStrategy} from '../helm-strategies/ingress-controller/ingress.strategy';
+import {type TlsCertStrategy} from '../helm-strategies/tls-cert/tlsCert.strategy';
+import {type HelmStrategy} from '../helm-strategies/helm.strategy';
 
 type PackageJson = {
 	scripts?: Record<string, string>;
@@ -21,8 +21,8 @@ type PackageJson = {
 
 export class RuleBuilder {
 	constructor(
-		private readonly ingressControllerStrategy: HelmIngressControllerStrategy,
-		private readonly tlsCertStrategy: HelmTlsCertStrategy,
+		private readonly ingressStrategy: IngressStrategy,
+		private readonly tlsCertStrategy: TlsCertStrategy,
 		private readonly logger: LoggerApi) {}
 
 	updatePackageJson = (packageJsonBuffer: Buffer, serviceName: string, tree: Tree) => {
@@ -64,7 +64,7 @@ export class RuleBuilder {
 
 		this.updatePackageJson(packageJsonBuffer, serviceName, tree);
 
-		const helmStrategyStack: BaseHelmStrategy[] = [this.tlsCertStrategy, this.ingressControllerStrategy];
+		const helmStrategyStack: HelmStrategy[] = [this.tlsCertStrategy, this.ingressStrategy];
 		const enrichedOptions = helmStrategyStack.reduce(
 			(acc, strategy) => strategy.enrichOptions(acc),
 			options,

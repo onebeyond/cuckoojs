@@ -1,6 +1,6 @@
-import {BaseHelmStrategy} from '../base.helm.strategy';
+import {HelmStrategy} from '../helm.strategy';
 
-export class HelmIngressControllerStrategy extends BaseHelmStrategy {
+export class IngressStrategy extends HelmStrategy {
 	constructor() {
 		super();
 		this.templatePath.push('ingress');

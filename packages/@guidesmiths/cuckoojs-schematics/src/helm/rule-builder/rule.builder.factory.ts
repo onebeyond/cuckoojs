@@ -1,12 +1,23 @@
 import {type LoggerApi} from '@angular-devkit/core/src/logger';
 import {RuleBuilder} from './rule.builder';
-import {type HelmIngressControllerStrategy} from '../helm-strategies/ingress-controller/helm.ingressController.strategy';
-import {type HelmTlsCertStrategy} from '../helm-strategies/tls-cert/helm.tlsCert.strategy';
+import {IngressStrategyFactory} from '../helm-strategies/ingress-controller/ingress.strategy.factory';
+import {TlsCertStrategyFactory} from '../helm-strategies/tls-cert/tlsCert.strategy.factory';
+import {type TlsCertStrategy} from '../helm-strategies/tls-cert/tlsCert.strategy';
 
+type RuleBuilderFactoryInput = {
+	ingressType: string;
+	tlsCertType: string;
+	logger: LoggerApi;
+};
 export class RuleBuilderFactory {
-	create = (
-		ingressControllerStrategy: HelmIngressControllerStrategy,
-		tlsCertStrategycontext: HelmTlsCertStrategy,
-		logger: LoggerApi,
-	): RuleBuilder => new RuleBuilder(ingressControllerStrategy, tlsCertStrategycontext, logger);
+	create = ({
+		ingressType,
+		tlsCertType,
+		logger,
+	}: RuleBuilderFactoryInput,
+	): RuleBuilder => {
+		const ingressStrategy = new IngressStrategyFactory().create(ingressType);
+		const tlsCertStrategy: TlsCertStrategy = new TlsCertStrategyFactory().create(tlsCertType);
+		return new RuleBuilder(ingressStrategy, tlsCertStrategy, logger);
+	};
 }
