@@ -68,7 +68,7 @@ service:
 ingress:
   enabled: true
   port: main
-  host: my-domain.certmanager.test
+  host: chart-example.local
 
 livenessProbe:
   httpGet:

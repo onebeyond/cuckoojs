@@ -72,23 +72,23 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: <%= domainName %>
       paths:
         - path: /
           pathType: ImplementationSpecific
   <% if (isTlsEnabled) { %>tls:
     - secretName: {{ include "<%= serviceName %>.fullname" . }}-tls
       hosts:
-        - chart-example.local
+        - <%= domainName %>
 <% } else { %>tls: []
   #  - secretName: chart-example-tls
   #    hosts:
-  #      - chart-example.local
+  #      - <%= domainName %>
 <% } } else if (ingressController == "traefik") { %>
 ingress:
   enabled: true
   port: main
-  host: my-domain.certmanager.test
+  host: <%= domainName %>
 <% } %>
 livenessProbe:
   httpGet:

@@ -123,6 +123,12 @@
         ]
       },
       "default": "none"
+    },
+    "domainName": {
+      "type": "string",
+      "description": "Domain name for the service",
+      "x-prompt": "What damain name do you want to provide to the service?",
+      "default": "chart-example.local"
     }
   },
   "required": ["serviceName", "imageName"]
