@@ -1,3 +1,4 @@
+{{- if .Values.ingress.enabled -}}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -6,10 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`{{ .Values.ingressroute.dns }}`)
+    - match: Host(`{{ .Values.ingress.host }}`)
       kind: Rule
       services:
         - name: {{ include "<%= serviceName %>.fullname" . }}
-          port: {{ .Values.ingressroute.port }}
-  tls:
+          port: {{ .Values.ingress.port }}
+<% if (isTlsEnabled) { %>  tls:
     secretName: {{ include "<%= serviceName %>.fullname" . }}-tls
+<% } %>{{- end }}

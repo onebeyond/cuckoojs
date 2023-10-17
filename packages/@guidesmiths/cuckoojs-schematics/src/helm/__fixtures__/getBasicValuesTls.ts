@@ -1,4 +1,4 @@
-export const getTraefikValues = () => `# Default values for serviceName.
+export const getBasicValuesTls = () => `# Default values for serviceName.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -8,11 +8,11 @@ image:
   repository: imageName
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: \"\"
+  tag: ""
 
 imagePullSecrets: []
-nameOverride: \"\"
-fullnameOverride: \"\"
+nameOverride: ""
+fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -21,7 +21,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: \"\"
+  name: ""
 
 # Environment variables to be sended to our container
 # env:
@@ -38,7 +38,7 @@ serviceAccount:
 
 # Secrets to be passed to kubernetes, this will be replaced at CI stage (Azure DevOps, for example)
 # secrets:
-#   MY_ENV_VAR: \"$\{base64(MyAzureSecret)}\"
+#   MY_ENV_VAR: "\${base64(MyAzureSecret)}"
 
 podAnnotations: {}
 
@@ -49,7 +49,7 @@ securityContext: {}
   capabilities:
     drop:
       - ALL
-    add: [\"NET_ADMIN\", \"SYS_TIME\"]
+    add: ["NET_ADMIN", "SYS_TIME"]
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -66,9 +66,20 @@ service:
   port: 80
 
 ingress:
-  enabled: true
-  port: main
-  host: my-domain.certmanager.test
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: {{ include "serviceName.fullname" . }}-tls
+      hosts:
+        - chart-example.local
 
 livenessProbe:
   httpGet:

@@ -1,4 +1,4 @@
-export const getTraefikIngress = () => `{{- if .Values.ingress.enabled -}}
+export const getTraefikIngressTls = () => `{{- if .Values.ingress.enabled -}}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -12,4 +12,6 @@ spec:
       services:
         - name: {{ include "serviceName.fullname" . }}
           port: {{ .Values.ingress.port }}
+  tls:
+    secretName: {{ include "serviceName.fullname" . }}-tls
 {{- end }}`;

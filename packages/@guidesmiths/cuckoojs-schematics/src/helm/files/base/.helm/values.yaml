@@ -64,7 +64,6 @@ ports:
 service:
   type: ClusterIP
   port: 80
-
 <% if (ingressController == "generic") { %>
 ingress:
   enabled: false
@@ -77,17 +76,20 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: []
+  <% if (isTlsEnabled) { %>tls:
+    - secretName: {{ include "<%= serviceName %>.fullname" . }}-tls
+      hosts:
+        - chart-example.local
+<% } else { %>tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-<% } else if (ingressController == "traefik") { %>
+<% } } else if (ingressController == "traefik") { %>
 ingress:
   enabled: true
   port: main
-  dns: my-domain.certmanager.test
+  host: my-domain.certmanager.test
 <% } %>
-
 livenessProbe:
   httpGet:
     path: <%= livenessProbePath %>

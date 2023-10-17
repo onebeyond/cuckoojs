@@ -7,6 +7,6 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: {{ .Values.ingressroute.dns }}
+  commonName: {{ .Values.ingress.host }}
   dnsNames:
-    - {{ .Values.ingressroute.dns }}
+    - {{ .Values.ingress.host }}

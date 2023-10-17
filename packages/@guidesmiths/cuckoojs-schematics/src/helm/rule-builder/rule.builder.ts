@@ -13,6 +13,7 @@ import {join} from 'path';
 import {type LoggerApi} from '@angular-devkit/core/src/logger';
 import {type HelmIngressControllerStrategy} from '../helm-strategies/ingress-controller/helm.ingressController.strategy';
 import {type HelmTlsCertStrategy} from '../helm-strategies/tls-cert/helm.tlsCert.strategy';
+import {type BaseHelmStrategy} from '../helm-strategies/base.helm.strategy';
 
 type PackageJson = {
 	scripts?: Record<string, string>;
@@ -50,7 +51,7 @@ export class RuleBuilder {
 		);
 	};
 
-	build = (options: any, tree: Tree): Rule => {
+	build = (options: Record<string, any>, tree: Tree): Rule => {
 		const packageJsonBuffer = tree.read('./package.json');
 		const serviceName = options?.serviceName as string | undefined;
 		if (!packageJsonBuffer) {
@@ -63,10 +64,15 @@ export class RuleBuilder {
 
 		this.updatePackageJson(packageJsonBuffer, serviceName, tree);
 
+		const helmStrategyStack: BaseHelmStrategy[] = [this.tlsCertStrategy, this.ingressControllerStrategy];
+		const enrichedOptions = helmStrategyStack.reduce(
+			(acc, strategy) => strategy.enrichOptions(acc),
+			options,
+		);
+
 		return chain([
-			this.addBaseHelmChartToTemplate(options),
-			this.tlsCertStrategy.addResources(options),
-			this.ingressControllerStrategy.addResources(options),
+			this.addBaseHelmChartToTemplate(enrichedOptions),
+			...helmStrategyStack.map(strategy => strategy.addResources(enrichedOptions)),
 		]);
 	};
 }

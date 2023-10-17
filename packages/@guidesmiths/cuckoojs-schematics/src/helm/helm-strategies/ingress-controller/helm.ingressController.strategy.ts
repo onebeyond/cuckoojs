@@ -5,5 +5,9 @@ export class HelmIngressControllerStrategy extends BaseHelmStrategy {
 		super();
 		this.templatePath.push('ingress');
 	}
+
+	enrichOptions(options: any): any {
+		return options;
+	}
 }
 
