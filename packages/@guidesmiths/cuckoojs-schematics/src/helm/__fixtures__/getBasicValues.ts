@@ -42,10 +42,10 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
   fsGroup: 1000
 
-securityContext: {}
+securityContext:
   capabilities:
     drop:
       - ALL

@@ -8,6 +8,7 @@ import {
     getTraefikIngress, 
     getBasicValuesTls, 
     getTraefikIngressTls,
+    getBasicIngressTls,
 } from './__fixtures__';
 
 const collectionPath = path.join(__dirname, '../collection.json');
@@ -66,7 +67,7 @@ const cases = [
         '/.helm/templates/tests/test-connection.yaml',
     ],
     expectedValues: getBasicValuesTls(),
-    expectedIngress: getBasicIngress(),
+    expectedIngress: getBasicIngressTls(),
  },
  {
     ingressType: 'traefik',

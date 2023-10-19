@@ -42,10 +42,10 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
   fsGroup: 1000
 
-securityContext: {}
+securityContext:
   capabilities:
     drop:
       - ALL
@@ -77,9 +77,8 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - secretName: {{ include "serviceName.fullname" . }}-tls
-      hosts:
-        - chart-example.local
+    hosts:
+      - chart-example.local
 
 livenessProbe:
   httpGet:

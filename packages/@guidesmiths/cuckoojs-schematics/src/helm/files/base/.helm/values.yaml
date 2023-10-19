@@ -42,10 +42,10 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
   fsGroup: 1000
 
-securityContext: {}
+securityContext:
   capabilities:
     drop:
       - ALL
@@ -77,9 +77,8 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   <% if (isTlsEnabled) { %>tls:
-    - secretName: {{ include "<%= serviceName %>.fullname" . }}-tls
-      hosts:
-        - <%= domainName %>
+    hosts:
+      - <%= domainName %>
 <% } else { %>tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -87,7 +86,7 @@ ingress:
 <% } } else if (ingressController == "traefik") { %>
 ingress:
   enabled: true
-  port: main
+  port: 80
   host: <%= domainName %>
 <% } %>
 livenessProbe:

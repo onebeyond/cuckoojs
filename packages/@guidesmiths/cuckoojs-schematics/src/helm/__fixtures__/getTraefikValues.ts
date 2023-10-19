@@ -42,10 +42,10 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
   fsGroup: 1000
 
-securityContext: {}
+securityContext:
   capabilities:
     drop:
       - ALL
@@ -67,7 +67,7 @@ service:
 
 ingress:
   enabled: true
-  port: main
+  port: 80
   host: chart-example.local
 
 livenessProbe:
