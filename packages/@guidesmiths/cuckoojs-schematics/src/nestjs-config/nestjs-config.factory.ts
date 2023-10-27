@@ -10,8 +10,10 @@ import {
 	chain,
 	url,
 } from '@angular-devkit/schematics';
-import {addConfigToModuleRule} from './add-config-to-module-rule';
 import {normalize} from '@angular-devkit/core';
+import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
+import {addConfigToModuleRule} from './utils/add-config-to-module-rule';
+import {PackageJsonUtils} from '../utils/package-json.utils';
 
 // eslint-disable-next-line @typescript-eslint/promise-function-async
 export const main = (options: {directory: string}): Rule => (tree: Tree, context: SchematicContext) => {
@@ -31,9 +33,26 @@ export const main = (options: {directory: string}): Rule => (tree: Tree, context
 	]);
 
 	const rule = chain([
-		mergeWith(templateSource, MergeStrategy.Overwrite), addConfigToModuleRule(appFile),
+		mergeWith(templateSource, MergeStrategy.Overwrite),
+		addConfigToModuleRule(appFile),
+		updatePackageJson(),
+		installDependencies(),
 	]);
 
 	return rule(tree, context);
+};
+
+const updatePackageJson = (): Rule => (tree: Tree, _context: SchematicContext) => {
+	const path = 'package.json';
+	const packageJsonUtils = new PackageJsonUtils(tree, path);
+	packageJsonUtils.addPackage('@nestjs/config', '^3.1.1', false);
+
+	return tree;
+};
+
+const installDependencies = (): Rule => (tree: Tree, context: SchematicContext) => {
+	context.addTask(new NodePackageInstallTask());
+
+	return tree;
 };
 
