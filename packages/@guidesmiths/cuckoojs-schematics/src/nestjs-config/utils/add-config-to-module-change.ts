@@ -14,7 +14,7 @@ const IMPORT_DECLARATION = `
 
 function getModuleDecoratorNode(nodes: ts.Node[]) {
 	const decoratorNodes = nodes.filter(n => n.kind === ts.SyntaxKind.Decorator);
-	const moduleDecoratorNodes = decoratorNodes?.filter(n => findNode(n as any, ts.SyntaxKind.Identifier as any, 'Module'));
+	const moduleDecoratorNodes = decoratorNodes?.filter(n => findNode(n, ts.SyntaxKind.Identifier as any, 'Module'));
 
 	if (moduleDecoratorNodes.length === 0) {
 		throw new SchematicsException('No Module decorators found');
@@ -28,7 +28,7 @@ function getModuleDecoratorNode(nodes: ts.Node[]) {
 }
 
 function getDecoratorArgument(node: ts.Decorator) {
-	const objectLiteralExpressionNodes = findNodes(node as any, ts.SyntaxKind.ObjectLiteralExpression as any);
+	const objectLiteralExpressionNodes = findNodes(node as ts.Node, ts.SyntaxKind.ObjectLiteralExpression as any);
 	if (objectLiteralExpressionNodes.length !== 1) {
 		throw new SchematicsException('Invalid Module decorator arguments');
 	}
