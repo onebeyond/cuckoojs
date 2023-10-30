@@ -1,119 +1,44 @@
 import { Logger } from '@nestjs/common';
-import { Expose, Type, plainToClass } from 'class-transformer';
-import {
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-  validateSync,
-} from 'class-validator';
-import _merge from 'lodash/merge';
+import { plainToClass } from 'class-transformer';
+import { validateSync } from 'class-validator';
+import * as merge from 'lodash.merge';
+import { readdirSync } from 'fs';
+import { parse, join } from 'path';
 
-import defaultConfig from './default';
-import localConfig from './local';
+import ConfigDto from './dto/config.dto';
+import { EEnvironment } from './dto/env.dto';
 
-enum EEnvironment {
-  Local = 'local',
-  Development = 'development',
-  Production = 'production',
-  Test = 'test',
+async function loadConfigFiles() {
+  const baseDir = join(process.cwd(), 'src', 'config', 'env');
+  return readdirSync(baseDir).reduce(async (total, filename) => {
+    const moduleName = parse(filename).name;
+    const module = await import(join(baseDir, filename));
+    return { ...(await total), [moduleName]: module };
+  }, Promise.resolve({}));
 }
 
-class EnvironmentVariablesDto {
-  @Expose()
-  @IsEnum(EEnvironment)
-  NODE_ENV: EEnvironment;
-
-  // @Expose()
-  // @IsNumber()
-  PORT: number;
-
-  @Expose()
-  @IsString()
-  DATABASE_HOST: string;
-
-  @Expose()
-  @IsNumber()
-  @IsOptional()
-  DATABASE_PORT: number;
-}
-
-// This method validates the environment variables according to the EnvironmentVariablesDto class.
-export const validate = (config: Record<string, unknown>) => {
-  Logger.log(':hourglass_flowing_sand: Validating environment variables ...');
-
-  const parsedConfig = plainToClass(EnvironmentVariablesDto, config, {
-    enableImplicitConversion: true,
-    excludeExtraneousValues: true,
-  });
-
-  Logger.debug(JSON.stringify(parsedConfig, null, 2));
-
-  const errors = validateSync(parsedConfig, {
-    skipMissingProperties: false,
-  });
-
-  if (errors.length > 0) {
-    throw new Error(errors.toString());
-  }
-
-  Logger.log(':white_check_mark: Environment variables validated!');
-
-  return parsedConfig;
-};
-
-class DatabaseConfigDto {
-  @Expose()
-  @IsString()
-  host: string;
-
-  @Expose()
-  @IsNumber()
-  port: number;
-}
-
-export class ConfigDto {
-  @Expose()
-  @IsEnum(EEnvironment)
-  environment: EEnvironment;
-
-  @Expose()
-  @IsNumber()
-  port: number;
-
-  @Expose()
-  @ValidateNested()
-  @Type(() => DatabaseConfigDto)
-  database: DatabaseConfigDto;
-
-  @Expose()
-  @IsString()
-  myRequiredVar: string;
-
-  @Expose()
-  @IsOptional()
-  @IsString()
-  myOptionalVar: string;
-}
-
-export default (): ConfigDto => {
+export default async function (): Promise<ConfigDto> {
   Logger.log(':hourglass_flowing_sand: Validating app configuration...');
 
-  Logger.debug('defaultConfig :>> ', defaultConfig());
-  Logger.debug('localConfig :>> ', localConfig());
+  const environment: EEnvironment = process.env.NODE_ENV as EEnvironment;
+  const configs = await loadConfigFiles();
+  console.log(configs);
+  const selectedConfig = configs[environment];
+
+  if (!selectedConfig)
+    throw new Error(
+      `Config file for environment ${environment} not found. Please, consider adding a ${environment}.ts file to the "env" folder.`,
+    );
 
   const appConfig = {};
-  _merge(appConfig, defaultConfig(), localConfig());
-
-  Logger.debug('appConfig :>> ', appConfig);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  merge(appConfig, configs.default, selectedConfig);
 
   const parsedConfig = plainToClass(ConfigDto, appConfig, {
     enableImplicitConversion: true,
     excludeExtraneousValues: true,
   });
-
-  Logger.debug('validated appConfig :>> ', parsedConfig);
 
   const errors = validateSync(parsedConfig, {
     skipMissingProperties: false,
@@ -126,4 +51,4 @@ export default (): ConfigDto => {
   Logger.log(':white_check_mark: App configuration validated!');
 
   return parsedConfig as ConfigDto;
-};
+}

@@ -46,6 +46,9 @@ const updatePackageJson = (): Rule => (tree: Tree, _context: SchematicContext) =
 	const path = 'package.json';
 	const packageJsonUtils = new PackageJsonUtils(tree, path);
 	packageJsonUtils.addPackage('@nestjs/config', '^3.1.1', false);
+	packageJsonUtils.addPackage('class-transformer', '^0.5.1', false);
+	packageJsonUtils.addPackage('class-validator', '^0.14.0', false);
+	packageJsonUtils.addPackage('lodash.merge', '^4.6.2', false);
 
 	return tree;
 };
