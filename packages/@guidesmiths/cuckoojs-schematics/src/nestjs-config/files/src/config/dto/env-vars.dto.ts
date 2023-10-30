@@ -6,7 +6,7 @@ import { EEnvironment } from './env.dto';
 export default class EnvironmentVariablesDto {
   @Expose()
   @IsEnum(EEnvironment)
-  NODE_ENV: EEnvironment;
+  <%=envVar%>: EEnvironment;
 
   @Expose()
   @IsNumber()

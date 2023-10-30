@@ -11,8 +11,6 @@ export default function (config: Record<string, unknown>) {
     excludeExtraneousValues: true,
   });
 
-  Logger.debug(JSON.stringify(parsedConfig, null, 2));
-
   const errors = validateSync(parsedConfig, {
     skipMissingProperties: false,
   });

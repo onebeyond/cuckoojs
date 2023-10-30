@@ -20,7 +20,7 @@ async function loadConfigFiles() {
 export default async function (): Promise<ConfigDto> {
   Logger.log(':hourglass_flowing_sand: Validating app configuration...');
 
-  const environment: EEnvironment = process.env.NODE_ENV as EEnvironment;
+  const environment: EEnvironment = process.env.<%=envVar%> as EEnvironment;
   const configs = await loadConfigFiles();
   console.log(configs);
   const selectedConfig = configs[environment];

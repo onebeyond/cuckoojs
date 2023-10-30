@@ -9,8 +9,13 @@
         "description": "The path of the existing project directory.",
         "default": ".",
         "x-prompt": "Where is the NestJS project located?"
+      },
+      "envVar": {
+        "type": "string",
+        "description": "Name of the env var that determines the environment",
+        "default": "NODE_ENV",
+        "x-prompt": "What is the name of the env var that determines the environment where the app will be running?"
       }
     },
-    "required": ["directory"]
+    "required": ["directory", "envVar"]
   }
-  
