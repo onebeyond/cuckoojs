@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsNvmrc",
+  "title": "Nvmrc schematic schema",
+  "type": "object",
+  "properties": {
+    "directory": {
+      "type": "string",
+      "description": "nvmrc file destination directory.",
+      "default": ".",
+      "x-prompt": "Where is the root folder of your project?"
+    },
+    "nodeVersion": {
+      "type": "number",
+      "description": "node version to use in nvmrc file",
+      "x-prompt": "What node version would you like for your project?",
+      "default": 18
+    }
+  },
+  "required": ["directory", "nodeVersion"]
+}
