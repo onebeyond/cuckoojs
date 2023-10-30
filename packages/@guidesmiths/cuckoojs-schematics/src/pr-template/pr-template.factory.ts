@@ -9,15 +9,23 @@ import {
 	template,
 	url,
 } from '@angular-devkit/schematics';
-import {normalize} from "@angular-devkit/core";
+import {normalize} from '@angular-devkit/core';
+import {resolve} from 'path';
 
-export const main = (options: any): Rule => (tree: Tree, context: SchematicContext) => {
-	context.logger.info('Creating Pull Request Template');
-
-	const templateSource = apply(url('./files'), [
-		template({...options}),
-		move(normalize(options.directory)),
-	]);
-
-	return mergeWith(templateSource, MergeStrategy.Overwrite)(tree, context);
+type Options = {
+	directory: string;
+	gitProvider: string;
 };
+
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
+		context.logger.info('Creating Pull Request Template...');
+
+		const templateSource = apply(url(resolve('.', 'files')), [
+			template({...options}),
+			move(normalize(options.directory)),
+		]);
+
+		return mergeWith(templateSource, MergeStrategy.Overwrite);
+	};
+}
