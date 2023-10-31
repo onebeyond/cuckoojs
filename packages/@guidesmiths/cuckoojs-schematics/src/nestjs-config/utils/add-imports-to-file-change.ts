@@ -8,7 +8,8 @@ export function addImportsToFileChange(sourceText: string, path: string): any[] 
 	const changesArr = [];
 
 	changesArr.push(insertImport(sourceFile as any, path, 'ConfigModule', '@nestjs/config'));
-	changesArr.push(insertImport(sourceFile as any, path, 'config, { validate }', './config/config', true));
+	changesArr.push(insertImport(sourceFile as any, path, 'config', './config/config', true));
+	changesArr.push(insertImport(sourceFile as any, path, 'validate', './config/env-validation', true));
 
 	return changesArr;
 }
