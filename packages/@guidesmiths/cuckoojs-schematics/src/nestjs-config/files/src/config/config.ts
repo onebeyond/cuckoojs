@@ -8,32 +8,32 @@ import { parse, join } from 'path';
 import ConfigDto from './dto/config.dto';
 import { EEnvironment } from './dto/env.dto';
 
-async function loadConfigFiles() {
-  const baseDir = join(process.cwd(), 'src', 'config', 'env');
-  return readdirSync(baseDir).reduce(async (total, filename) => {
-    const moduleName = parse(filename).name;
-    const module = await import(join(baseDir, filename));
-    return { ...(await total), [moduleName]: module };
-  }, Promise.resolve({}));
+async function loadConfigFiles(envName) {
+  const envFile = join(process.cwd(), 'src', 'config', 'env', `${envName}.ts`);
+  const defaultFile = join(process.cwd(), 'src', 'config', 'env', 'default.ts');
+  try {
+    return {
+      default: await import(defaultFile),
+      [envName]: await import(envFile),
+    };
+  } catch (error) {
+    throw new Error(
+      `Config file for environment ${envName} not found. Please, consider adding a ${envName}.ts file to the "env" folder.`,
+    );
+  }
 }
 
 export default async function (): Promise<ConfigDto> {
   Logger.log(':hourglass_flowing_sand: Validating app configuration...');
 
   const environment: EEnvironment = process.env.<%=envVar%> as EEnvironment;
-  const configs = await loadConfigFiles();
-  console.log(configs);
-  const selectedConfig = configs[environment];
-
-  if (!selectedConfig)
-    throw new Error(
-      `Config file for environment ${environment} not found. Please, consider adding a ${environment}.ts file to the "env" folder.`,
-    );
+  const configs = await loadConfigFiles(environment)
+    
 
   const appConfig = {};
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  merge(appConfig, configs.default, selectedConfig);
+  merge(appConfig, configs.default, configs[environment]);
 
   const parsedConfig = plainToClass(ConfigDto, appConfig, {
     enableImplicitConversion: true,
