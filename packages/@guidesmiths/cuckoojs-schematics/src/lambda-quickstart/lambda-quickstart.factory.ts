@@ -10,24 +10,38 @@ import {
 	url,
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
+import {resolve} from 'path';
 
-export const main = (options: any): Rule => (tree: Tree, context: SchematicContext) => {
-	context.logger.info('Creating Lambda Quickstart');
-
-	const templateSource = apply(url('./files'), [
-		template({...options}),
-		move(normalize(options.directory)),
-		renameFile(options),
-	]);
-
-	return mergeWith(templateSource, MergeStrategy.Overwrite)(tree, context);
+type Options = {
+	directory: string;
+	serviceName: string;
 };
 
-function renameFile(options: any): Rule {
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
+		context.logger.info('Creating Lambda Quickstart...');
+
+		const templateSource = apply(url(resolve('.', 'files')), [
+			template({...options}),
+			move(normalize(options.directory)),
+			renameFile(options),
+		]);
+
+		return mergeWith(templateSource, MergeStrategy.Overwrite);
+	};
+}
+
+function renameFile(options: Options): Rule {
 	return (tree: Tree, _context: SchematicContext) => {
 		const normalizedPath = normalize(options.directory);
-		tree.rename(`${normalizedPath}/nvmrc`, `${normalizedPath}/.nvmrc`);
-		tree.rename(`${normalizedPath}/env.sample`, `${normalizedPath}/.env.sample`);
+		tree.rename(
+			resolve(normalizedPath, 'nvmrc'),
+			resolve(normalizedPath, '.nvmrc'),
+		);
+		tree.rename(
+			resolve(normalizedPath, 'env.sample'),
+			resolve(normalizedPath, '.env.sample'),
+		);
 		return tree;
 	};
 }

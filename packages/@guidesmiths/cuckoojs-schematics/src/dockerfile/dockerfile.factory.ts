@@ -10,29 +10,45 @@ import {
 	url,
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
+import {resolve} from 'path';
 
-export const main = (options: any): Rule => (tree: Tree, context: SchematicContext) => {
-	context.logger.info('Creating Dockerfile');
-
-	const templateSourceDockerfile = apply(url(`./files/${options.buildType}`), [
-		template({...options}),
-	]);
-	const mergedDockerfile = mergeWith(templateSourceDockerfile, MergeStrategy.Overwrite);
-
-	const templateSourceDockerignore = apply(url('./files/common'), [
-		template({...options}),
-	]);
-	const mergedDockerignore = mergeWith(templateSourceDockerignore, MergeStrategy.Overwrite);
-
-	return chain([
-		mergedDockerfile,
-		mergedDockerignore,
-		renameDockerignore(options),
-	])(tree, context);
+type Options = {
+	directory: string;
+	buildType: string;
+	nodeVersion: string;
 };
 
-const renameDockerignore = (options: any): Rule => (tree: Tree, _context: SchematicContext) => {
-	const normalizedPath = normalize(options.directory);
-	tree.rename(`${normalizedPath}/dockerignore`, `${normalizedPath}/.dockerignore`);
-	return tree;
-};
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
+		context.logger.info('Creating Dockerfile...');
+
+		const templateSourceDockerfile = apply(
+			url(resolve('.', 'files', options.buildType)),
+			[template({...options})],
+		);
+		const mergedDockerfile = mergeWith(templateSourceDockerfile, MergeStrategy.Overwrite);
+
+		const templateSourceDockerignore = apply(
+			url(resolve('.', 'files', 'common')),
+			[template({...options})],
+		);
+		const mergedDockerignore = mergeWith(templateSourceDockerignore, MergeStrategy.Overwrite);
+
+		return chain([
+			mergedDockerfile,
+			mergedDockerignore,
+			renameDockerignore(options),
+		]);
+	};
+}
+
+function renameDockerignore(options: Options): Rule {
+	return (tree: Tree, _context: SchematicContext) => {
+		const normalizedPath = normalize(options.directory);
+		tree.rename(
+			resolve(normalizedPath, 'dockerignore'),
+			resolve(normalizedPath, '.dockerignore'),
+		);
+		return tree;
+	};
+}
