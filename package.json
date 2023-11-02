@@ -12,6 +12,6 @@
   },
   "name": "cuckoojs",
   "devDependencies": {
-    "lerna": "^6.6.1"
+    "lerna": "^7.4.2"
   }
 }
