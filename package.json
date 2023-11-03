@@ -11,6 +11,7 @@
     "test": "lerna run test"
   },
   "devDependencies": {
+    "conventional-changelog-conventionalcommits": "^7.0.2",
     "lerna": "^7.4.2"
   }
 }
