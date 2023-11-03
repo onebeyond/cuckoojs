@@ -1,5 +1,4 @@
 name: Setup Node and install dependencies
-description: Install node, cache modules and install dependencies
 
 runs:
   using: 'composite'

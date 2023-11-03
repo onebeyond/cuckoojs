@@ -1,5 +1,4 @@
 name: CI
-description: Test, build and lint packages
 
 on:
   push:

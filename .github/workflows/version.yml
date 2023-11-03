@@ -1,5 +1,4 @@
 name: Version packages
-description: Bump packages' versions and push to repo
 
 on:
   workflow_dispatch:
