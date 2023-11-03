@@ -1,0 +1,43 @@
+name: Version packages
+description: Bump packages' versions and push to repo
+
+on:
+  workflow_dispatch:
+    inputs:
+      version-bump:
+        description: 'The type of version bump to perform. Must be one of: major, minor, patch, premajor, preminor, prepatch, prerelease'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Version
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Install node, npm, and dependencies
+        uses: ./.github/actions/setup-and-install
+
+      - name: Print Environment Info
+        run: npx lerna info
+        shell: bash
+
+      - name: Configure git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+        shell: bash
+
+      - name: Bump version of packages
+        run: npx lerna version ${{ inputs.version-bump }} --yes
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

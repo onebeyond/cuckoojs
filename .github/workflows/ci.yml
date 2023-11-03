@@ -1,0 +1,73 @@
+name: CI
+description: Test, build and lint packages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+#  test:
+#    name: Unit Tests
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 10
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Install node, npm, and dependencies
+#        uses: ./.github/actions/setup-and-install
+#
+#      - name: Print Environment Info
+#        run: npx lerna info
+#        shell: bash
+#
+#      - name: Run Tests
+#        run: npx lerna run test
+#        shell: bash
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install node, npm, and dependencies
+        uses: ./.github/actions/setup-and-install
+
+      - name: Print Environment Info
+        run: npx lerna info
+        shell: bash
+
+      - name: Build Packages
+        run: npx lerna run build
+        shell: bash
+
+#  lint:
+#    name: Lint
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 10
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Install node, npm, and dependencies
+#        uses: ./.github/actions/setup-and-install
+#
+#      - name: Print Environment Info
+#        run: npx lerna info
+#        shell: bash
+#
+#      - name: Lint Packages
+#        run: npx lerna run lint
+#        shell: bash
