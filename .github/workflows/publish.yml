@@ -1,5 +1,4 @@
-name: Publish
-description: Publish packages to npm
+name: Publish packages
 
 on:
   push:
