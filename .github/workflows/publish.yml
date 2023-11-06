@@ -26,6 +26,6 @@ jobs:
       - name: Set auth credentials in .npmrc
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_GUIDESMITHS }}" > .npmrc
 
-      - name: Publish packages from git
-        run: npx lerna publish from-git -y
+      - name: Publish packages from package
+        run: npx lerna publish from-package -y
         shell: bash
