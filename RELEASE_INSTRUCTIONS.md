@@ -2,8 +2,8 @@
 
 ## TL;DR
 
-1. Trigger the `Version` workflow specifying the `version-bump`
-2. Publish the draft release (press the edit icon)
+1. Trigger the [Version](https://github.com/onebeyond/cuckoojs/actions/workflows/version.yml) workflow specifying the `version-bump`
+2. Publish the draft release (press the edit icon of the newly created draft release in [here](https://github.com/onebeyond/cuckoojs/releases))
 3. See your packages get published to NPM 😌
 
 ## Motivation
