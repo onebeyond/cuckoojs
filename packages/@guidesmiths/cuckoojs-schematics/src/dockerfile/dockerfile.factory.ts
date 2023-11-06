@@ -12,11 +12,11 @@ import {
 import {normalize} from '@angular-devkit/core';
 import {resolve} from 'path';
 
-type Options = {
+interface Options {
 	directory: string;
 	buildType: string;
 	nodeVersion: string;
-};
+}
 
 export function main(options: Options): Rule {
 	return (_tree: Tree, context: SchematicContext) => {
@@ -43,7 +43,7 @@ export function main(options: Options): Rule {
 }
 
 function renameDockerignore(options: Options): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree) => {
 		const normalizedPath = normalize(options.directory);
 		tree.rename(
 			resolve(normalizedPath, 'dockerignore'),

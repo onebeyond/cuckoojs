@@ -10,7 +10,7 @@ import {
 } from '@angular-devkit/schematics';
 import {resolve} from 'path';
 
-type Options = {
+interface Options {
 	serviceName: string;
 	imageName: string;
 	resourcesLimitCpu: string;
@@ -21,7 +21,7 @@ type Options = {
 	autoscalingReplicasMin: number;
 	autoscalingReplicasMax: number;
 	autoscalingTargetCpu: number;
-};
+}
 
 export function main(options: Options): Rule {
 	return (_tree: Tree, context: SchematicContext) => {

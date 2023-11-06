@@ -12,10 +12,10 @@ import {
 import {normalize} from '@angular-devkit/core';
 import {resolve} from 'path';
 
-type Options = {
+interface Options {
 	directory: string;
 	serviceName: string;
-};
+}
 
 export function main(options: Options): Rule {
 	return (_tree: Tree, context: SchematicContext) => {
@@ -32,7 +32,7 @@ export function main(options: Options): Rule {
 }
 
 function renameFile(options: Options): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree) => {
 		const normalizedPath = normalize(options.directory);
 		tree.rename(
 			resolve(normalizedPath, 'nvmrc'),
