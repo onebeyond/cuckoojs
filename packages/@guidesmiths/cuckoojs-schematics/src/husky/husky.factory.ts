@@ -11,10 +11,10 @@ import {resolve} from 'path';
 
 import {PackageJsonUtils} from '../utils/package-json.utils';
 
-type Options = {
+interface Options {
 	directory: string;
 	skipInstall: boolean;
-};
+}
 
 export function main(options: Options): Rule {
 	return (tree: Tree, context: SchematicContext) => {
@@ -56,7 +56,7 @@ function runCommand(directory: string, skipInstall: boolean): Rule {
 }
 
 function updatePackageJson(directory: string): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree) => {
 		const path = resolve(directory, 'package.json');
 
 		const packageJsonUtils = new PackageJsonUtils(tree, path);

@@ -12,10 +12,10 @@ import {
 import {normalize} from '@angular-devkit/core';
 import {resolve} from 'path';
 
-type Options = {
+interface Options {
 	directory: string;
 	gitProvider: string;
-};
+}
 
 export function main(options: Options): Rule {
 	return (_tree: Tree, context: SchematicContext) => {

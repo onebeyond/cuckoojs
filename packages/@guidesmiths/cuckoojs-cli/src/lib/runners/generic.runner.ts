@@ -1,12 +1,12 @@
 import type {SpawnOptions, StdioOptions} from 'child_process';
 import {spawn} from 'child_process';
 
-type RunObject = {
+interface RunObject {
 	command: string;
 	args: string [];
 	cwd?: string;
 	stdio?: StdioOptions;
-};
+}
 
 export class GenericRunner {
 	constructor(protected binary: string) {}
@@ -31,7 +31,6 @@ export class GenericRunner {
 			);
 
 			child.on('error', error => {
-				console.log('eeeee', error);
 				reject(new Error(`Child process filed with error: ${error.message}`));
 			});
 

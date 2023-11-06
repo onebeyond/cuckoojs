@@ -14,10 +14,10 @@ import {normalize} from '@angular-devkit/core';
 import {join} from 'path';
 import {PackageJsonUtils} from '../utils/package-json.utils';
 
-type Options = {
+interface Options {
 	directory: string;
 	nodeVersion: number;
-};
+}
 
 export function main(options: Options): Rule {
 	return (_tree: Tree, context: SchematicContext): Rule => {

@@ -13,12 +13,12 @@ import {normalize} from '@angular-devkit/core';
 import {PackageJsonUtils} from '../utils/package-json.utils';
 import {resolve} from 'path';
 
-type Options = {
+interface Options {
 	directory: string;
-};
+}
 
 export function main(options: Options): Rule {
-	return async (_tree: Tree, context: SchematicContext) => {
+	return (_tree: Tree, context: SchematicContext) => {
 		context.logger.info('Setting up ESlint config...');
 		const path = normalize(options.directory);
 
@@ -38,7 +38,7 @@ export function main(options: Options): Rule {
 }
 
 function renameFile(options: Options): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree) => {
 		const normalizedPath = normalize(options.directory);
 		tree.rename(
 			resolve(normalizedPath, 'eslintrc.js'),
@@ -49,7 +49,7 @@ function renameFile(options: Options): Rule {
 }
 
 function updatePackageJson(directory: string): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree) => {
 		const path = `${directory}/package.json`;
 		const packageJsonUtils = new PackageJsonUtils(tree, path);
 

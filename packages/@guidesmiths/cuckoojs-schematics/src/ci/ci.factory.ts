@@ -10,14 +10,14 @@ import {
 } from '@angular-devkit/schematics';
 import {resolve} from 'path';
 
-type Options = {
+interface Options {
 	ciProvider: string;
 	dockerRegistry: string;
 	imageName: string;
-};
+}
 
 export function main(options: Options): Rule {
-	return async (_tree: Tree, context: SchematicContext) => {
+	return (_tree: Tree, context: SchematicContext) => {
 		context.logger.info('Creating CI configuration...');
 
 		const templateSource = apply(
