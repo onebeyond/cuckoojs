@@ -88,7 +88,7 @@
     },
     "ingressController": {
       "type": "string",
-      "description": "ingress controller to use",
+      "description": "Ingress controller to be used",
       "x-prompt": {
         "message": "What ingress controller do you want to use?",
         "type": "list",
@@ -107,7 +107,7 @@
     },
     "tlsCertManager": {
       "type": "string",
-      "description": "tls cert manager to use",
+      "description": "TLS certificate manager to be used",
       "x-prompt": {
         "message": "What tls cert manager do you want to use?",
         "type": "list",

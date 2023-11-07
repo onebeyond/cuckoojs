@@ -102,3 +102,6 @@ That's it!
 | `autoscalingReplicasMin`   | Autoscaled minimum replicas                   | *number*         | `1`           |
 | `autoscalingReplicasMax`   | Autoscaled maximum replicas                   | *number*         | `5`           |
 | `autoscalingTargetCpu`   | Target cpu used to trigger autoscaling        | *number*         | `75`          |
+| `ingressController` | Ingress controller to be used      | `generic`, `traefik`  | `generic`             |
+| `tlsCertManager`    | TLS certificate manager to be used | `none`, `certManager` | `none`                |
+| `domainName`        | Domain name for the service        |  *string*             | `chart-example.local` |
