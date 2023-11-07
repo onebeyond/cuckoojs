@@ -1,6 +1,6 @@
 {
   "name": "@guidesmiths/cuckoojs-schematics",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A collection of CuckooJS schematics",
   "keywords": [
     "schematics",
