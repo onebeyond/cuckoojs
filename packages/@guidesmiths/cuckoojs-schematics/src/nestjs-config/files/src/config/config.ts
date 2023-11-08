@@ -2,8 +2,7 @@ import { Logger } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import * as merge from 'lodash.merge';
-import { readdirSync } from 'fs';
-import { parse, join } from 'path';
+import { join } from 'path';
 
 import ConfigDto from './dto/config.dto';
 import { EEnvironment } from './dto/env.dto';
@@ -17,8 +16,10 @@ async function loadConfigFiles(envName) {
       [envName]: await import(envFile),
     };
   } catch (error) {
+    const missingFilename = /.*\/(?<filename>.*)\.ts'/.exec(error.message)
+      ?.groups?.filename;
     throw new Error(
-      `Config file for environment ${envName} not found. Please, consider adding a ${envName}.ts file to the "env" folder.`,
+      `Config file for environment ${missingFilename} not found. Please, consider adding a ${missingFilename}.ts file to the "env" folder.`,
     );
   }
 }
@@ -27,12 +28,10 @@ export default async function (): Promise<ConfigDto> {
   Logger.log(':hourglass_flowing_sand: Validating app configuration...');
 
   const environment: EEnvironment = process.env.<%=envVar%> as EEnvironment;
-  const configs = await loadConfigFiles(environment)
+  const configs = await loadConfigFiles(environment);
     
-
   const appConfig = {};
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
   merge(appConfig, configs.default, configs[environment]);
 
   const parsedConfig = plainToClass(ConfigDto, appConfig, {
