@@ -1,5 +1,5 @@
 import {type Rule, SchematicsException, type Tree} from '@angular-devkit/schematics';
-import {InsertChange} from '@schematics/angular/utility/change';
+import {InsertChange} from '../../utils/change';
 import {addConfigToModuleChange} from './add-config-to-module-change';
 import {addImportsToFileChange} from './add-imports-to-file-change';
 
