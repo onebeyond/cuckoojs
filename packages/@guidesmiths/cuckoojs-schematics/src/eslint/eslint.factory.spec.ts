@@ -17,7 +17,7 @@ describe('eslint', () => {
             "/.eslintrc.js"
         ]);
 
-        const actualPackageJson = JSON.parse(tree.readContent('./package.json'));
+        const actualPackageJson = JSON.parse(tree.readContent('./package.json')) as Record<string, string>;
         expect(actualPackageJson.devDependencies).toEqual({
             "eslint": "^8.29.0",
             "eslint-config-airbnb-base": "^15.0.0",

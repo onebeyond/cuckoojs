@@ -3,16 +3,16 @@ import {join} from 'path';
 import {promises as fs} from 'fs';
 import sortObjectKeys from '../utils/sortObjectByKeys';
 
-export type PackageEntry = {
+export interface PackageEntry {
 	name: string;
 	version: string;
 	section: PackageDependencySection;
-};
+}
 
-export type ScriptEntry = {
+export interface ScriptEntry {
 	name: string;
 	value: string;
-};
+}
 
 type PackageDependencySection = 'dependencies' | 'devDependencies';
 
@@ -56,7 +56,7 @@ export class NpmRunner extends GenericRunner {
 		for (const packageEntry of packageEntries) {
 			NpmRunner.ensurePackageSection(packageJson, packageEntry.section);
 			packageJson[packageEntry.section][packageEntry.name] = packageEntry.version;
-			packageJson[packageEntry.section] = sortObjectKeys(packageJson[packageEntry.section]);
+			packageJson[packageEntry.section] = sortObjectKeys(packageJson[packageEntry.section]) as Record<string, string>;
 		}
 
 		await fs.writeFile(packagePath, JSON.stringify(packageJson, null, 2));
