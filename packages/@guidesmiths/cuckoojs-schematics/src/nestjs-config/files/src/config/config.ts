@@ -7,9 +7,9 @@ import { join } from 'path';
 import ConfigDto from './dto/config.dto';
 import { EEnvironment } from './dto/env.dto';
 
-async function loadConfigFiles(envName) {
-  const envFile = join(process.cwd(), 'src', 'config', 'env', `${envName}.ts`);
-  const defaultFile = join(process.cwd(), 'src', 'config', 'env', 'default.ts');
+async function loadConfigFiles(envName: string) {
+  const envFile = join(__dirname, 'env', `${envName}.js`);
+  const defaultFile = join(__dirname, 'env', 'default.js');
   try {
     return {
       default: await import(defaultFile),
@@ -29,7 +29,6 @@ export default async function (): Promise<ConfigDto> {
 
   const environment: EEnvironment = process.env.<%=envVar%> as EEnvironment;
   const configs = await loadConfigFiles(environment);
-    
   const appConfig = {};
 
   merge(appConfig, configs.default, configs[environment]);
