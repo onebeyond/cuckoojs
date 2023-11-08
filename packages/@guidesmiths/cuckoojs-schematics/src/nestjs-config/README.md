@@ -54,7 +54,7 @@ meet the validation requirements, the `config` module will throw a validation er
 
 1. Add/edit the name of the environment to `EEnvironment` in `src/config/dto/env.dto.ts`
 2. Add/edit the corresponding configuration file from `src/config/env`. The name of the file must match the value added during
-step 1. You must use the `module.exports` syntax.
+step 1. You must use the default export syntax (`export default`) that exports an object
 
 ### Add constrains to DTO's
 
