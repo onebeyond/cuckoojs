@@ -10,7 +10,6 @@ export function addConfigToModuleRule(path: string): Rule {
 			throw new SchematicsException('File does not exist.');
 		}
 
-		try {
 			const importsChanges = addImportsToFileChange(sourceText, path);
 			const moduleChange = addConfigToModuleChange(sourceText, path);
 
@@ -26,8 +25,5 @@ export function addConfigToModuleRule(path: string): Rule {
 			tree.commitUpdate(declarationRecorder);
 
 			return tree;
-		} catch (error) {
-			console.error(error);
-		}
 	};
 }
