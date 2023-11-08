@@ -27,7 +27,8 @@ Add it to your project running:
 schematics @onebeyond/cuckoojs-schematics:nestjs-config --directory=. --envVar=NODE_ENV
 ```
 
-This will generate a new NestJS module in `src/config` and the necessary `import`s to your `app.module.ts`.
+This will generate a new NestJS module in `src/config` and the necessary `import`s to your `app.module.ts`. Your NestJS needs
+to have a `./src/app.module.ts` file.
 
 Within `src/config/env` we provide 5 different configurations by default that can be renamed or removed at will to fit 
 your project's needs. 
@@ -49,10 +50,10 @@ meet the validation requirements, the `config` module will throw a validation er
 1. Remove the value from `EEnvironment` in `src/config/dto/env.dto.ts`
 2. Remove the corresponding configuration file from `src/config/env`
 
-### Add an environment configuration
+### Add/Edit an environment configuration
 
-1. Add the name of the environment to `EEnvironment` in `src/config/dto/env.dto.ts`
-2. Add the corresponding configuration file from `src/config/env`. The name of the file must match the value added during
+1. Add/edit the name of the environment to `EEnvironment` in `src/config/dto/env.dto.ts`
+2. Add/edit the corresponding configuration file from `src/config/env`. The name of the file must match the value added during
 step 1. You must use the `module.exports` syntax.
 
 ### Add constrains to DTO's
