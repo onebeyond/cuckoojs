@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   root: true,
-  ignorePatterns: ['node_modules', 'packages/*/*/dist'],
+  ignorePatterns: ['node_modules', 'packages/*/*/dist', 'packages/**/files'],
   rules: {
     'no-console': 'error'
   }
