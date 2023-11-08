@@ -1,6 +1,6 @@
 
 import * as ts from 'typescript';
-import {getSourceNodes, findNode, findNodes} from '@schematics/angular/utility/ast-utils';
+import {getSourceNodes, findNode, findNodes} from '../../utils/ast-utils';
 import {InsertChange} from '@schematics/angular/utility/change';
 import {SchematicsException} from '@angular-devkit/schematics';
 
@@ -14,7 +14,7 @@ const IMPORT_DECLARATION = `
 
 function getModuleDecoratorNode(nodes: ts.Node[]) {
 	const decoratorNodes = nodes.filter(n => n.kind === ts.SyntaxKind.Decorator);
-	const moduleDecoratorNodes = decoratorNodes?.filter(n => findNode(n, ts.SyntaxKind.Identifier as any, 'Module'));
+	const moduleDecoratorNodes: ts.Node[] = decoratorNodes?.filter(n => findNode(n, ts.SyntaxKind.Identifier, 'Module'));
 
 	if (moduleDecoratorNodes.length === 0) {
 		throw new SchematicsException('No Module decorators found');
@@ -28,7 +28,7 @@ function getModuleDecoratorNode(nodes: ts.Node[]) {
 }
 
 function getDecoratorArgument(node: ts.Decorator) {
-	const objectLiteralExpressionNodes = findNodes(node as ts.Node, ts.SyntaxKind.ObjectLiteralExpression as any);
+	const objectLiteralExpressionNodes = findNodes(node, ts.SyntaxKind.ObjectLiteralExpression) || [];
 	if (objectLiteralExpressionNodes.length !== 1) {
 		throw new SchematicsException('Invalid Module decorator arguments');
 	}
@@ -59,13 +59,13 @@ function createImportsChange(path: string, node: ts.Node) {
 	const importToInsert = `
   imports: [${IMPORT_DECLARATION}
   ],`;
-	const insertPosition = findNodes(node as any, ts.SyntaxKind.OpenBraceToken as any)[0].end;
+	const insertPosition = findNodes(node, ts.SyntaxKind.OpenBraceToken)[0].end;
 	return new InsertChange(path, insertPosition, importToInsert);
 }
 
 export function addConfigToModuleChange(sourceText: string, path: string): InsertChange {
 	const sourceFile = ts.createSourceFile(path, sourceText, ts.ScriptTarget.Latest, true);
-	const nodes: any[] = getSourceNodes(sourceFile as any);
+	const nodes = getSourceNodes(sourceFile);
 
 	const moduleDecoratorNode = getModuleDecoratorNode(nodes);
 	const decoratorArgument = getDecoratorArgument(moduleDecoratorNode);
