@@ -8,7 +8,8 @@ describe('ci', () => {
     it('works with github', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematic('ci', {ciProvider: 'github', dockerRegistry: 'dockerRegistry', imageName: 'imageName'}, Tree.empty())
+          .runSchematicAsync('ci', {ciProvider: 'github', dockerRegistry: 'dockerRegistry', imageName: 'imageName'}, Tree.empty())
+          .toPromise();
 
         expect(tree.files).toEqual([
             '/.github/workflows/ci-docker-build-push.yml',
@@ -17,7 +18,8 @@ describe('ci', () => {
     it('works with azuredevops', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematic('ci', {ciProvider: 'azuredevops', dockerRegistry: 'dockerRegistry', imageName: 'imageName'}, Tree.empty())
+          .runSchematicAsync('ci', {ciProvider: 'azuredevops', dockerRegistry: 'dockerRegistry', imageName: 'imageName'}, Tree.empty())
+          .toPromise();
 
         expect(tree.files).toEqual([
             '/azure-pipelines.yml',

@@ -7,7 +7,9 @@ const collectionPath = path.join(__dirname, '../collection.json');
 describe('helm', () => {
     it('works', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
-        const tree = await runner.runSchematic('helm', {serviceName: 'serviceName', imageName: 'imageName'}, Tree.empty())
+        const tree = await runner
+          .runSchematicAsync('helm', {serviceName: 'serviceName', imageName: 'imageName'}, Tree.empty())
+          .toPromise();
 
         expect(tree.files).toEqual([
             '/.helm/.helmignore',

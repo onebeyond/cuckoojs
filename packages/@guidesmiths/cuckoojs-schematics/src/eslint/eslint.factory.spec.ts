@@ -9,7 +9,9 @@ describe('eslint', () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const folder = Tree.empty();
         folder.create('package.json',Buffer.from('{}'));
-        const tree = await runner.runSchematic('eslint', {directory: '.'}, folder)
+        const tree = await runner
+          .runSchematicAsync('eslint', {directory: '.'}, folder)
+          .toPromise();
 
 
         expect(tree.files).toEqual([
