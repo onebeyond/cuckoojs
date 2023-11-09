@@ -12,8 +12,8 @@ async function loadConfigFiles(envName: string) {
   const defaultFile = join(__dirname, 'env', 'default.js');
   try {
     return {
-      default: await import(defaultFile),
-      [envName]: await import(envFile),
+      default: (await import(defaultFile))?.default,
+      [envName]: (await import(envFile))?.default,
     };
   } catch (error) {
     const missingFilename = /.*\/(?<filename>.*)\.ts'/.exec(error.message)
