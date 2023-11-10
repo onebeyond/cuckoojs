@@ -1,0 +1,31 @@
+name: Publish packages
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  test:
+    name: Publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install node, npm, and dependencies
+        uses: ./.github/actions/setup-and-install
+
+      - name: Print Environment Info
+        run: npx lerna info
+        shell: bash
+
+      - name: Set auth credentials in .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_GUIDESMITHS }}" > .npmrc
+
+      - name: Publish packages from package
+        run: npx lerna publish from-package -y
+        shell: bash

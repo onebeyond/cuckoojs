@@ -1,0 +1,18 @@
+name: Extract Lerna Version
+description: Extracts Lerna version from lerna.json and provides it as an output
+
+outputs:
+  lerna-version:
+    value: ${{ steps.extract-version.outputs.lerna-version }}
+    description: 'The extracted Lerna version'
+
+runs:
+  using: composite
+  steps:
+    - name: Extract Lerna Version
+      id: extract-version
+      shell: bash
+      run: |
+        LERNA_VERSION=$(jq -r '.version' lerna.json)
+        echo "Using Lerna version from lerna.json: $LERNA_VERSION"
+        echo "lerna-version=${LERNA_VERSION}" >> $GITHUB_OUTPUT

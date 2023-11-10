@@ -10,15 +10,16 @@ describe('eslint', () => {
         const folder = Tree.empty();
         folder.create('package.json',Buffer.from('{}'));
         const tree = await runner
-            .runSchematicAsync('eslint', {directory: '.'}, folder)
-            .toPromise();
+          .runSchematicAsync('eslint', {directory: '.'}, folder)
+          .toPromise();
+
 
         expect(tree.files).toEqual([
             '/package.json',
             "/.eslintrc.js"
         ]);
 
-        const actualPackageJson = JSON.parse(tree.readContent('./package.json'));
+        const actualPackageJson = JSON.parse(tree.readContent('./package.json')) as Record<string, string>;
         expect(actualPackageJson.devDependencies).toEqual({
             "eslint": "^8.29.0",
             "eslint-config-airbnb-base": "^15.0.0",

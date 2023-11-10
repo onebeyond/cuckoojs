@@ -1,0 +1,55 @@
+# https://github.com/marketplace/actions/release-drafter#configuration
+
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+
+# https://github.com/release-drafter/release-drafter#version-resolver
+#   With the version-resolver option version number incrementing can be
+#   resolved automatically based on labels of individual pull requests.
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+
+# https://github.com/release-drafter/release-drafter#categorize-pull-requests
+#   With the categories option you can categorize pull requests in release
+#   notes using labels.
+categories:
+  - title: '💥 Breaking changes'
+    labels:
+      - 'major'
+  - title: '🚀 New features'
+    labels:
+      - 'minor'
+  - title: '🧰 Others'
+    labels:
+      - 'patch'
+
+# https://github.com/release-drafter/release-drafter#autolabeler
+#   You can add automatically a label into a pull request, with the autolabeler
+#   option. Available matchers are files (glob), branch (regex), title (regex)
+#   and body (regex). Matchers are evaluated independently; the label will be
+#   set if at least one of the matchers meets the criteria.
+autolabeler:
+  - label: 'major'
+    title:
+      - '/^\S+!{1}:{1}\s{1}\S*/i'
+  - label: 'minor'
+    title:
+      - '/^feat:{1}\s{1}\S*/i'
+  - label: 'patch'
+    title:
+      - '/^(build|chore|ci|docs|fix|perf|refactor|revert|style|test):{1}\s{1}\S*/i'
+
+template: |
+  ## What’s Changed
+
+  $CHANGES

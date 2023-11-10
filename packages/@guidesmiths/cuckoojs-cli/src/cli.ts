@@ -27,7 +27,7 @@ const init = (): void => {
 		.command('new <name> [options...]')
 		.alias('n')
 		.description('Generate Nest application with basic tooling.')
-		.action(async (name: string, _options: any) => {
+		.action(async (name: string) => {
 			await new NewCommand(name).execute();
 		});
 
@@ -54,7 +54,7 @@ const init = (): void => {
 		.addOption(
 			new Option('--skip-git-init', 'Skip git repository initialization')
 		)
-		.action(async (name: string, options: any) => {
+		.action(async (name: string, options: { gitProvider: string, skipGitInit: string}) => {
 			await new LambdaNewCommand(name, options.gitProvider, !!options.skipGitInit).execute();
 		});
 

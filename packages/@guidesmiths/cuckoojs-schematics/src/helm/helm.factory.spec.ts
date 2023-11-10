@@ -8,8 +8,8 @@ describe('helm', () => {
     it('works', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematicAsync('helm', {serviceName: 'serviceName', imageName: 'imageName'}, Tree.empty())
-            .toPromise();
+          .runSchematicAsync('helm', {serviceName: 'serviceName', imageName: 'imageName'}, Tree.empty())
+          .toPromise();
 
         expect(tree.files).toEqual([
             '/.helm/.helmignore',

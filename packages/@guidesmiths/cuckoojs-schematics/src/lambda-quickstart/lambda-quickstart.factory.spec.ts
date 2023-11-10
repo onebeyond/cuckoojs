@@ -8,8 +8,9 @@ describe('lambda-quickstart', () => {
     it('works', async () => {
         const runner = new SchematicTestRunner('schematics', collectionPath);
         const tree = await runner
-            .runSchematicAsync('lambda-quickstart', {directory: 'some-folder', serviceName: 'anyName'}, Tree.empty())
-            .toPromise();
+          .runSchematicAsync('lambda-quickstart', {directory: 'some-folder', serviceName: 'anyName'}, Tree.empty())
+          .toPromise();
+
 
         expect(tree.files).toEqual([
             "/some-folder/README.md",

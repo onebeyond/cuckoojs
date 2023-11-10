@@ -10,11 +10,10 @@ import {
 	findNodeAtLocation,
 } from 'jsonc-parser';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-type TInsertDependencyOptions = {
+interface IInsertDependencyOptions {
 	ordered?: boolean;
 	overwrite?: boolean;
-};
+}
 
 export class PackageJsonUtils {
 	content: string;
@@ -35,14 +34,26 @@ export class PackageJsonUtils {
 		this.checkFileContent();
 	}
 
+	// @TODO: deprecate and replace all usages with addDependency or addDevDependency
 	addPackage(name: string, version: string, dev = false) {
 		const section = dev ? 'devDependencies' : 'dependencies';
-		this.content = this.insertDependency([section, name], version, {ordered: true, overwrite: true});
-		this.host.overwrite(this.path, this.content);
+		this.addWithPath([section, name], version, {ordered: true, overwrite: true});
+	}
+
+	addDependency(name: string, version: string) {
+		this.addWithPath(['dependencies', name], version, {ordered: true, overwrite: true});
+	}
+
+	addDevDependency(name: string, version: string) {
+		this.addWithPath(['devDependencies', name], version, {ordered: true, overwrite: true});
 	}
 
 	addScript(name: string, value: string) {
-		this.content = this.insertDependency(['scripts', name], value);
+		this.addWithPath(['scripts', name], value);
+	}
+
+	addWithPath(path: string[], value: string, options: IInsertDependencyOptions = {}) {
+		this.content = this.insertDependency(path, value, options);
 		this.host.overwrite(this.path, this.content);
 	}
 
@@ -55,7 +66,7 @@ export class PackageJsonUtils {
 		}
 	}
 
-	private insertDependency(path: JSONPath, value: string, options: TInsertDependencyOptions = {ordered: false, overwrite: false}) {
+	private insertDependency(path: JSONPath, value: string, options: IInsertDependencyOptions = {ordered: false, overwrite: false}) {
 		const propertyToInsert = path.slice(-1)[0];
 		const getInsertionIndex = options.ordered
 		// eslint-disable-next-line @typescript-eslint/require-array-sort-compare

@@ -1,22 +1,36 @@
 import {
-  apply,
-  MergeStrategy,
-  mergeWith,
-  Rule,
-  SchematicContext,
-  template,
-  Tree,
-  url
+	apply,
+	MergeStrategy,
+	mergeWith,
+	type Rule,
+	type SchematicContext,
+	template,
+	type Tree,
+	url,
 } from '@angular-devkit/schematics';
+import {resolve} from 'path';
 
-export const main = (options: any): Rule => {
-  return (tree: Tree, context: SchematicContext) => {
-    context.logger.info(`Creating Helm Chart`);
+interface Options {
+	serviceName: string;
+	imageName: string;
+	resourcesLimitCpu: string;
+	resourcesLimitMemory: string;
+	resourcesRequestCpu: string;
+	resourcesRequestMemory: string;
+	autoscalingEnabled: boolean;
+	autoscalingReplicasMin: number;
+	autoscalingReplicasMax: number;
+	autoscalingTargetCpu: number;
+}
 
-    const templateSource = apply(url(`./files`), [
-      template({...options})
-    ]);
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
+		context.logger.info('Creating Helm Chart...');
 
-    return mergeWith(templateSource, MergeStrategy.Overwrite)(tree, context);
-  };
+		const templateSource = apply(url(resolve('.', 'files')), [
+			template({...options}),
+		]);
+
+		return mergeWith(templateSource, MergeStrategy.Overwrite);
+	};
 }

@@ -46,6 +46,16 @@
       "factory": "./husky/husky.factory#main",
       "schema": "./husky/schema.json"
     },
+    "nvmrc": {
+      "description": "Add nvmrc to the project",
+      "factory": "./nvmrc/nvmrc.factory#main",
+      "schema": "./nvmrc/schema.json"
+    },
+    "nestjs-config": {
+      "description": "Add NestJS config to the project",
+      "factory": "./nestjs-config/nestjs-config.factory#main",
+      "schema": "./nestjs-config/schema.json"
+    },
     "basic-tooling": {
       "description": "Add basic tooling to the project",
       "factory": "./basic-tooling/basic-tooling.factory#main",

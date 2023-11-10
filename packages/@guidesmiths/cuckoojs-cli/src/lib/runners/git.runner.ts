@@ -1,9 +1,9 @@
 import {GenericRunner} from './generic.runner';
 
-type CreateBranchOptions = {
+interface CreateBranchOptions {
 	initialBranch?: string;
 	folderName: string;
-};
+}
 
 export class GitRunner extends GenericRunner {
 	constructor() {

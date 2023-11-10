@@ -29,6 +29,8 @@ That's it!
 
 ## Available schematics
 
+- [`nestjs-config`](/packages/@guidesmiths/cuckoojs-schematics/src/nestjs-config/README.md)
+
 ### Pull Request Template
 
 * **Description**: Enables having a standard format when doing Pull Request

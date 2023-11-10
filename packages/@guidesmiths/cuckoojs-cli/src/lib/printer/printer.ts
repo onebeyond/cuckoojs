@@ -43,12 +43,12 @@ const decorationMap: Record<Decoration, string> = {
 	none,
 };
 
-type Style = {
+interface Style {
 	fontColor?: FontColor;
 	backgroundColor?: BackgroundColor;
 	alignment?: Alignment;
 	decoration?: Decoration;
-};
+}
 export default class Printer {
 	public static format({
 		backgroundColor = 'none',
@@ -93,12 +93,12 @@ export default class Printer {
 		}).start();
 	}
 
-	public startStep(text: string): any {
+	public startStep(text: string): void {
 		this.load.text = `(${this.step}/${this.total}) ${text}`;
 		this.load.start();
 	}
 
-	public updateStep(text: string): any {
+	public updateStep(text: string): void {
 		this.load.text =`(${this.step}/${this.total}) ${text}`;
 	}
 
