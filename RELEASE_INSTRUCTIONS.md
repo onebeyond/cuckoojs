@@ -2,15 +2,17 @@
 
 ## TL;DR
 
-1. Trigger the [Version](https://github.com/onebeyond/cuckoojs/actions/workflows/version.yml) workflow specifying the `version-bump`
-2. Publish the draft release (press the edit icon of the newly created draft release in [here](https://github.com/onebeyond/cuckoojs/releases))
-3. See your packages get published to NPM 😌
+1. Trigger the [Version](https://github.com/onebeyond/cuckoojs/actions/workflows/version.yml) workflow specifying the `version-bump`. This
+will create a new pull request with the changes done by Lerna `version`.
+2. Merge the previous pull request. It will generate a new draft release.
+3. Publish the draft release (press the edit icon of the newly created draft release in [here](https://github.com/onebeyond/cuckoojs/releases))
+4. See your packages get published to NPM 😌
 
 ## Motivation
 
-This repository uses [Lerna](https://lerna.js.org/docs/introduction) as a tool to handle monorepos. Lerna provides commands [`version`](https://github.com/lerna/lerna/tree/main/libs/commands/version) and [`publish`](https://github.com/lerna/lerna/tree/main/libs/commands/publish), which under normal circumstances should be sufficient for versioning and publishing packages in a monorepo. In brief, the `version` command increments the versions of the monorepo packages, generates a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging), and pushes the modified files (`lerna.json`, `package.json` of the packages, changelog files, etc.) and the git tag. The `publish` command publishes the packages to the corresponding registry.
+This repository uses [Lerna](https://lerna.js.org/docs/introduction) as a tool to handle monorepos. Lerna provides the commands [`version`](https://github.com/lerna/lerna/tree/main/libs/commands/version) and [`publish`](https://github.com/lerna/lerna/tree/main/libs/commands/publish), which under normal circumstances should be sufficient for versioning and publishing packages in a monorepo. In brief, the `version` command increments the versions of the monorepo packages, generates a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging), and pushes the modified files (`lerna.json`, `package.json` of the packages, changelog files, etc.) and the git tag. The `publish` command publishes the packages to the corresponding registry.
 
-As mentioned in Lerna's documentation for the [`allow-branch`](https://github.com/lerna/lerna/tree/main/libs/commands/publish) option, it is advisable not to run the `version` command on a branch other than `main`. We agree that allowing versioning on branches can be error-prone. However, in this repository, pushes to `main` are restricted. We also wanted to avoid using person access tokens. This first limitation has led us to opt for an alternative and secure way to increment the version of the packages.
+As mentioned in Lerna's documentation for the [`allow-branch`](https://github.com/lerna/lerna/tree/main/libs/commands/publish) option, it is advisable not to run the `version` command on a branch other than `main`. We agree that allowing versioning on branches can be error-prone. However, in this repository, pushes to `main` are restricted. We also wanted to avoid using personal access tokens. This first limitation has led us to opt for an alternative and secure way to increment the version of the packages.
 
 Furthermore, even though Lerna can generate versions based on commit messages following the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification, we have chosen a somewhat more manual but safer approach, at least in our opinion.
 
