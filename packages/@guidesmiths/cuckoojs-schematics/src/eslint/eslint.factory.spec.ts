@@ -10,8 +10,9 @@ describe('eslint', () => {
         const folder = Tree.empty();
         folder.create('package.json',Buffer.from('{}'));
         const tree = await runner
-            .runSchematicAsync('eslint', {directory: '.'}, folder)
-            .toPromise();
+          .runSchematicAsync('eslint', {directory: '.'}, folder)
+          .toPromise();
+
 
         expect(tree.files).toEqual([
             '/package.json',

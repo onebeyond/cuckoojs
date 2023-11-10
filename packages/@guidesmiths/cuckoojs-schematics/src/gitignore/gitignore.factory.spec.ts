@@ -8,8 +8,8 @@ describe('gitignore', () => {
 	it('works', async () => {
 		const runner = new SchematicTestRunner('schematics', collectionPath);
 		const tree = await runner
-			.runSchematicAsync('gitignore', {directory: '.'}, Tree.empty())
-			.toPromise();
+      .runSchematicAsync('gitignore', {directory: '.'}, Tree.empty())
+      .toPromise();
 
 		expect(tree.files).toEqual([
 			'/.gitignore'
