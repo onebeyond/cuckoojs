@@ -24,7 +24,7 @@ env var defined via the `envVar` option.
 Add it to your project running:
 
 ```bash
-schematics @onebeyond/cuckoojs-schematics:nestjs-config --directory=. --envVar=NODE_ENV
+schematics @guidesmiths/cuckoojs-schematics:nestjs-config --directory=. --envVar=NODE_ENV
 ```
 
 This will generate a new NestJS module in `src/config` and the necessary `import`s to your `app.module.ts`. Your NestJS project needs
