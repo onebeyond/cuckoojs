@@ -29,7 +29,7 @@ That's it!
 
 ## Available schematics
 
-- [`nestjs-config`](./src/nestjs-config/README.md)
+- [`nestjs-config`](/packages/@guidesmiths/cuckoojs-schematics/src/nestjs-config/README.md)
 
 ### Pull Request Template
 
