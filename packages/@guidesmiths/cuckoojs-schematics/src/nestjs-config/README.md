@@ -27,7 +27,7 @@ Add it to your project running:
 schematics @onebeyond/cuckoojs-schematics:nestjs-config --directory=. --envVar=NODE_ENV
 ```
 
-This will generate a new NestJS module in `src/config` and the necessary `import`s to your `app.module.ts`. Your NestJS needs
+This will generate a new NestJS module in `src/config` and the necessary `import`s to your `app.module.ts`. Your NestJS project needs
 to have a `./src/app.module.ts` file.
 
 Within `src/config/env` we provide 5 different configurations by default that can be renamed or removed at will to fit 
