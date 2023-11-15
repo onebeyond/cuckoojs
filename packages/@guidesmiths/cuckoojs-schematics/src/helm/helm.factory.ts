@@ -3,19 +3,34 @@ import {
 	type SchematicContext,
 	type Tree,
 } from '@angular-devkit/schematics';
+import {resolve} from 'path';
 
 import {RuleBuilderFactory} from './rule-builder/rule.builder.factory';
 
-// eslint-disable-next-line @typescript-eslint/promise-function-async
-export const main = (options: any): Rule => (tree: Tree, context: SchematicContext) => {
-	context.logger.info('Creating Helm Chart');
+interface Options {
+	serviceName: string;
+	imageName: string;
+	resourcesLimitCpu: string;
+	resourcesLimitMemory: string;
+	resourcesRequestCpu: string;
+	resourcesRequestMemory: string;
+	autoscalingEnabled: boolean;
+	autoscalingReplicasMin: number;
+	autoscalingReplicasMax: number;
+	autoscalingTargetCpu: number;
+}
 
-	const ruleBuilder = new RuleBuilderFactory().create({
-		ingressType: options.ingressController as string,
-		tlsCertType: options.tlsCertManager as string,
-		logger: context.logger,
-	});
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
+		context.logger.info('Creating Helm Chart...');
 
-	const rule = ruleBuilder.build(options, tree);
-	return rule(tree, context);
-};
+		const ruleBuilder = new RuleBuilderFactory().create({
+      ingressType: options.ingressController as string,
+      tlsCertType: options.tlsCertManager as string,
+      logger: context.logger,
+    });
+
+    const rule = ruleBuilder.build(options, tree);
+    return rule(tree, context);
+	};
+}

@@ -11,25 +11,33 @@ import {
 	url,
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
+import {resolve} from 'path';
 
-export function main(options: any): Rule {
-	return (tree: Tree, context: SchematicContext) => {
-		context.logger.info('Creating .gitignore file');
+interface Options {
+	directory: string;
+}
 
-		const templateSource = apply(url('./files'), [
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
+		context.logger.info('Creating .gitignore file...');
+
+		const templateSource = apply(url(resolve('.', 'files')), [
 			template({}),
 			move(normalize(options.directory)),
 			renameFile(options),
 		]);
 
-		return mergeWith(templateSource, MergeStrategy.Overwrite)(tree, context);
+		return mergeWith(templateSource, MergeStrategy.Overwrite);
 	};
 }
 
-function renameFile(options: any): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+function renameFile(options: Options): Rule {
+	return (tree: Tree) => {
 		const normalizedPath = normalize(options.directory);
-		tree.rename(`${normalizedPath}/gitignore`, `${normalizedPath}/.gitignore`);
+		tree.rename(
+			resolve(normalizedPath, 'gitignore'),
+			resolve(normalizedPath, '.gitignore'),
+		);
 		return tree;
 	};
 }

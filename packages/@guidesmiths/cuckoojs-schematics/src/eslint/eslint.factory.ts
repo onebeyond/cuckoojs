@@ -10,56 +10,57 @@ import {
 	url,
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
+import {PackageJsonUtils} from '../utils/package-json.utils';
+import {resolve} from 'path';
 
-export const main = (options: any): Rule => (tree: Tree, context: SchematicContext) => {
-	context.logger.info('Setting up ESlint config');
-	const path = normalize(options.directory);
+interface Options {
+	directory: string;
+}
 
-	const templateSource = apply(url('./files'), [
-		template({...options}),
-		move(path),
-		renameFile(options),
-	]);
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
+		context.logger.info('Setting up ESlint config...');
+		const path = normalize(options.directory);
 
-	const merged = mergeWith(templateSource, MergeStrategy.Overwrite);
+		const templateSource = apply(url(resolve('.', 'files')), [
+			template({...options}),
+			move(path),
+			renameFile(options),
+		]);
 
-	return chain([
-		merged,
-		updatePackageJson(path),
-	])(tree, context)
-};
+		const merged = mergeWith(templateSource, MergeStrategy.Overwrite);
 
-function renameFile(options: any): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+		return chain([
+			merged,
+			updatePackageJson(path),
+		]);
+	};
+}
+
+function renameFile(options: Options): Rule {
+	return (tree: Tree) => {
 		const normalizedPath = normalize(options.directory);
-		tree.rename(`${normalizedPath}/eslintrc.js`, `${normalizedPath}/.eslintrc.js`);
+		tree.rename(
+			resolve(normalizedPath, 'eslintrc.js'),
+			resolve(normalizedPath, '.eslintrc.js'),
+		);
 		return tree;
 	};
 }
 
 function updatePackageJson(directory: string): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree) => {
 		const path = `${directory}/package.json`;
-		const file = tree.read(path) as unknown as string;
-		const json = JSON.parse(file.toString()) as Record<string, any>;
+		const packageJsonUtils = new PackageJsonUtils(tree, path);
 
-		if (!json.devDependencies) {
-			json.devDependencies = {};
-		}
+		packageJsonUtils.addPackage('eslint', '^8.29.0', true);
+		packageJsonUtils.addPackage('eslint-config-airbnb-base', '^15.0.0', true);
+		packageJsonUtils.addPackage('eslint-plugin-import', '^2.26.0', true);
+		packageJsonUtils.addPackage('eslint-plugin-jest', '^27.1.6', true);
 
-		json.devDependencies['eslint'] = '^8.29.0';
-		json.devDependencies['eslint-config-airbnb-base'] = '^15.0.0';
-		json.devDependencies['eslint-plugin-import'] = '^2.26.0';
-		json.devDependencies['eslint-plugin-jest'] = '^27.1.6';
+		packageJsonUtils.addScript('lint', 'eslint .');
+		packageJsonUtils.addScript('lint:fix', 'eslint . --fix');
 
-		if(!json.scripts) {
-			json.scripts = {}
-		}
-
-		json.scripts['lint'] = 'eslint .';
-		json.scripts['lint:fix'] = 'eslint . --fix';
-
-		tree.overwrite(path, JSON.stringify(json, null, 2));
 		return tree;
 	};
 }

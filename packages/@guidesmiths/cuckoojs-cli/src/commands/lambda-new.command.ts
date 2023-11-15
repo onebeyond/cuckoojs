@@ -107,7 +107,7 @@ export class LambdaNewCommand extends AbstractCommand {
 		} catch (error: unknown) {
 			printer.load.fail(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
-			 LambdaNewCommand.endProcess(1);
+      LambdaNewCommand.endProcess(1);
 		}
 	}
 

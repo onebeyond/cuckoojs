@@ -133,7 +133,8 @@ describe('helm', () => {
         const folder = Tree.empty();
         folder.create('package.json',Buffer.from('{}'));
         const tree = await runner
-            .runSchematicAsync('helm', schemaOptions, folder).toPromise();
+          .runSchematicAsync('helm', {serviceName: 'serviceName', imageName: 'imageName'}, Tree.empty())
+          .toPromise();
 
         expect(tree.files).toEqual(expectedFiles);
 

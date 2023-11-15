@@ -11,9 +11,14 @@ import {resolve} from 'path';
 
 import {PackageJsonUtils} from '../utils/package-json.utils';
 
-export function main(options: {directory: string; skipInstall: boolean}): Rule {
+interface Options {
+	directory: string;
+	skipInstall: boolean;
+}
+
+export function main(options: Options): Rule {
 	return (tree: Tree, context: SchematicContext) => {
-		context.logger.info('Adding husky ...');
+		context.logger.info('Adding husky...');
 
 		const path = normalize(resolve(options.directory));
 		if (!tree.exists(normalize('.git/HEAD'))) {
@@ -28,7 +33,7 @@ export function main(options: {directory: string; skipInstall: boolean}): Rule {
 				updatePackageJson(path),
 				runCommand(path, options.skipInstall),
 			]),
-		)(tree, context);
+		);
 	};
 }
 
@@ -50,9 +55,9 @@ function runCommand(directory: string, skipInstall: boolean): Rule {
 	};
 }
 
-function updatePackageJson(_directory: string): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
-		const path = 'package.json';
+function updatePackageJson(directory: string): Rule {
+	return (tree: Tree) => {
+		const path = resolve(directory, 'package.json');
 
 		const packageJsonUtils = new PackageJsonUtils(tree, path);
 		packageJsonUtils.addPackage('husky', '^8.0.3', true);

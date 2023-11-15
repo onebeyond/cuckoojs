@@ -12,12 +12,18 @@ import {
 	url,
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
+import {resolve} from 'path';
+import {PackageJsonUtils} from '../utils/package-json.utils';
 
-export function main(options: any): Rule {
-	return (tree: Tree, context: SchematicContext) => {
+interface Options {
+	directory: string;
+}
+
+export function main(options: Options): Rule {
+	return (_tree: Tree, context: SchematicContext) => {
 		context.logger.info('Adding commitlint ...');
 		const path = normalize(options.directory);
-		const templateSource = apply(url('./files'), [
+		const templateSource = apply(url(resolve('.', 'files')), [
 			template({}),
 			move(path),
 		]);
@@ -27,24 +33,16 @@ export function main(options: any): Rule {
 		return chain([
 			merged,
 			updatePackageJson(path),
-		])(tree, context);
+		]);
 	};
 }
 
 function updatePackageJson(directory: string): Rule {
-	return (tree: Tree, _context: SchematicContext) => {
+	return (tree: Tree) => {
 		const path = `${directory}/package.json`;
-		const file = tree.read(path) as unknown as string;
-		const json = JSON.parse(file.toString()) as Record<string, any>;
-
-		if (!json.devDependencies) {
-			json.devDependencies = {};
-		}
-
-		json.devDependencies['@commitlint/cli'] = '^17.1.2';
-		json.devDependencies['@commitlint/config-conventional'] = '^17.1.0';
-
-		tree.overwrite(path, JSON.stringify(json, null, 2));
+		const packageJsonUtils = new PackageJsonUtils(tree, path);
+		packageJsonUtils.addPackage('@commitlint/cli', '^17.1.2', true);
+		packageJsonUtils.addPackage('@commitlint/config-conventional', '^17.1.0', true);
 		return tree;
 	};
 }
