@@ -2,7 +2,7 @@ import { HelmStrategyFactory } from '../helm.strategy.factory';
 import { NoneTlsCertStrategy } from './none.tlsCert.strategy';
 import { CertManagerTlsCertStrategy } from './cert-manager.tlsCert.strategy';
 import { type TlsCertStrategy } from './tlsCert.strategy';
-import { TlsCertTypes } from './TlsCertTypes.enum';
+import { TlsCertTypes } from './tlsCertTypes.enum';
 
 export class TlsCertStrategyFactory extends HelmStrategyFactory<TlsCertStrategy> {
   create(type: string): TlsCertStrategy {

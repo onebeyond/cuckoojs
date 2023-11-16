@@ -1,4 +1,4 @@
-import { TlsCertTypes } from './TlsCertTypes.enum';
+import { TlsCertTypes } from './tlsCertTypes.enum';
 import { TlsCertStrategy } from './tlsCert.strategy';
 
 export class CertManagerTlsCertStrategy extends TlsCertStrategy {
