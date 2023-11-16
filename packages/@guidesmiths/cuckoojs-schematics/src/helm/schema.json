@@ -117,8 +117,8 @@
             "description": "No tls cert manager"
           },
           {
-            "value": "certManager",
-            "description": "Cert manager"
+            "value": "cert-manager",
+            "description": "cert-manager"
           }
         ]
       },

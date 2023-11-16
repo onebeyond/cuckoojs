@@ -1,8 +1,9 @@
-import {TlsCertStrategy} from './tlsCert.strategy';
+import { TlsCertTypes } from './TlsCertTypes.enum';
+import { TlsCertStrategy } from './tlsCert.strategy';
 
 export class NoneTlsCertStrategy extends TlsCertStrategy {
-	constructor() {
-		super(false);
-		this.templatePath.push('none');
-	}
+  constructor() {
+    super(false);
+    this.templatePath.push(TlsCertTypes.NONE);
+  }
 }
