@@ -1,5 +1,6 @@
 import {
 	chain,
+  noop,
 	type Rule,
 	type SchematicContext,
 	type Tree,
@@ -10,9 +11,14 @@ import {execSync} from 'child_process';
 import {resolve} from 'path';
 import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks'
 
-export function main(options: {directory: string}): Rule {
+interface Options {
+  directory: string;
+  skipInstall: boolean;
+}
+
+export function main(options: Options): Rule {
 	return (tree: Tree, context: SchematicContext) => {
-		context.logger.info('Adding Husky, Commitlint, Gitignore, Nvmrc and NestJS-config...');
+		context.logger.info('Adding Husky, Commitlint, Gitignore, Nvmrc...');
 
     if (!tree.exists(normalize(`${options.directory}/package.json`))) {
 			context.logger.warn(
@@ -22,12 +28,11 @@ export function main(options: {directory: string}): Rule {
 		}
 
 		return chain([
-      schematic('nestjs-config', {...options, skipInstall: true}),
 			schematic('husky', options),
 			schematic('commitlint', options),
 			schematic('gitignore', options),
 			schematic('nvmrc', options),
-      installDependencies(),
+      options.skipInstall ? noop() : installDependencies(),
 		]);
 	};
 }

@@ -9,15 +9,15 @@ package:
 - commitlint
 - gitignore
 - nvmrc
-- nestjs-config
 
 Check their correspondent README files for more info.
 
 ## Options
 
-| Option     | Description                                                         | Requiered | Type | Default    |
-|------------|---------------------------------------------------------------------|---|---|------------|
-| `directory` | Root folder of your NestJS project                                  | false | string | `.`        |
+| Option        | Description                                                         | Requiered | Type | Default    |
+|---------------|---------------------------------------------------------------------|---|---|------------|
+| `directory`   | Root folder of your NestJS project                                  | false | string | `.`        |
+| `skipInstall` | Root folder of your NestJS project                                  | false | string | `.`        |
 
 ## How to use it within a project
 

@@ -8,6 +8,11 @@
       "type": "string",
       "description": "destination directory.",
       "default": "."
+    },
+    "skillInstall": {
+      "type": "boolean",
+      "description": "skip npm install.",
+      "default": false
     }
   }
 }
