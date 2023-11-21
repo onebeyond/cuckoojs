@@ -18,7 +18,7 @@ interface Options {
 
 export function main(options: Options): Rule {
 	return (tree: Tree, context: SchematicContext) => {
-		context.logger.info('Adding Husky, Commitlint, Gitignore, Nvmrc...');
+		context.logger.info('Adding husky, commitlint, gitignore, nvmrc...');
 
     if (!tree.exists(normalize(`${options.directory}/package.json`))) {
 			context.logger.warn(
