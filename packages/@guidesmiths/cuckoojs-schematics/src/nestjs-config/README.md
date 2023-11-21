@@ -14,10 +14,11 @@ env var defined via the `envVar` option.
 
 ## Options
 
-| Option     | Description                                                         | Requiered | Type | Default    |
-|------------|---------------------------------------------------------------------|---|---|------------|
-| `directory` | Root folder of your NestJS project                                  | false | string | `.`        |
-| `envVar  ` | Name of the env var that determines your environment during runtime | false | string | `NODE_ENV` |
+| Option        | Description                                                                 | Requiered | Type    | Default    |
+|---------------|-----------------------------------------------------------------------------|---|---------|------------|
+| `directory`   | Root folder of your NestJS project                                          | false | string  | `.`        |
+| `envVar`      | Name of the env var that determines your environment during runtime         | false | string  | `NODE_ENV` |
+| `skipInstall` | Skips the installation process of the packages included with this schematic | false | boolean | `false`    |
 
 ## How to use it within a project
 

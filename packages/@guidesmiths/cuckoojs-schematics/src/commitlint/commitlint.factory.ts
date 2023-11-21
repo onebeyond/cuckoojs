@@ -12,7 +12,6 @@ import {
 	url,
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
-import {resolve} from 'path';
 import {PackageJsonUtils} from '../utils/package-json.utils';
 
 interface Options {
@@ -23,7 +22,7 @@ export function main(options: Options): Rule {
 	return (_tree: Tree, context: SchematicContext) => {
 		context.logger.info('Adding commitlint ...');
 		const path = normalize(options.directory);
-		const templateSource = apply(url(resolve('.', 'files')), [
+		const templateSource = apply(url(normalize('./files')), [
 			template({}),
 			move(path),
 		]);
@@ -39,7 +38,7 @@ export function main(options: Options): Rule {
 
 function updatePackageJson(directory: string): Rule {
 	return (tree: Tree) => {
-		const path = `${directory}/package.json`;
+		const path = normalize(`${directory}/package.json`);
 		const packageJsonUtils = new PackageJsonUtils(tree, path);
 		packageJsonUtils.addPackage('@commitlint/cli', '^17.1.2', true);
 		packageJsonUtils.addPackage('@commitlint/config-conventional', '^17.1.0', true);

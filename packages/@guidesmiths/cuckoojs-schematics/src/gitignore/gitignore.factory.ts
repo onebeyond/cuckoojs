@@ -11,7 +11,6 @@ import {
 	url,
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
-import {resolve} from 'path';
 
 interface Options {
 	directory: string;
@@ -21,7 +20,7 @@ export function main(options: Options): Rule {
 	return (_tree: Tree, context: SchematicContext) => {
 		context.logger.info('Creating .gitignore file...');
 
-		const templateSource = apply(url(resolve('.', 'files')), [
+		const templateSource = apply(url(normalize('./files')), [
 			template({}),
 			move(normalize(options.directory)),
 			renameFile(options),
@@ -33,10 +32,9 @@ export function main(options: Options): Rule {
 
 function renameFile(options: Options): Rule {
 	return (tree: Tree) => {
-		const normalizedPath = normalize(options.directory);
 		tree.rename(
-			resolve(normalizedPath, 'gitignore'),
-			resolve(normalizedPath, '.gitignore'),
+      normalize(`${options.directory}/gitignore`),
+      normalize(`${options.directory}/.gitignore`),
 		);
 		return tree;
 	};
