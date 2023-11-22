@@ -15,6 +15,6 @@ export class GitRunner extends GenericRunner {
 	}
 
 	public async createBranch({folderName, initialBranch = 'main'}: CreateBranchOptions) {
-		await super.run({command: `-C ${folderName} checkout`, args: ['-b', initialBranch]});
+		await super.run({command: `-C ${folderName} checkout`, args: ['-b', initialBranch], stdio: 'pipe'});
 	}
 }
