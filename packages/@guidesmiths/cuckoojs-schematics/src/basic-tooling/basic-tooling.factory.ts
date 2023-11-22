@@ -9,7 +9,6 @@ import {schematic} from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
 import {execSync} from 'child_process';
 import {resolve} from 'path';
-import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks'
 
 interface Options {
   directory: string;
@@ -32,14 +31,7 @@ export function main(options: Options): Rule {
 			schematic('commitlint', options),
 			schematic('gitignore', options),
 			schematic('nvmrc', options),
-      options.skipInstall ? noop() : installDependencies(),
+      options.skipInstall ? noop() : schematic('install-packages', options),
 		]);
 	};
-}
-
-function installDependencies(): Rule {
-  return (tree: Tree, context: SchematicContext) => {
-    context.addTask(new NodePackageInstallTask());
-    return tree;
-  };
 }
