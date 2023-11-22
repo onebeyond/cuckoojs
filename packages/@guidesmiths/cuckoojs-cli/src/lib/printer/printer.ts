@@ -75,36 +75,27 @@ export default class Printer {
 		return Math.floor((columns - text.length) / 2);
 	}
 
-	total: number;
-	step: number;
-	load: loading.Loading;
-	constructor({total, step}: {total: number; step: number}) {
-		this.total = total;
-		this.step = step;
-		this.load = this.initLoader();
-	}
 
-	public initLoader(): loading.Loading {
-		return loading({
-			color: 'green',
-			interval: 100,
-			stream: process.stdout,
-			frames: ['◐', '◓', '◑', '◒'],
-		}).start();
+	load: loading.Loading;
+	constructor() {
+		this.load = loading({
+      color: 'green',
+      interval: 100,
+      stream: process.stdout,
+      frames: ['◐', '◓', '◑', '◒'],
+    });
 	}
 
 	public startStep(text: string): void {
-		this.load.text = `(${this.step}/${this.total}) ${text}`;
+		this.load.text = text;
 		this.load.start();
 	}
 
 	public updateStep(text: string): void {
-		this.load.text =`(${this.step}/${this.total}) ${text}`;
+		this.load.text = text;
 	}
 
-	public endStep(): number {
+	public endStep(): void {
 		this.load.succeed(this.load.text);
-		this.step += 1;
-		return this.step;
 	}
 }

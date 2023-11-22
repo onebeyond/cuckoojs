@@ -31,7 +31,7 @@ export class NewCommand extends AbstractCommand {
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 8, step: 1});
+    const printer = new Printer();
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {
