@@ -60,6 +60,11 @@
       "description": "Add basic tooling to the project",
       "factory": "./basic-tooling/basic-tooling.factory#main",
       "schema": "./basic-tooling/schema.json"
+    },
+    "install-packages": {
+      "description": "Install packages in your project",
+      "factory": "./install-packages/install-packages.factory#main",
+      "schema": "./install-packages/schema.json"
     }
   }
 }

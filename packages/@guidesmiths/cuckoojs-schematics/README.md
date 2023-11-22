@@ -31,6 +31,7 @@ That's it!
 
 - [`nestjs-config`](/packages/@guidesmiths/cuckoojs-schematics/src/nestjs-config/README.md)
 - [`basic-tooling`](/packages/@guidesmiths/cuckoojs-schematics/src/basic-tooling/README.md)
+- [`install-packages`](/packages/@guidesmiths/cuckoojs-schematics/src/install-packages/README.md)
 
 ### Pull Request Template
 
