@@ -9,6 +9,7 @@ import {
 	template,
 	chain,
 	url,
+  noop
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
 import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
@@ -17,6 +18,7 @@ import {PackageJsonUtils} from '../utils/package-json.utils';
 
 interface Options {
   directory: string;
+  skipInstall: boolean;
 }
 
 export function main(options: Options): Rule {
@@ -40,7 +42,7 @@ export function main(options: Options): Rule {
       mergeWith(templateSource, MergeStrategy.Overwrite),
       addConfigToModuleRule(appFile),
       updatePackageJson(),
-      installDependencies(),
+      options.skipInstall ? noop() : installDependencies(),
     ]);
   };
 }
