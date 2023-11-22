@@ -2,9 +2,11 @@ import {
   type Rule,
   type SchematicContext,
   type Tree,
-} from "@angular-devkit/schematics";
+} from '@angular-devkit/schematics';
 
-import { RuleBuilderFactory } from "./rule-builder/rule.builder.factory";
+import { RuleBuilderFactory } from './rule-builder/rule.builder.factory';
+import { type IngressType } from './helm-strategies/ingress-controller/ingressTypes.enum';
+import { type TlsCertType } from './helm-strategies/tls-cert/tlsCertTypes.enum';
 
 interface Options {
   serviceName: string;
@@ -17,18 +19,18 @@ interface Options {
   autoscalingReplicasMin: number;
   autoscalingReplicasMax: number;
   autoscalingTargetCpu: number;
-  ingressController: string;
-  tlsCertManager: string;
+  ingressController: IngressType;
+  tlsCertManager: TlsCertType;
   domainName: string;
 }
 
 export function main(options: Options): Rule {
   return (_tree: Tree, context: SchematicContext) => {
-    context.logger.info("Creating Helm Chart...");
+    context.logger.info('Creating Helm Chart...');
 
     const ruleBuilder = new RuleBuilderFactory().create({
-      ingressType: options.ingressController as string,
-      tlsCertType: options.tlsCertManager as string,
+      ingressType: options.ingressController,
+      tlsCertType: options.tlsCertManager,
       logger: context.logger,
     });
 
