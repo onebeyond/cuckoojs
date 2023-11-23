@@ -33,7 +33,7 @@ export class LambdaNewCommand extends AbstractCommand {
 	}
 
 	public async execute() {
-		const printer = new Printer({total: 11, step: 1});
+		const printer = new Printer();
 		this.printSuccess(messages.banner);
 
 		if (this.checkFileExists()) {

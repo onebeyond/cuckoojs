@@ -1,9 +1,9 @@
-import {SchematicRunner} from '../lib/runners/schematic.runner';
 import {messages} from '../lib/ui/ui';
 import {AbstractCommand} from './abstract.command';
+import {NestRunner} from '../lib/runners/nest.runner';
 
 export class GenerateCommand extends AbstractCommand {
-	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
+	private readonly schematicRunner: NestRunner = new NestRunner();
 
 	constructor(
 		private readonly schematic: string,
