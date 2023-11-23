@@ -10,9 +10,9 @@ of schematics and its `Tree`.
 
 ## Options
 
-| Option        | Description                                                         | Requiered | Type | Default |
-|---------------|---------------------------------------------------------------------|---|---|---------|
-| `directory`   | Root folder of your NestJS project                                  | false | string | `.`     |
+| Option        | Description                                                        | Requiered | Type | Default |
+|---------------|--------------------------------------------------------------------|---|---|---------|
+| `directory`   | Root folder of your project                                  | false | string | `.`     |
 
 ## How to use it within a project
 
