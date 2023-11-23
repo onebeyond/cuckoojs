@@ -12,38 +12,33 @@ export class SchematicRunner extends GenericRunner {
 		super('node');
 	}
 
-	public async generateNestApplication(name: string) {
-		const args = ['@nestjs/schematics:application', `--name ${name} --verbosity=QUIET -`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
-	}
-
 	public async generateNestElement(schematic: string, name: string, options: string[]) {
 		const args = [`@nestjs/schematics:${schematic} ${name} ${options.join(' ')}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
 	}
 
 	public async addGitignoreFile(name: string) {
 		const args = [`@guidesmiths/cuckoojs-schematics:gitignore --directory=${name}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
 	}
 
 	public async addCommitlint(name: string) {
 		const args = [`@guidesmiths/cuckoojs-schematics:commitlint --directory=${name}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
 	}
 
 	public async addPullRequestTemplate(name: string, gitProvider: string) {
 		const args = [`@guidesmiths/cuckoojs-schematics:pr-template --directory=${name} --git-provider=${gitProvider}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
 	}
 
 	public async addLambdaQuickstart(name: string) {
 		const args = [`@guidesmiths/cuckoojs-schematics:lambda-quickstart --directory=${name} --service-name=${name}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
 	}
 
 	public async addESlint(name: string) {
 		const args = [`@guidesmiths/cuckoojs-schematics:eslint --directory=${name}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args, stdio: ['pipe', 'pipe', 'inherit']});
+		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
 	}
 }

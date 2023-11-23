@@ -15,7 +15,7 @@ export class GenericRunner {
 		command,
 		args = [],
 		cwd = process.cwd(),
-		stdio = 'pipe',
+		stdio = 'inherit',
 	}: RunObject): Promise<string | void> {
 		const options: SpawnOptions = {
 			cwd,

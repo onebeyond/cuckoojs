@@ -46,7 +46,7 @@ export class NpmRunner extends GenericRunner {
 
 	public async runScript(name: string, script: string) {
 		const args = [`--prefix ${name} ${script}`];
-		await super.run({command: 'run', args, stdio: 'pipe'});
+		await super.run({command: 'run', args});
 	}
 
 	public async addPackages(name: string, packageEntries: PackageEntry[]) {
