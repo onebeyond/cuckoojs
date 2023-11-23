@@ -14,6 +14,30 @@
       "description": "docker image name to deploy on kubernetes",
       "x-prompt": "What image do you want to config deployment?"
     },
+    "containerPort": {
+      "type": "number",
+      "description": "port to expose on the container",
+      "x-prompt": "What port do you want to expose on the container?",
+      "default": 4000
+    },
+    "portProtocol": {
+      "type": "string",
+      "description": "protocol to expose on the container",
+      "x-prompt": "What protocol do you want to expose on the container?",
+      "default": "TCP"
+    },
+    "livenessProbePath": {
+      "type": "string",
+      "description": "path to check liveness probe",
+      "x-prompt": "What path do you want to check liveness probe?",
+      "default": "/"
+    },
+    "readinessProbePath": {
+      "type": "string",
+      "description": "path to check readyness probe",
+      "x-prompt": "What path do you want to check readyness probe?",
+      "default": "/"
+    },
     "resourcesLimitCpu": {
       "type": "number",
       "description": "max cpu used by a pod",
@@ -61,6 +85,50 @@
       "description": "Target cpu to enable pods autoscaling",
       "x-prompt": "What is the target percentage cpu to autoscale pods?",
       "default": 75
+    },
+    "ingressController": {
+      "type": "string",
+      "description": "Ingress controller to be used",
+      "x-prompt": {
+        "message": "What ingress controller do you want to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": "generic",
+            "description": "Generic ingress controller"
+          },
+          {
+            "value": "traefik",
+            "description": "Traefik ingress controller"
+          }
+        ]
+      },
+      "default": "generic"
+    },
+    "tlsCertManager": {
+      "type": "string",
+      "description": "TLS certificate manager to be used",
+      "x-prompt": {
+        "message": "What tls cert manager do you want to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": "none",
+            "description": "No tls cert manager"
+          },
+          {
+            "value": "cert-manager",
+            "description": "cert-manager"
+          }
+        ]
+      },
+      "default": "none"
+    },
+    "domainName": {
+      "type": "string",
+      "description": "Domain name for the service",
+      "x-prompt": "What damain name do you want to provide to the service?",
+      "default": "chart-example.local"
     }
   },
   "required": ["serviceName", "imageName"]
