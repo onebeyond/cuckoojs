@@ -7,8 +7,6 @@ import {
 } from '@angular-devkit/schematics';
 import {schematic} from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
-import {execSync} from 'child_process';
-import {resolve} from 'path';
 
 interface Options {
   directory: string;
@@ -19,11 +17,12 @@ export function main(options: Options): Rule {
 	return (tree: Tree, context: SchematicContext) => {
 		context.logger.info('Adding husky, commitlint, gitignore, nvmrc...');
 
-    if (!tree.exists(normalize(`${options.directory}/package.json`))) {
+    let existPackageJson = true;
+    if (!tree.exists(normalize(`./package.json`))) {
 			context.logger.warn(
-				'package.json file not found. Initializing package.json',
+				'package.json file not found. Skipping installation',
 			);
-			execSync('npm init --y', {cwd: resolve(options.directory)});
+			existPackageJson = false;
 		}
 
 		return chain([
@@ -31,7 +30,7 @@ export function main(options: Options): Rule {
 			schematic('commitlint', options),
 			schematic('gitignore', options),
 			schematic('nvmrc', options),
-      options.skipInstall ? noop() : schematic('install-packages', options),
+      options.skipInstall || !existPackageJson ? noop() : schematic('install-packages', options),
 		]);
 	};
 }
