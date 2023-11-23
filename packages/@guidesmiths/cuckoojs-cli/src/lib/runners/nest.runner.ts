@@ -14,6 +14,15 @@ export class NestRunner extends GenericRunner {
 
   public async generateNestApplication(name: string): Promise<void> {
     const args = ['new', name, '--skip-install'];
-    await super.run({command: NestRunner.getCliPath(), args, stdio: ['inherit', 'inherit', 'inherit']});
+    await this.runNestCli(args);
+  }
+
+  public async generateNestElement(schematic: string, name: string, options: string[]) {
+    const args = ['generate', schematic, name, ...options];
+    await this.runNestCli(args);
+  }
+
+  private async runNestCli(args: string[]) {
+    await super.run({command: NestRunner.getCliPath(), args});
   }
 }

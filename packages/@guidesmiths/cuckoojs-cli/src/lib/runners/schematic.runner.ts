@@ -12,11 +12,6 @@ export class SchematicRunner extends GenericRunner {
 		super('node');
 	}
 
-	public async generateNestElement(schematic: string, name: string, options: string[]) {
-		const args = [`@nestjs/schematics:${schematic} ${name} ${options.join(' ')}`];
-		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
-	}
-
 	public async addGitignoreFile(name: string) {
 		const args = [`@guidesmiths/cuckoojs-schematics:gitignore --directory=${name}`];
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
