@@ -9,16 +9,13 @@ import {
 	template,
 	chain,
 	url,
-  noop
 } from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
-import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
 import {addConfigToModuleRule} from './utils/add-config-to-module-rule';
 import {PackageJsonUtils} from '../utils/package-json.utils';
 
 interface Options {
   directory: string;
-  skipInstall: boolean;
 }
 
 export function main(options: Options): Rule {
@@ -42,7 +39,6 @@ export function main(options: Options): Rule {
       mergeWith(templateSource, MergeStrategy.Overwrite),
       addConfigToModuleRule(appFile),
       updatePackageJson(),
-      options.skipInstall ? noop() : installDependencies(),
     ]);
   };
 }
@@ -55,16 +51,8 @@ function updatePackageJson(): Rule {
     packageJsonUtils.addPackage('class-transformer', '^0.5.1', false);
     packageJsonUtils.addPackage('class-validator', '^0.14.0', false);
     packageJsonUtils.addPackage('lodash.merge', '^4.6.2', false);
-
     return tree;
   };
 }
 
-function installDependencies(): Rule {
-  return (tree: Tree, context: SchematicContext) => {
-    context.addTask(new NodePackageInstallTask());
-
-    return tree;
-  };
-}
 
