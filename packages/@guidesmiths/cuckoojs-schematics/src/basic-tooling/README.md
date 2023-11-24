@@ -17,7 +17,6 @@ Check their correspondent README files for more info.
 | Option        | Description                                                         | Requiered | Type | Default |
 |---------------|---------------------------------------------------------------------|---|---|---------|
 | `directory`   | Root folder of your NestJS project                                  | false | string | `.`     |
-| `skipInstall` | Root folder of your NestJS project                                  | false | string | `false` |
 
 ## How to use it within a project
 
