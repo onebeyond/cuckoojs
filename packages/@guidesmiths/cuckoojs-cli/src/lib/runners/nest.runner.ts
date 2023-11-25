@@ -12,8 +12,8 @@ export class NestRunner extends GenericRunner {
     super('node');
   }
 
-  public async generateNestApplication(name: string): Promise<void> {
-    const args = ['new', name, '--skip-install'];
+  public async generateNestApplication(name: string, packageManager: string): Promise<void> {
+    const args = ['new', name, `--package-manager ${packageManager}`, '--skip-install'];
     await this.runNestCli(args);
   }
 
