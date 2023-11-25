@@ -47,7 +47,8 @@
     "test": "jest src/**/*.spec.ts",
     "test:dev": "npm run build && jest src/**/*.spec.ts",
     "lint": "eslint --ext .ts . && tsc --noemit",
-    "lint:fix": "eslint --fix --ext .ts ."
+    "lint:fix": "eslint --fix --ext .ts .",
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
     "@angular-devkit/core": "^14.2.7",
