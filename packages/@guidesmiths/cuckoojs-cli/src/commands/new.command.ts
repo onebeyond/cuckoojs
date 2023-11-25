@@ -1,30 +1,18 @@
 import {SchematicRunner} from '../lib/runners/schematic.runner';
 import {GitRunner} from '../lib/runners/git.runner';
-import type {PackageEntry, ScriptEntry} from '../lib/runners/npm.runner';
-import {NpmRunner} from '../lib/runners/npm.runner';
 import {messages} from '../lib/ui/ui';
 import * as fs from 'fs';
 import {join} from 'path';
-import {BashRunnerHusky} from '../lib/runners/bash.runner.husky';
 import {AbstractCommand} from './abstract.command';
 import {NestRunner} from '../lib/runners/nest.runner';
 import Printer from '../lib/printer/printer';
+import {Prompter} from '../lib/utils/Prompter/Prompter';
+import {PackageManager} from '../lib/utils/PackageManager/PackageManager';
 
 export class NewCommand extends AbstractCommand {
 	private readonly schematicRunner: SchematicRunner = new SchematicRunner();
 	private readonly gitRunner: GitRunner = new GitRunner();
-	private readonly npmRunner: NpmRunner = new NpmRunner();
-	private readonly bashRunnerHusky: BashRunnerHusky = new BashRunnerHusky();
 	private readonly nestRunner: NestRunner = new NestRunner();
-
-	private readonly initialPackages: PackageEntry[] = [
-		{name: 'husky', version: '^8.0.1', section: 'devDependencies'},
-	];
-
-	private readonly initialScripts: ScriptEntry[] = [
-		{name: 'prepare', value: 'husky install'},
-		{name: 'postinstall', value: 'npx @guidesmiths/license-checker --outputFileName license-report --failOn /GPL/'},
-	];
 
 	constructor(
 		private readonly name: string,
@@ -42,25 +30,21 @@ export class NewCommand extends AbstractCommand {
 		}
 
 		try {
-			await this.nestRunner.generateNestApplication(this.name);
+      const packageManager = await Prompter.promptPackageManager();
+
+			await this.nestRunner.generateNestApplication(this.name, packageManager);
 
 			await this.gitRunner.createBranch({folderName: this.name});
 
-			await this.npmRunner.addPackages(this.name, this.initialPackages);
+			await this.schematicRunner.addBasicTooling(this.name);
 
-			await this.npmRunner.addScripts(this.name, this.initialScripts);
-
-			await this.schematicRunner.addCommitlint(this.name);
-
-			await this.schematicRunner.addGitignoreFile(this.name);
+      await this.schematicRunner.addNestJsConfigModule(this.name);
 
       printer.startStep('Installing dependencies');
-			await this.npmRunner.install(this.name);
+			await new PackageManager(this.name).install(packageManager);
       printer.endStep();
 
-			await this.bashRunnerHusky.addHuskyCommitMsg(this.name);
-
-      this.printSuccess(`\n        🐦 Your CuckooJS nest "${this.name}" is generated and ready to use 🐦`);
+      this.printSuccess(`\n🐦 Your CuckooJS Nest "${this.name}" project is generated and ready to use 🐦`);
 		} catch (error: unknown) {
       printer.load.fail(`Error generating new project: ${(error as Error).message}`);
 			this.removeFolder();
