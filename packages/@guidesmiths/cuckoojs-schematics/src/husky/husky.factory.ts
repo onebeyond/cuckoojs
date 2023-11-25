@@ -18,7 +18,7 @@ export function main(options: Options): Rule {
 	return function (tree: Tree, context: SchematicContext) {
 		context.logger.info('Adding husky...');
 
-		if (!tree.exists(normalize('.git/HEAD'))) {
+		if (!tree.exists(normalize(`${options.directory}/.git/HEAD`))) {
 			context.logger.info(
 				'Git directory not found. Husky installation will not proceed. Please, consider initializing Git on this project',
 			);
@@ -41,11 +41,10 @@ function runCommand(directory: string, skipInstall: boolean): Rule {
 			return tree;
 		}
 
-		const path = normalize(`${directory}/.husky/commit-msg`);
-		execSync('npx husky install');
-		execSync(`npx husky add ${path} 'npx --no -- commitlint --edit "$1"'`);
-		const path2 = normalize(`${directory}/.husky/pre-push`);
-		execSync(`npx husky add ${path2} 'npm run test'`);
+    const cwd = normalize(directory);
+		execSync('npx husky install', { cwd });
+		execSync(`npx husky add ${normalize(`.husky/commit-msg`)} 'npx --no -- commitlint --edit "$1"'`, { cwd });
+		execSync(`npx husky add ${normalize(`.husky/pre-push`)} 'npm run test'`, { cwd });
 		return tree;
 	};
 }
