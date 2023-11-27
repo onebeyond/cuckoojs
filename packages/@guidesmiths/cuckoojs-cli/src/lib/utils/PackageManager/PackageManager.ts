@@ -1,6 +1,6 @@
-import {detect} from 'detect-package-manager';
-import {resolve} from 'path';
-import {existsSync} from 'fs';
+import { detect } from 'detect-package-manager';
+import { resolve } from 'path';
+import { existsSync } from 'fs';
 import spawnAsync from '../spawnAsync';
 
 export enum PackagerManagerEnum {
@@ -15,20 +15,19 @@ const lockFiles: Record<PackagerManagerEnum, string> = {
   [PackagerManagerEnum.npm]: 'package-lock.json',
   [PackagerManagerEnum.yarn]: 'yarn.lock',
   [PackagerManagerEnum.pnpm]: 'pnpm-lock.yaml',
-}
+};
 
 const initArgs: Record<PackagerManagerEnum, string> = {
   [PackagerManagerEnum.npm]: 'init --y --name=',
   [PackagerManagerEnum.yarn]: 'init --y --name ',
   [PackagerManagerEnum.pnpm]: 'init --y --name ',
-}
+};
 
 const installArgs: Record<PackagerManagerEnum, string> = {
   [PackagerManagerEnum.npm]: 'install',
   [PackagerManagerEnum.yarn]: 'install',
   [PackagerManagerEnum.pnpm]: 'install',
-}
-
+};
 
 export class PackageManager {
   private readonly path: string;
@@ -59,9 +58,9 @@ export class PackageManager {
   }
 
   public detect(): Promise<PackagerManagerEnum> {
-    return (detect({
+    return detect({
       cwd: this.path,
       includeGlobalBun: false,
-    }) as Promise<PackagerManagerEnum>);
+    }) as Promise<PackagerManagerEnum>;
   }
 }

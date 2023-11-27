@@ -1,8 +1,7 @@
-import spawnAsync, {RunObject} from '../utils/spawnAsync';
+import spawnAsync, { RunObject } from '../utils/spawnAsync';
 
 export class GenericRunner {
-  constructor(protected binary: string) {
-  }
+  constructor(protected binary: string) {}
 
   protected run({
     command,
@@ -10,6 +9,11 @@ export class GenericRunner {
     cwd = process.cwd(),
     stdio = 'inherit',
   }: RunObject) {
-    return spawnAsync({command: this.binary, args: [command, ...args], stdio, cwd});
+    return spawnAsync({
+      command: this.binary,
+      args: [command, ...args],
+      stdio,
+      cwd,
+    });
   }
 }

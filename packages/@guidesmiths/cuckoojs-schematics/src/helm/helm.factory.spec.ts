@@ -1,6 +1,6 @@
-import { Tree } from "@angular-devkit/schematics";
-import { SchematicTestRunner } from "@angular-devkit/schematics/testing";
-import * as path from "path";
+import { Tree } from '@angular-devkit/schematics';
+import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+import * as path from 'path';
 import {
   getBasicValues,
   getBasicIngress,
@@ -9,9 +9,9 @@ import {
   getBasicValuesTls,
   getTraefikIngressTls,
   getBasicIngressTls,
-} from "./__fixtures__";
+} from './__fixtures__';
 
-const collectionPath = path.join(__dirname, "../collection.json");
+const collectionPath = path.join(__dirname, '../collection.json');
 
 const cases = [
   {
@@ -125,35 +125,35 @@ const cases = [
     expectedIngress: getTraefikIngressTls(),
   },
 ];
-describe("helm", () => {
+describe('helm', () => {
   test.each(cases)(
-    "works for helm with $ingressType ingress controller and $tlsCertType",
+    'works for helm with $ingressType ingress controller and $tlsCertType',
     async ({
       schemaOptions,
       expectedFiles,
       expectedValues,
       expectedIngress,
     }) => {
-      const runner = new SchematicTestRunner("schematics", collectionPath);
+      const runner = new SchematicTestRunner('schematics', collectionPath);
       const folder = Tree.empty();
-      folder.create("package.json", Buffer.from("{}"));
+      folder.create('package.json', Buffer.from('{}'));
       const tree = await runner
         .runSchematicAsync('helm', schemaOptions, folder)
         .toPromise();
 
       expect(tree.files).toEqual(expectedFiles);
 
-      const packageJson = JSON.parse(tree.readContent("./package.json"));
+      const packageJson = JSON.parse(tree.readContent('./package.json'));
       expect(packageJson.scripts).toEqual({
-        "helm:upgrade":
-          "helm upgrade -f ./.helm/values.yml serviceName ./.helm",
+        'helm:upgrade':
+          'helm upgrade -f ./.helm/values.yml serviceName ./.helm',
       });
 
-      const helmValues = tree.readContent("/.helm/values.yaml");
+      const helmValues = tree.readContent('/.helm/values.yaml');
       expect(helmValues).toEqual(expectedValues);
 
-      const ingress = tree.readContent("/.helm/templates/ingress.yaml");
+      const ingress = tree.readContent('/.helm/templates/ingress.yaml');
       expect(ingress).toEqual(expectedIngress);
-    }
+    },
   );
 });

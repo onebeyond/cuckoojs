@@ -1,7 +1,7 @@
 /*
-* Copy-paste from https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/utility/change.ts
-* following suggestions from this issue: https://github.com/angular/angular-cli/issues/19885#issuecomment-768272337
-* */
+ * Copy-paste from https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/utility/change.ts
+ * following suggestions from this issue: https://github.com/angular/angular-cli/issues/19885#issuecomment-768272337
+ * */
 
 /**
  * @license
@@ -51,7 +51,11 @@ export class InsertChange implements Change {
   order: number;
   description: string;
 
-  constructor(public path: string, public pos: number, public toAdd: string) {
+  constructor(
+    public path: string,
+    public pos: number,
+    public toAdd: string,
+  ) {
     if (pos < 0) {
       throw new Error('Negative positions are invalid');
     }
@@ -79,7 +83,11 @@ export class RemoveChange implements Change {
   order: number;
   description: string;
 
-  constructor(public path: string, private pos: number, public toRemove: string) {
+  constructor(
+    public path: string,
+    private pos: number,
+    public toRemove: string,
+  ) {
     if (pos < 0) {
       throw new Error('Negative positions are invalid');
     }
@@ -125,7 +133,9 @@ export class ReplaceChange implements Change {
       const text = content.substring(this.pos, this.pos + this.oldText.length);
 
       if (text !== this.oldText) {
-        return Promise.reject(new Error(`Invalid replace: "${text}" != "${this.oldText}".`));
+        return Promise.reject(
+          new Error(`Invalid replace: "${text}" != "${this.oldText}".`),
+        );
       }
 
       // TODO: throw error if oldText doesn't match removed string.
@@ -134,7 +144,10 @@ export class ReplaceChange implements Change {
   }
 }
 
-export function applyToUpdateRecorder(recorder: UpdateRecorder, changes: Change[]): void {
+export function applyToUpdateRecorder(
+  recorder: UpdateRecorder,
+  changes: Change[],
+): void {
   for (const change of changes) {
     if (change instanceof InsertChange) {
       recorder.insertLeft(change.pos, change.toAdd);
@@ -144,7 +157,9 @@ export function applyToUpdateRecorder(recorder: UpdateRecorder, changes: Change[
       recorder.remove(change.order, change.oldText.length);
       recorder.insertLeft(change.order, change.newText);
     } else if (!(change instanceof NoopChange)) {
-      throw new Error('Unknown Change type encountered when updating a recorder.');
+      throw new Error(
+        'Unknown Change type encountered when updating a recorder.',
+      );
     }
   }
 }
