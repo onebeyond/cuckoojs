@@ -58,8 +58,11 @@
     "@guidesmiths/cuckoojs-schematics": "^0.0.9",
     "@nestjs/cli": "^10.2.1",
     "@nestjs/schematics": "^9.0.3",
+    "@types/inquirer": "^7.3.3",
     "@types/node": "^18.11.17",
     "commander": "^9.4.1",
+    "detect-package-manager": "^3.0.1",
+    "inquirer": "^8.2.6",
     "loading-cli": "^1.1.0"
   }
 }

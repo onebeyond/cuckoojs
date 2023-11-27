@@ -36,4 +36,14 @@ export class SchematicRunner extends GenericRunner {
 		const args = [`@guidesmiths/cuckoojs-schematics:eslint --directory=${name}`];
 		await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
 	}
+
+  public async addBasicTooling(name: string) {
+    const args = [`@guidesmiths/cuckoojs-schematics:basic-tooling --directory=${name}`];
+    await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
+  }
+
+  public async addNestJsConfigModule(name: string) {
+    const args = [`@guidesmiths/cuckoojs-schematics:nestjs-config --directory=${name}`];
+    await super.run({command: SchematicRunner.getSchematicsCliPath(), args});
+  }
 }

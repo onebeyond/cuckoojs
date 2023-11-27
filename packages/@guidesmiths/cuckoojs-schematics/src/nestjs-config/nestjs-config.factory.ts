@@ -22,10 +22,10 @@ export function main(options: Options): Rule {
   return (tree: Tree, context: SchematicContext) => {
     context.logger.info('Creating Nest basic config files...');
 
-    const appFile = './src/app.module.ts';
-    if (!tree.exists(normalize('./nest-cli.json')) || !tree.exists(normalize(appFile))) {
+    const appFile = `${options.directory}/src/app.module.ts`;
+    if (!tree.exists(normalize(`${options.directory}/nest-cli.json`)) || !tree.exists(normalize(appFile))) {
       context.logger.info(
-        'This is not a nestJs project. Schematic will not create the config files in this folder.',
+        'This is not a NestJs project. Schematic will not create the config files in this folder.',
       );
       return;
     }
@@ -38,14 +38,14 @@ export function main(options: Options): Rule {
     return chain([
       mergeWith(templateSource, MergeStrategy.Overwrite),
       addConfigToModuleRule(appFile),
-      updatePackageJson(),
+      updatePackageJson(options.directory),
     ]);
   };
 }
 
-function updatePackageJson(): Rule {
+function updatePackageJson(directory: string): Rule {
   return (tree: Tree) => {
-    const path = 'package.json';
+    const path = normalize(`${directory}/package.json`);
     const packageJsonUtils = new PackageJsonUtils(tree, path);
     packageJsonUtils.addPackage('@nestjs/config', '^3.1.1', false);
     packageJsonUtils.addPackage('class-transformer', '^0.5.1', false);
