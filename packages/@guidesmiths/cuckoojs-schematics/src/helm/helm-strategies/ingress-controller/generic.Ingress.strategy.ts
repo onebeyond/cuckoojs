@@ -1,9 +1,9 @@
-import {IngressStrategy} from './ingress.strategy';
+import { IngressStrategy } from './ingress.strategy';
 import { IngressTypes } from './ingressTypes.enum';
 
 export class GenericIngressControllerStrategy extends IngressStrategy {
-	constructor() {
-		super();
-		this.templatePath.push(IngressTypes.GENERIC);
-	}
+  constructor() {
+    super();
+    this.templatePath.push(IngressTypes.GENERIC);
+  }
 }

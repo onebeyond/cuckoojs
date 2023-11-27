@@ -1,9 +1,27 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import loading = require('loading-cli');
 
-type FontColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
+type FontColor =
+  | 'black'
+  | 'red'
+  | 'green'
+  | 'yellow'
+  | 'blue'
+  | 'magenta'
+  | 'cyan'
+  | 'white'
+  | 'none';
 
-type BackgroundColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'none';
+type BackgroundColor =
+  | 'black'
+  | 'red'
+  | 'green'
+  | 'yellow'
+  | 'blue'
+  | 'magenta'
+  | 'cyan'
+  | 'white'
+  | 'none';
 
 type Alignment = 'left' | 'center';
 
@@ -13,89 +31,90 @@ const reset = '\u001b[0m';
 const none = '';
 
 const fontColorMap: Record<FontColor, string> = {
-	black: '\u001b[30m',
-	red: '\u001b[31m',
-	green: '\u001b[32m',
-	yellow: '\u001b[33m',
-	blue: '\u001b[34m',
-	magenta: '\u001b[35m',
-	cyan: '\u001b[35m',
-	white: '\u001b[37m',
-	none,
+  black: '\u001b[30m',
+  red: '\u001b[31m',
+  green: '\u001b[32m',
+  yellow: '\u001b[33m',
+  blue: '\u001b[34m',
+  magenta: '\u001b[35m',
+  cyan: '\u001b[35m',
+  white: '\u001b[37m',
+  none,
 };
 
 const backgroundColorMap: Record<BackgroundColor, string> = {
-	black: '\u001b[40m',
-	red: '\u001b[41m',
-	green: '\u001b[42m',
-	yellow: '\u001b[43m',
-	blue: '\u001b[44m',
-	magenta: '\u001b[45m',
-	cyan: '\u001b[46m',
-	white: '\u001b[47m',
-	none,
+  black: '\u001b[40m',
+  red: '\u001b[41m',
+  green: '\u001b[42m',
+  yellow: '\u001b[43m',
+  blue: '\u001b[44m',
+  magenta: '\u001b[45m',
+  cyan: '\u001b[46m',
+  white: '\u001b[47m',
+  none,
 };
 
 const decorationMap: Record<Decoration, string> = {
-	bold: '\u001b[1m',
-	underline: '\u001b[4m',
-	reversed: '\u001b[7m',
-	none,
+  bold: '\u001b[1m',
+  underline: '\u001b[4m',
+  reversed: '\u001b[7m',
+  none,
 };
 
 interface Style {
-	fontColor?: FontColor;
-	backgroundColor?: BackgroundColor;
-	alignment?: Alignment;
-	decoration?: Decoration;
+  fontColor?: FontColor;
+  backgroundColor?: BackgroundColor;
+  alignment?: Alignment;
+  decoration?: Decoration;
 }
 export default class Printer {
-	public static format({
-		backgroundColor = 'none',
-		fontColor = 'none',
-		alignment = 'left',
-		decoration = 'none',
-	}: Style) {
-		const backgroundCode = backgroundColorMap[backgroundColor];
-		const fontCode = fontColorMap[fontColor];
-		const decorationCode = decorationMap[decoration];
-		return function (text: string) {
-			const formattedText = `${backgroundCode}${fontCode}${decorationCode}${text}${reset}`;
-			let leftPaddingAmount = 0;
-			if (alignment === 'center') {
-				leftPaddingAmount = Printer.calculateLeftPadding(text);
-			}
+  public static format({
+    backgroundColor = 'none',
+    fontColor = 'none',
+    alignment = 'left',
+    decoration = 'none',
+  }: Style) {
+    const backgroundCode = backgroundColorMap[backgroundColor];
+    const fontCode = fontColorMap[fontColor];
+    const decorationCode = decorationMap[decoration];
+    return function (text: string) {
+      const formattedText = `${backgroundCode}${fontCode}${decorationCode}${text}${reset}`;
+      let leftPaddingAmount = 0;
+      if (alignment === 'center') {
+        leftPaddingAmount = Printer.calculateLeftPadding(text);
+      }
 
-			process.stdout.write(`${' '.repeat(leftPaddingAmount)}${formattedText}\n`);
-		};
-	}
+      process.stdout.write(
+        `${' '.repeat(leftPaddingAmount)}${formattedText}\n`,
+      );
+    };
+  }
 
-	private static calculateLeftPadding(text: string) {
-		const columns = process.stdout.columns || 80;
-		return Math.floor((columns - text.length) / 2);
-	}
+  private static calculateLeftPadding(text: string) {
+    const columns = process.stdout.columns || 80;
+    return Math.floor((columns - text.length) / 2);
+  }
 
-
-	load: loading.Loading;
-	constructor() {
-		this.load = loading({
+  load: loading.Loading;
+  constructor() {
+    this.load = loading({
       color: 'green',
       interval: 100,
       stream: process.stdout,
       frames: ['◐', '◓', '◑', '◒'],
     });
-	}
+  }
 
-	public startStep(text: string): void {
-		this.load.text = text;
-		this.load.start();
-	}
+  public startStep(text: string): void {
+    this.load.text = text;
+    this.load.start();
+  }
 
-	public updateStep(text: string): void {
-		this.load.text = text;
-	}
+  public updateStep(text: string): void {
+    this.load.text = text;
+  }
 
-	public endStep(): void {
-		this.load.succeed(this.load.text);
-	}
+  public endStep(): void {
+    this.load.succeed(this.load.text);
+  }
 }

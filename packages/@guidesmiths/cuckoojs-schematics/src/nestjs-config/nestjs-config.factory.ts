@@ -1,18 +1,16 @@
-import type {
-	Rule,
-	SchematicContext,
-	Tree} from '@angular-devkit/schematics';
+import type { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import {
-	apply,
-	MergeStrategy,
-	mergeWith, move,
-	template,
-	chain,
-	url,
+  apply,
+  MergeStrategy,
+  mergeWith,
+  move,
+  template,
+  chain,
+  url,
 } from '@angular-devkit/schematics';
-import {normalize} from '@angular-devkit/core';
-import {addConfigToModuleRule} from './utils/add-config-to-module-rule';
-import {PackageJsonUtils} from '../utils/package-json.utils';
+import { normalize } from '@angular-devkit/core';
+import { addConfigToModuleRule } from './utils/add-config-to-module-rule';
+import { PackageJsonUtils } from '../utils/package-json.utils';
 
 interface Options {
   directory: string;
@@ -23,7 +21,10 @@ export function main(options: Options): Rule {
     context.logger.info('Creating Nest basic config files...');
 
     const appFile = `${options.directory}/src/app.module.ts`;
-    if (!tree.exists(normalize(`${options.directory}/nest-cli.json`)) || !tree.exists(normalize(appFile))) {
+    if (
+      !tree.exists(normalize(`${options.directory}/nest-cli.json`)) ||
+      !tree.exists(normalize(appFile))
+    ) {
       context.logger.info(
         'This is not a NestJs project. Schematic will not create the config files in this folder.',
       );
@@ -31,7 +32,7 @@ export function main(options: Options): Rule {
     }
 
     const templateSource = apply(url('./files'), [
-      template({...options}),
+      template({ ...options }),
       move(normalize(options.directory)),
     ]);
 
@@ -54,5 +55,3 @@ function updatePackageJson(directory: string): Rule {
     return tree;
   };
 }
-
-

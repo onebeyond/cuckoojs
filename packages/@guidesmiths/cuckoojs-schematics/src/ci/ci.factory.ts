@@ -1,30 +1,30 @@
 import {
-	apply,
-	MergeStrategy,
-	mergeWith,
-	type Rule,
-	type SchematicContext,
-	template,
-	type Tree,
-	url,
+  apply,
+  MergeStrategy,
+  mergeWith,
+  type Rule,
+  type SchematicContext,
+  template,
+  type Tree,
+  url,
 } from '@angular-devkit/schematics';
-import {resolve} from 'path';
+import { resolve } from 'path';
 
 interface Options {
-	ciProvider: string;
-	dockerRegistry: string;
-	imageName: string;
+  ciProvider: string;
+  dockerRegistry: string;
+  imageName: string;
 }
 
 export function main(options: Options): Rule {
-	return (_tree: Tree, context: SchematicContext) => {
-		context.logger.info('Creating CI configuration...');
+  return (_tree: Tree, context: SchematicContext) => {
+    context.logger.info('Creating CI configuration...');
 
-		const templateSource = apply(
-			url(resolve('.', 'files', options.ciProvider)),
-			[template({...options})],
-		);
+    const templateSource = apply(
+      url(resolve('.', 'files', options.ciProvider)),
+      [template({ ...options })],
+    );
 
-		return mergeWith(templateSource, MergeStrategy.Overwrite);
-	};
+    return mergeWith(templateSource, MergeStrategy.Overwrite);
+  };
 }
