@@ -11,7 +11,7 @@ export class GitRunner extends GenericRunner {
   }
 
   public async init(folderName: string) {
-    await super.run({ command: 'init', args: [folderName] });
+    await super.run({ command: 'init', args: [folderName], stdio: 'pipe' });
   }
 
   public async createBranch({
