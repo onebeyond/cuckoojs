@@ -28,9 +28,10 @@ module.exports = () => {
 			displayLevel: event.level.toUpperCase().padStart(event.level.length + Math.floor((6 - event.level.length) / 2), ' ')
 				.padEnd(6, ' '),
 			details: Object.keys(details).length ? `\n ${JSON.stringify(details, null, 2)}` : '',
-			errorMessage:
-				event.error &&
-				(event.error.message instanceof Object ? JSON.stringify(event.error.message) : event.error.message),
+      errorMessage: event.error
+        && (event.error.message instanceof Object
+          ? JSON.stringify(event.error.message)
+          : event.error.message),
 			timestamp: event.timestamp.toISOString(),
 		});
 		const colour = colours[event.level] || colours.default;
