@@ -10,7 +10,6 @@ import {
 } from '@angular-devkit/schematics';
 import { normalize } from '@angular-devkit/core';
 import { PackageJsonUtils } from '../utils/package-json.utils';
-import { resolve } from 'path';
 
 interface Options {
   directory: string;
@@ -21,7 +20,7 @@ export function main(options: Options): Rule {
     context.logger.info('Setting up ESlint config...');
     const path = normalize(options.directory);
 
-    const templateSource = apply(url(resolve('.', 'files')), [
+    const templateSource = apply(url(normalize('./files')), [
       template({ ...options }),
       move(path),
       renameFile(options),
@@ -35,10 +34,9 @@ export function main(options: Options): Rule {
 
 function renameFile(options: Options): Rule {
   return (tree: Tree) => {
-    const normalizedPath = normalize(options.directory);
     tree.rename(
-      resolve(normalizedPath, 'eslintrc.js'),
-      resolve(normalizedPath, '.eslintrc.js'),
+      normalize(`${options.directory}/eslintrc.js`),
+      normalize(`${options.directory}/.eslintrc.js`),
     );
     return tree;
   };
@@ -46,7 +44,7 @@ function renameFile(options: Options): Rule {
 
 function updatePackageJson(directory: string): Rule {
   return (tree: Tree) => {
-    const path = `${directory}/package.json`;
+    const path = normalize(`${directory}/package.json`);
     const packageJsonUtils = new PackageJsonUtils(tree, path);
 
     packageJsonUtils.addPackage('eslint', '^8.29.0', true);
