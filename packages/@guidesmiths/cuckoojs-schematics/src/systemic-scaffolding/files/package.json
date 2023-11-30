@@ -1,0 +1,46 @@
+{
+  "name": "<%=directory%>",
+  "version": "0.0.1",
+  "description": "",
+  "author": {
+    "name": "author",
+    "email": "author@domain.com"
+  },
+  "main": "index.js",
+  "scripts": {
+    "local": "SERVICE_ENV=local node index.js",
+    "start": "node index.js",
+    "test": "cross-env SERVICE_ENV=test jest --runInBand --detectOpenHandles --forceExit",
+    "test:watch": "npm run test -- --watch",
+    "test:report": "cross-env CI=true SERVICE_ENV=test jest --runInBand --detectOpenHandles --forceExit --coverage",
+    "manifest": "node_modules/make-manifest/bin/make-manifest",
+    "qa": "npm run lint && npm run test"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.10",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "jest-config": "^29.7.0",
+    "jest-junit": "^16.0.0",
+    "make-manifest": "^2.0.2",
+    "supertest": "^6.3.3"
+  },
+  "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.12",
+    "confabulous": "^1.7.0",
+    "debug": "^4.1.1",
+    "helmet": "^4.1.1",
+    "hogan.js": "^3.0.2",
+    "on-headers": "^1.0.2",
+    "optimist": "^0.6.1",
+    "optional": "^0.1.4",
+    "prepper": "^1.2.0",
+    "ramda": "^0.27.0",
+    "swagger-endpoint-validator": "^4.1.0",
+    "systemic": "^3.3.7",
+    "systemic-domain-runner": "^1.1.0",
+    "systemic-express": "^1.1.1"
+  }
+}
