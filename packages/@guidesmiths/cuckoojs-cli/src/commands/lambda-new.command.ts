@@ -2,8 +2,6 @@ import { SchematicRunner } from '../lib/runners/schematic.runner';
 import type { PackageEntry, ScriptEntry } from '../lib/runners/npm.runner';
 import { NpmRunner } from '../lib/runners/npm.runner';
 import { messages } from '../lib/ui/ui';
-import * as fs from 'fs';
-import { join } from 'path';
 import { BashRunnerHusky } from '../lib/runners/bash.runner.husky';
 import { AbstractCommand } from './abstract.command';
 import Printer from '../lib/printer/printer';
@@ -40,7 +38,7 @@ export class LambdaNewCommand extends AbstractCommand {
     const printer = new Printer();
     this.printSuccess(messages.banner);
 
-    if (this.checkFileExists()) {
+    if (super.checkFileExists(this.name)) {
       if (this.skipGitInit) {
         this.printNeutral(
           `Folder ${this.name} already exists but git won't be initialized there`,
@@ -60,7 +58,7 @@ export class LambdaNewCommand extends AbstractCommand {
     }
 
     try {
-      this.checkFileExists();
+      super.checkFileExists(this.name);
 
       printer.startStep('Generating AWS Lambda scaffolding');
       await this.schematicRunner.addLambdaQuickstart(this.name);
@@ -123,21 +121,8 @@ export class LambdaNewCommand extends AbstractCommand {
       printer.load.fail(
         `Error generating new project: ${(error as Error).message}`,
       );
-      this.removeFolder();
+      super.removeFolder(this.name);
       LambdaNewCommand.endProcess(1);
     }
-  }
-
-  private removeFolder() {
-    try {
-      fs.rmdirSync(join(process.cwd(), this.name), { recursive: true });
-    } catch (e: unknown) {
-      // ignore
-    }
-  }
-
-  private checkFileExists() {
-    const path = join(process.cwd(), this.name);
-    return fs.existsSync(path);
   }
 }

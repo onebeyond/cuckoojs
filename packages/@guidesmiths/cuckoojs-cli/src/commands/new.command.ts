@@ -1,8 +1,6 @@
 import { SchematicRunner } from '../lib/runners/schematic.runner';
 import { GitRunner } from '../lib/runners/git.runner';
 import { messages } from '../lib/ui/ui';
-import * as fs from 'fs';
-import { join } from 'path';
 import { AbstractCommand } from './abstract.command';
 import { NestRunner } from '../lib/runners/nest.runner';
 import Printer from '../lib/printer/printer';
@@ -22,7 +20,7 @@ export class NewCommand extends AbstractCommand {
     const printer = new Printer();
     this.printSuccess(messages.banner);
 
-    if (this.checkFileExists()) {
+    if (super.checkFileExists(this.name)) {
       this.printError(
         `Error generating new project: Folder ${this.name} already exists`,
       );
@@ -51,21 +49,8 @@ export class NewCommand extends AbstractCommand {
       printer.load.fail(
         `Error generating new project: ${(error as Error).message}`,
       );
-      this.removeFolder();
+      super.removeFolder(this.name);
       NewCommand.endProcess(1);
     }
-  }
-
-  private removeFolder() {
-    try {
-      fs.rmdirSync(join(process.cwd(), this.name), { recursive: true });
-    } catch (e: unknown) {
-      // ignore
-    }
-  }
-
-  private checkFileExists() {
-    const path = join(process.cwd(), this.name);
-    return fs.existsSync(path);
   }
 }
