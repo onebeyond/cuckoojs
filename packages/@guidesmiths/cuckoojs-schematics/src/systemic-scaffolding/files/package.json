@@ -29,6 +29,7 @@
     "@hapi/boom": "^9.1.0",
     "body-parser": "^1.19.0",
     "bunyan": "^1.8.12",
+    "chalk": "^5.3.0",
     "confabulous": "^1.7.0",
     "debug": "^4.1.1",
     "helmet": "^4.1.1",
