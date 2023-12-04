@@ -1,5 +1,5 @@
 const supertest = require('supertest');
-const system = require('../system');
+const system = require('../../system');
 
 describe('Service Tests', () => {
 	let request;
