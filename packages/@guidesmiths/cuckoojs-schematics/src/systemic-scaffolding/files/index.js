@@ -4,7 +4,7 @@ const runner = require('systemic-domain-runner');
 const system = require('./system');
 const openTelemetry = require('./opentelemetry');
 
-openTelemetry.init();
+openTelemetry.start();
 
 const emergencyLogger = console;
 

@@ -13,8 +13,7 @@
     "test": "cross-env SERVICE_ENV=test jest --runInBand --detectOpenHandles --forceExit",
     "test:watch": "npm run test -- --watch",
     "test:report": "cross-env CI=true SERVICE_ENV=test jest --runInBand --detectOpenHandles --forceExit --coverage",
-    "manifest": "node_modules/make-manifest/bin/make-manifest",
-    "qa": "npm run lint && npm run test"
+    "manifest": "node_modules/make-manifest/bin/make-manifest"
   },
   "devDependencies": {
     "@types/jest": "^29.5.10",
@@ -27,12 +26,10 @@
   },
   "dependencies": {
     "@hapi/boom": "^9.1.0",
-    "@opentelemetry/api": "^1.7.0",
-    "@opentelemetry/instrumentation": "^0.45.1",
     "@opentelemetry/instrumentation-express": "^0.33.3",
     "@opentelemetry/instrumentation-http": "^0.45.1",
     "@opentelemetry/instrumentation-pino": "^0.34.3",
-    "@opentelemetry/sdk-trace-node": "^1.18.1",
+    "@opentelemetry/sdk-node": "^0.45.1",
     "body-parser": "^1.19.0",
     "chalk": "^5.3.0",
     "confabulous": "^1.7.0",

@@ -1,20 +1,25 @@
-const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+const process = require('process');
+const opentelemetry = require('@opentelemetry/sdk-node');
 const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 
-const init = () => {
-  const provider = new NodeTracerProvider();
-  provider.register();
+const sdk = new opentelemetry.NodeSDK({
+  instrumentations: [
+    new PinoInstrumentation(),
+    new ExpressInstrumentation(),
+    new HttpInstrumentation(),
+  ],
+});
 
-  registerInstrumentations({
-    instrumentations: [
-      new PinoInstrumentation(),
-      new ExpressInstrumentation(),
-      new HttpInstrumentation(),
-    ],
-  });
-};
+process.on('SIGTERM', () => {
+  sdk
+    .shutdown()
+    .then(
+      () => {},
+      err => process.stderr.write('Error shutting down OpenTelemetry SDK', err),
+    )
+    .finally(() => process.exit(0));
+});
 
-module.exports = { init };
+module.exports = sdk;
