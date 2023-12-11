@@ -3,5 +3,5 @@ const { join } = require('path');
 
 module.exports = () =>
   new System({ name: '<%=directory%>' })
-  .bootstrap(join(__dirname, 'components'));
+  .bootstrap(join(__dirname, 'src', 'components'));
 
