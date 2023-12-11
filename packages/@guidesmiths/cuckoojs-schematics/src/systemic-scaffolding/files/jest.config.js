@@ -1,5 +1,5 @@
 const { defaults } = require('jest-config');
-require('./test/env');
+require('./src/test/env');
 
 /** @type {import('jest').Config} */
 module.exports = {
