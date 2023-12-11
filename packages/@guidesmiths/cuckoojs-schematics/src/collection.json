@@ -60,6 +60,11 @@
       "description": "Add basic tooling to the project",
       "factory": "./basic-tooling/basic-tooling.factory#main",
       "schema": "./basic-tooling/schema.json"
+    },
+    "systemic-scaffolding": {
+      "description": "Add Systemic project scaffolding",
+      "factory": "./systemic-scaffolding/systemic-scaffolding.factory#main",
+      "schema": "./systemic-scaffolding/schema.json"
     }
   }
 }
