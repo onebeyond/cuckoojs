@@ -1,5 +1,5 @@
 const path = require('path');
-const Conf = require('packages/@guidesmiths/cuckoojs-schematics/src/systemic-scaffolding/files/src/components/config/confabulous');
+const Conf = require('confabulous');
 
 module.exports = ({ confabulous } = {}) => {
 	const Confabulous = confabulous || Conf;
