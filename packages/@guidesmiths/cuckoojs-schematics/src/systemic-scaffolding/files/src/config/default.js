@@ -14,7 +14,7 @@ module.exports = {
           validationEndpoint: '/test',
           format: 'yaml',
           yaml: {
-            file: './docs/syncapi.yaml',
+            file: './src/docs/syncapi.yaml',
           },
         },
       },

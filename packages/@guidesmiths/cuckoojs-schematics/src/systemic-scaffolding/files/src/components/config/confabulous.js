@@ -1,5 +1,5 @@
 const path = require('path');
-const Conf = require('packages/@guidesmiths/cuckoojs-schematics/src/systemic-scaffolding/files/src/components/config/confabulous');
+const Conf = require('confabulous');
 
 module.exports = ({ confabulous } = {}) => {
 	const Confabulous = confabulous || Conf;
@@ -7,7 +7,7 @@ module.exports = ({ confabulous } = {}) => {
 
 	const start = (params, cb) =>
 		new Confabulous()
-			.add(() => loaders.require({ path: path.join(process.cwd(), 'config', 'default.js'), watch: true }))
+			.add(() => loaders.require({ path: path.join(process.cwd(), 'src', 'config', 'default.js'), watch: true }))
 			.add(() =>
 				loaders.require({
 					path: path.join(process.cwd(), 'config', `${process.env.SERVICE_ENV}.js`),

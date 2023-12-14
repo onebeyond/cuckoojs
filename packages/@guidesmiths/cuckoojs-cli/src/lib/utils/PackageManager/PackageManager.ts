@@ -29,6 +29,12 @@ const installArgs: Record<PackagerManagerEnum, string> = {
   [PackagerManagerEnum.pnpm]: 'install',
 };
 
+const runScriptArgs: Record<PackagerManagerEnum, string> = {
+  [PackagerManagerEnum.npm]: 'run',
+  [PackagerManagerEnum.yarn]: '',
+  [PackagerManagerEnum.pnpm]: 'run',
+};
+
 export class PackageManager {
   private readonly path: string;
 
@@ -52,6 +58,15 @@ export class PackageManager {
     return spawnAsync({
       command: packageManager,
       args: [installArgs[packageManager]],
+      stdio: 'pipe',
+      cwd: this.path,
+    });
+  }
+
+  public runScript(packageManager: PackageManagerOptions, script: string) {
+    return spawnAsync({
+      command: packageManager,
+      args: [runScriptArgs[packageManager], script],
       stdio: 'pipe',
       cwd: this.path,
     });

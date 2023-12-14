@@ -59,4 +59,11 @@ export class SchematicRunner extends GenericRunner {
     ];
     await super.run({ command: SchematicRunner.getSchematicsCliPath(), args });
   }
+
+  public async addSystemicScaffolding(name: string) {
+    const args = [
+      `@guidesmiths/cuckoojs-schematics:systemic-scaffolding --directory=${name}`,
+    ];
+    await super.run({ command: SchematicRunner.getSchematicsCliPath(), args });
+  }
 }

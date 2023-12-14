@@ -1,16 +1,13 @@
-import { SchematicRunner } from '../lib/runners/schematic.runner';
-import { GitRunner } from '../lib/runners/git.runner';
-import { messages } from '../lib/ui/ui';
-import { AbstractCommand } from './abstract.command';
-import { NestRunner } from '../lib/runners/nest.runner';
-import Printer from '../lib/printer/printer';
-import { Prompter } from '../lib/utils/Prompter/Prompter';
-import { PackageManager } from '../lib/utils/PackageManager/PackageManager';
+import { SchematicRunner } from '../../lib/runners/schematic.runner';
+import { GitRunner } from '../../lib/runners/git.runner';
+import { messages } from '../../lib/ui/ui';
+import { AbstractCommand } from '../abstract.command';
+import Printer from '../../lib/printer/printer';
+import { PackageManager } from '../../lib/utils/PackageManager/PackageManager';
 
 export class NewCommand extends AbstractCommand {
   private readonly schematicRunner: SchematicRunner = new SchematicRunner();
   private readonly gitRunner: GitRunner = new GitRunner();
-  private readonly nestRunner: NestRunner = new NestRunner();
 
   constructor(private readonly name: string) {
     super();
@@ -28,22 +25,27 @@ export class NewCommand extends AbstractCommand {
     }
 
     try {
-      const packageManager = await Prompter.promptPackageManager();
+      await this.schematicRunner.addSystemicScaffolding(this.name);
 
-      await this.nestRunner.generateNestApplication(this.name, packageManager);
-
+      await this.gitRunner.init(this.name);
       await this.gitRunner.createBranch({ folderName: this.name });
+
+      await this.schematicRunner.addESlint(this.name);
 
       await this.schematicRunner.addBasicTooling(this.name);
 
-      await this.schematicRunner.addNestJsConfigModule(this.name);
+      const packageManager = new PackageManager(this.name);
 
       printer.startStep('Installing dependencies');
-      await new PackageManager(this.name).install(packageManager);
+      await packageManager.install('npm');
+      printer.endStep();
+
+      printer.startStep('Linting files');
+      await packageManager.runScript('npm', 'lint:fix');
       printer.endStep();
 
       this.printSuccess(
-        `\n🐦 Your CuckooJS Nest "${this.name}" project is generated and ready to use 🐦`,
+        `\n🐦 Your CuckooJS Systemic "${this.name}" project is generated and ready to use 🐦`,
       );
     } catch (error: unknown) {
       printer.load.fail(

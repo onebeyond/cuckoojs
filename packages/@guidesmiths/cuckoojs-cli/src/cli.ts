@@ -2,6 +2,7 @@
 import { Option, Command } from 'commander';
 import { version } from '../package.json';
 import { NewCommand, GenerateCommand } from './commands';
+import { NewCommand as SystemicNewCommand } from './commands/systemic/new.command';
 import { LambdaNewCommand } from './commands/lambda-new.command';
 
 const init = (): void => {
@@ -63,6 +64,18 @@ const init = (): void => {
         ).execute();
       },
     );
+
+  const systemic = cuckoo
+    .command('systemic')
+    .description('Generate Systemic templates');
+
+  systemic
+    .command('new <name>')
+    .alias('n')
+    .description('Generate a Systemic application')
+    .action(async (name: string) => {
+      await new SystemicNewCommand(name).execute();
+    });
 
   cuckoo.parse(process.argv);
 };
