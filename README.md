@@ -6,54 +6,15 @@
 <a href="https://codeclimate.com/github/onebeyond/cuckoojs/maintainability"><img src="https://api.codeclimate.com/v1/badges/4513809de0dc74ecf875/maintainability" /></a>
 <a href="https://codeclimate.com/github/onebeyond/cuckoojs/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4513809de0dc74ecf875/test_coverage" /></a>
 
-#### Let the cuckoo accommodate the nest for you.
+## Let the cuckoo accommodate the nest for you.
 
-CuckooJS is a scaffolding based on <a href="https://nestjs.com/" target="_blank">NestJS</a>. Inspired by the cuckoo bird, we took advantage of the already created nest and included our own easter eggs, such as:
-- <a href="https://commitlint.js.org/#/" target="_blank">Commitlint</a>
-- <a href="https://www.npmjs.com/package/husky" target="_blank">Husky</a>
-- <a href="https://www.npmjs.com/package/@guidesmiths/license-checker" target="_blank">License checker</a> <img alt="logo" src="https://github.com/guidesmiths/license-checker/blob/6e96b2d9a93e3838931e87f8f63af7f144811689/assets/logo.png?raw=true" width="20px" />
+CuckooJS is a project designed to facilitate the generation of scaffolding and components for your JavaScript and TypeScript applications. It is structured as a monorepo that encompasses the following packages:
 
-This way, you don't have to worry about including these when initiating a new project. 
+- [`cuckoojs-cli`](/packages/@guidesmiths/cuckoojs-cli/README.md): A command-line interface (CLI) enabling the generation of scaffolding using various frameworks.
+- [`cuckoojs-schematics`](/packages/@guidesmiths/cuckoojs-schematics/README.md): A set of Schematics to incorporate diverse functionalities and streamline the setup of your projects.
 
+Both packages can be employed independently. In the case of `cuckoojs-schematics`, it is imperative to utilize [Schematics CLI](https://www.npmjs.com/package/@angular-devkit/schematics-cli). 
 
-
-### <img alt="logo" src="./assets/logo.svg" width="20px" />  How to use it
-
-Install the cuckoo cli globally
-
-```bash
-npm install -g @guidesmiths/cuckoojs-cli
-```
-
-Creating a new NestJS app with the basic tooling:
-
-```bash
-cuckoo new <projectname>
-```
+For more detailed information, please refer to the README of each respective package.
 
 
-You can still use all the commands that work with NestJS, for example:
-
-```bash
-cuckoo generate|g controller <name>
-```
-
-### Use our schematics
-
-If you want to use the schematics solely, install the schematics globally
-
-```bash
-npm install -g @guidesmiths/cuckoojs-schematics
-```
-
-Currently we have schematics for:
-- creating a .gitignore file:
-
-```bash
-schematics @guidesmiths/cuckoojs-schematics:gitignore --directory=<path>
-```
-- adding commitlint:
-
-```bash
-schematics @guidesmiths/cuckoojs-schematics:commitlint --directory=<path>
-```
